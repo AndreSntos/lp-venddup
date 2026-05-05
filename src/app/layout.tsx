@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { AnalyticsProvider } from "@/lib/tracking/posthog-provider";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -66,7 +67,7 @@ export default function RootLayout({
         <div className="vd-grid-bg" aria-hidden="true" />
         <div className="vd-noise" aria-hidden="true" />
         <div className="vd-scanline" aria-hidden="true" />
-        {children}
+        <AnalyticsProvider>{children}</AnalyticsProvider>
       </body>
     </html>
   );

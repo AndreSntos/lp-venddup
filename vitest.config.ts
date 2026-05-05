@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    pool: "forks",
+    pool: "vmForks",
     testTimeout: 30000,
     setupFiles: ["./src/tests/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
@@ -21,6 +21,11 @@ export default defineConfig({
         "src/app/**",
         "src/**/*.d.ts",
         "src/**/*.config.ts",
+        /* PostHog e Provider dependem de browser/React — excluídos de cobertura */
+        "src/lib/tracking/posthog-client.ts",
+        "src/lib/tracking/posthog-provider.tsx",
+        /* Apenas constantes e tipos — sem lógica executável */
+        "src/lib/tracking/events.ts",
       ],
       thresholds: {
         statements: 85,

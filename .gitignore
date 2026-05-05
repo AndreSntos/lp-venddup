@@ -2,3 +2,5 @@ node_modules
 .next/
 coverage/
 tsconfig.tsbuildinfo
+.env*.local
+.env.local

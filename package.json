@@ -8,13 +8,14 @@
     "start": "next start",
     "lint": "eslint ./src --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --pool=forks",
-    "test:watch": "vitest --pool=forks",
-    "test:coverage": "vitest run --pool=forks --coverage",
+    "test": "vitest run --pool=vmForks",
+    "test:watch": "vitest --pool=vmForks",
+    "test:coverage": "vitest run --pool=vmForks --coverage",
     "check": "npm run typecheck && npm run lint && npm run test && npm run test:coverage && npm run build"
   },
   "dependencies": {
     "next": "16.2.4",
+    "posthog-js": "^1.372.8",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

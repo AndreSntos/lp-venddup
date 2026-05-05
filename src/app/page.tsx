@@ -185,6 +185,9 @@ function Navbar() {
         href="https://app.venddup.com.br/register"
         className="vd-btn primary sm lp-nav-cta"
         rel="noopener"
+        data-track="signup_started"
+        data-track-label="Começar grátis"
+        data-track-location="navbar"
       >
         Começar grátis
       </a>
@@ -638,7 +641,11 @@ function FAQ() {
         <div className="lp-faq">
           {faqs.map((item, i) => (
             <details key={i}>
-              <summary>
+              <summary
+                data-track="lp_faq_clicked"
+                data-track-label={item.q}
+                data-track-location="faq"
+              >
                 {item.q}
                 <span className="lp-faq-chevron" aria-hidden="true">
                   <IconChevronDown />
@@ -686,6 +693,9 @@ function CTAFinal() {
             className="vd-btn primary"
             rel="noopener"
             style={{ padding: "16px 32px", fontSize: "16px" }}
+            data-track="signup_started"
+            data-track-label="Começar teste grátis"
+            data-track-location="cta-final"
           >
             Começar teste grátis
             <IconArrow />
@@ -694,6 +704,9 @@ function CTAFinal() {
             href="https://demo.venddup.com.br"
             className="vd-btn ghost"
             rel="noopener"
+            data-track="lp_cta_clicked"
+            data-track-label="Ver exemplo de vitrine"
+            data-track-location="cta-final"
           >
             <IconLink />
             Ver exemplo de vitrine
@@ -780,6 +793,9 @@ export default function HomePage() {
                     href="https://app.venddup.com.br/register"
                     className="vd-btn primary"
                     rel="noopener"
+                    data-track="signup_started"
+                    data-track-label="Começar teste grátis"
+                    data-track-location="hero"
                   >
                     Começar teste grátis
                     <IconArrow />
@@ -788,6 +804,9 @@ export default function HomePage() {
                     href="https://demo.venddup.com.br"
                     className="vd-btn ghost"
                     rel="noopener"
+                    data-track="lp_cta_clicked"
+                    data-track-label="Ver exemplo de vitrine"
+                    data-track-location="hero"
                   >
                     <IconLink />
                     Ver exemplo de vitrine

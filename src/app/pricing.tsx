@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/tracking/posthog-client";
+import { LP_EVENTS } from "@/lib/tracking/events";
 
 type Period = "anual" | "semestral" | "mensal";
 
@@ -133,6 +135,20 @@ export function PricingSection() {
                   href="https://app.venddup.com.br/register"
                   className="vd-btn primary lp-plan-cta-btn"
                   rel="noopener"
+                  onClick={() => {
+                    trackEvent(LP_EVENTS.LP_PRICING_CLICKED, {
+                      plan: "starter",
+                      period,
+                      cta_label: "Começar teste grátis",
+                      cta_location: "pricing",
+                      cta_destination: "https://app.venddup.com.br/register",
+                    });
+                    trackEvent(LP_EVENTS.SIGNUP_STARTED, {
+                      plan: "starter",
+                      period,
+                      source: "pricing",
+                    });
+                  }}
                 >
                   Começar teste grátis
                   <ArrowIcon />
