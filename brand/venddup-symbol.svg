@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500" fill="none">
+
+    <defs>
+      <linearGradient id="topGrad" x1="95" y1="100" x2="405" y2="255" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#27E8E5"/>
+        <stop offset="50%" stop-color="#1CC8F2"/>
+        <stop offset="100%" stop-color="#1595FF"/>
+      </linearGradient>
+      <linearGradient id="blueGrad" x1="110" y1="205" x2="390" y2="430" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#2A91FF"/>
+        <stop offset="50%" stop-color="#176BFF"/>
+        <stop offset="100%" stop-color="#0E4FFF"/>
+      </linearGradient>
+      
+    </defs>
+    
+
+<g id="venddup-symbol" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M95 100 L250 252 L405 100" stroke="url(#topGrad)" stroke-width="74"/>
+  <path d="M112 214 L250 341 L388 214" stroke="url(#blueGrad)" stroke-width="58"/>
+  <path d="M112 302 L250 430 L388 302" stroke="url(#blueGrad)" stroke-width="58"/>
+</g>
+
+<use href="#venddup-symbol"/>
+</svg>

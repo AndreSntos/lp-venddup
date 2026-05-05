@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venddup Design System V4 — Premium Tech SaaS</title>
+  <meta name="description" content="Design system premium tech para o Venddup: vitrine própria, pedidos organizados via WhatsApp, kits com margem, dashboard, suporte, políticas e 18+." />
+  <style>
+    :root{
+      color-scheme: dark;
+      --vd-bg:#030712;
+      --vd-bg-rgb:3,7,18;
+      --vd-bg-hsl:222,71%,4%;
+      --vd-bg-dec:198418;
+      --vd-panel:#07111f;
+      --vd-panel-rgb:7,17,31;
+      --vd-panel-hsl:215,63%,7%;
+      --vd-panel-dec:463135;
+      --vd-panel-2:#0a1628;
+      --vd-elevated:#0d1b31;
+      --vd-glass:rgba(10,22,40,.68);
+      --vd-line:rgba(125,211,252,.18);
+      --vd-line-strong:rgba(125,211,252,.38);
+      --vd-text:#f8fbff;
+      --vd-muted:#9fb4d0;
+      --vd-faint:#627792;
+      --vd-cyan:#38bdf8;
+      --vd-cyan-rgb:56,189,248;
+      --vd-cyan-hsl:198,93%,60%;
+      --vd-cyan-dec:3718648;
+      --vd-blue:#2563eb;
+      --vd-indigo:#6366f1;
+      --vd-violet:#8b5cf6;
+      --vd-pink:#ec4899;
+      --vd-green:#25d366;
+      --vd-green-rgb:37,211,102;
+      --vd-green-hsl:142,70%,49%;
+      --vd-green-dec:2478950;
+      --vd-lime:#a3e635;
+      --vd-amber:#f59e0b;
+      --vd-danger:#fb7185;
+      --vd-success:#22c55e;
+      --vd-shadow:0 24px 90px rgba(0,0,0,.46);
+      --vd-shadow-soft:0 12px 45px rgba(2,132,199,.12);
+      --vd-radius-xs:10px;
+      --vd-radius-sm:14px;
+      --vd-radius-md:20px;
+      --vd-radius-lg:28px;
+      --vd-radius-xl:38px;
+      --vd-radius-orb:999px;
+      --vd-font-display:"Space Grotesk", "Inter Tight", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --vd-font-ui:"Inter", "Manrope", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --vd-font-mono:"JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --vd-max:1220px;
+      --vd-nav-h:76px;
+    }
+    [data-theme="light"]{
+      color-scheme: light;
+      --vd-bg:#f5f9ff;
+      --vd-bg-rgb:245,249,255;
+      --vd-bg-hsl:216,100%,98%;
+      --vd-bg-dec:16120319;
+      --vd-panel:#ffffff;
+      --vd-panel-rgb:255,255,255;
+      --vd-panel-hsl:0,0%,100%;
+      --vd-panel-dec:16777215;
+      --vd-panel-2:#edf5ff;
+      --vd-elevated:#ffffff;
+      --vd-glass:rgba(255,255,255,.72);
+      --vd-line:rgba(37,99,235,.16);
+      --vd-line-strong:rgba(37,99,235,.32);
+      --vd-text:#06111f;
+      --vd-muted:#475569;
+      --vd-faint:#76869a;
+      --vd-cyan:#0284c7;
+      --vd-blue:#1d4ed8;
+      --vd-indigo:#4f46e5;
+      --vd-violet:#7c3aed;
+      --vd-pink:#db2777;
+      --vd-green:#16a34a;
+      --vd-lime:#65a30d;
+      --vd-amber:#d97706;
+      --vd-danger:#e11d48;
+      --vd-success:#15803d;
+      --vd-shadow:0 24px 70px rgba(29,78,216,.12);
+      --vd-shadow-soft:0 16px 50px rgba(14,116,144,.10);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth; scroll-padding-top:96px}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 17% 14%, rgba(56,189,248,.18), transparent 28%),
+        radial-gradient(circle at 79% 7%, rgba(139,92,246,.20), transparent 28%),
+        radial-gradient(circle at 50% 88%, rgba(37,211,102,.09), transparent 34%),
+        linear-gradient(180deg, var(--vd-bg), var(--vd-bg));
+      color:var(--vd-text);
+      font-family:var(--vd-font-ui);
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    ::selection{background:rgba(56,189,248,.35); color:var(--vd-text)}
+    .vd-noise,.vd-grid-bg,.vd-scanline{position:fixed;inset:0;pointer-events:none;z-index:-2}
+    .vd-noise{opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E")}
+    .vd-grid-bg{z-index:-3;background-image:linear-gradient(rgba(125,211,252,.10) 1px, transparent 1px),linear-gradient(90deg, rgba(125,211,252,.10) 1px, transparent 1px);background-size:52px 52px;mask-image:linear-gradient(to bottom, #000 0%, transparent 75%)}
+    .vd-scanline{z-index:-1;background:linear-gradient(to bottom, transparent, rgba(56,189,248,.03), transparent);height:33vh;animation:scan 8s linear infinite}
+    @keyframes scan{0%{transform:translateY(-40vh)}100%{transform:translateY(140vh)}}
+    @keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(56,189,248,.36)}70%{box-shadow:0 0 0 18px rgba(56,189,248,0)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
+    @keyframes shimmer{0%{background-position:-220% 0}100%{background-position:220% 0}}
+    @keyframes dash{to{stroke-dashoffset:-340}}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    .vd-shell{width:min(var(--vd-max), calc(100% - 32px));margin-inline:auto}
+    .vd-topbar{
+      position:sticky;top:14px;z-index:20;width:min(1320px, calc(100% - 24px));height:var(--vd-nav-h);margin:14px auto 0;padding:10px 12px 10px 18px;
+      display:flex;align-items:center;gap:16px;border:1px solid var(--vd-line);border-radius:var(--vd-radius-orb);background:linear-gradient(180deg, color-mix(in srgb, var(--vd-glass), transparent 5%), color-mix(in srgb, var(--vd-glass), transparent 18%));backdrop-filter:blur(22px);box-shadow:var(--vd-shadow-soft)
+    }
+    .vd-brand{display:flex;align-items:center;gap:12px;min-width:max-content;font-weight:900;letter-spacing:-.04em;font-family:var(--vd-font-display)}
+    .vd-mark{width:42px;height:42px;border-radius:16px;display:grid;place-items:center;background:conic-gradient(from 180deg, var(--vd-cyan), var(--vd-indigo), var(--vd-green), var(--vd-cyan));box-shadow:0 0 34px rgba(56,189,248,.34);position:relative;overflow:hidden}
+    .vd-mark:after{content:"";position:absolute;inset:2px;border-radius:14px;background:var(--vd-panel);opacity:.62}.vd-mark span{position:relative;z-index:1;font-family:var(--vd-font-mono);font-size:13px}
+    .vd-nav{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;flex:1}.vd-nav::-webkit-scrollbar{display:none}
+    .vd-nav a{font-size:12px;color:var(--vd-muted);padding:10px 12px;border-radius:999px;border:1px solid transparent;white-space:nowrap;transition:.2s ease}.vd-nav a:hover{color:var(--vd-text);border-color:var(--vd-line);background:rgba(125,211,252,.08)}
+    .vd-theme-toggle{border:1px solid var(--vd-line-strong);border-radius:999px;background:linear-gradient(135deg, rgba(56,189,248,.15), rgba(139,92,246,.12));color:var(--vd-text);padding:10px 14px;display:flex;gap:8px;align-items:center;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+    .vd-section{padding:86px 0;position:relative}.vd-section.tight{padding:52px 0}
+    .vd-kicker{font-family:var(--vd-font-mono);text-transform:uppercase;letter-spacing:.18em;color:var(--vd-cyan);font-size:12px;font-weight:800;margin-bottom:14px}
+    .vd-title{font-family:var(--vd-font-display);font-size:clamp(36px,6vw,76px);line-height:.92;letter-spacing:-.07em;margin:0 0 18px}.vd-title.small{font-size:clamp(30px,4.4vw,54px)}
+    .vd-copy{color:var(--vd-muted);font-size:18px;line-height:1.7;max-width:760px;margin:0}.vd-copy strong{color:var(--vd-text)}
+    .vd-gradient-text{background:linear-gradient(90deg, var(--vd-text), var(--vd-cyan), var(--vd-green), var(--vd-violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .vd-hero{min-height:calc(100vh - 90px);padding:90px 0 52px;display:grid;align-items:center}
+    .vd-hero-grid{display:grid;grid-template-columns:1fr 1.02fr;gap:34px;align-items:center}
+    .vd-badge-row{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0}.vd-pill{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--vd-line);background:rgba(125,211,252,.07);color:var(--vd-muted);border-radius:999px;padding:9px 12px;font-size:12px;font-family:var(--vd-font-mono)}.vd-dot{width:8px;height:8px;border-radius:50%;background:var(--vd-green);box-shadow:0 0 18px var(--vd-green)}
+    .vd-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.vd-btn{position:relative;isolation:isolate;border:1px solid var(--vd-line-strong);border-radius:999px;padding:13px 18px;background:rgba(125,211,252,.08);color:var(--vd-text);font-weight:850;display:inline-flex;align-items:center;gap:9px;cursor:pointer;transition:.22s ease;overflow:hidden}.vd-btn:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);transform:translateX(-120%);transition:.55s ease;z-index:-1}.vd-btn:hover{transform:translateY(-2px);border-color:rgba(56,189,248,.7);box-shadow:0 14px 35px rgba(56,189,248,.14)}.vd-btn:hover:before{transform:translateX(120%)}.vd-btn.primary{background:linear-gradient(135deg, var(--vd-cyan), var(--vd-indigo));color:#fff;border:0;box-shadow:0 18px 46px rgba(37,99,235,.30)}.vd-btn.whatsapp{background:linear-gradient(135deg, var(--vd-green), #08a045);color:#03140a;border:0}.vd-btn.ghost{background:transparent}.vd-btn.danger{background:linear-gradient(135deg, rgba(251,113,133,.20), rgba(236,72,153,.10));border-color:rgba(251,113,133,.35)}.vd-btn.disabled{opacity:.45;cursor:not-allowed}.vd-btn.loading:after{content:"";width:13px;height:13px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:orbit .7s linear infinite}
+    .vd-hero-stage{position:relative;min-height:650px;perspective:1200px}
+    .vd-orbital{position:absolute;inset:2%;border-radius:50%;border:1px solid rgba(125,211,252,.13);animation:orbit 22s linear infinite}.vd-orbital:nth-child(2){inset:12%;animation-duration:16s;animation-direction:reverse;border-color:rgba(37,211,102,.13)}.vd-orbital:nth-child(3){inset:23%;animation-duration:28s;border-color:rgba(139,92,246,.16)}
+    .vd-command-panel{position:absolute;inset:55px 15px auto auto;width:min(560px,95%);height:390px;border:1px solid var(--vd-line-strong);border-radius:34px;background:linear-gradient(145deg, rgba(7,17,31,.92), rgba(8,23,42,.74));box-shadow:var(--vd-shadow), 0 0 80px rgba(56,189,248,.15);backdrop-filter:blur(20px);overflow:hidden;transform:rotateX(7deg) rotateY(-10deg) rotateZ(1deg);animation:float 7s ease-in-out infinite}.light .vd-command-panel,[data-theme="light"] .vd-command-panel{background:linear-gradient(145deg, rgba(255,255,255,.96), rgba(237,245,255,.86))}
+    .vd-panel-top{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--vd-line);background:rgba(125,211,252,.04)}.vd-traffic{display:flex;gap:7px}.vd-traffic span{width:10px;height:10px;border-radius:50%;background:var(--vd-cyan)}.vd-traffic span:nth-child(2){background:var(--vd-amber)}.vd-traffic span:nth-child(3){background:var(--vd-green)}.vd-panel-label{font-family:var(--vd-font-mono);font-size:12px;color:var(--vd-muted)}
+    .vd-command-body{display:grid;grid-template-columns:150px 1fr;height:calc(100% - 54px)}.vd-mini-sidebar{padding:14px;border-right:1px solid var(--vd-line);display:grid;gap:9px;align-content:start}.vd-mini-nav{height:34px;border:1px solid var(--vd-line);border-radius:12px;background:rgba(125,211,252,.06);display:flex;align-items:center;gap:8px;padding:0 10px;color:var(--vd-muted);font-size:12px}.vd-mini-nav.active{background:linear-gradient(90deg, rgba(56,189,248,.20), rgba(37,211,102,.12));color:var(--vd-text)}
+    .vd-command-main{padding:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.vd-metric{border:1px solid var(--vd-line);border-radius:18px;background:linear-gradient(180deg, rgba(125,211,252,.08), rgba(255,255,255,.02));padding:13px;position:relative;overflow:hidden}.vd-metric:after{content:"";position:absolute;inset:auto 0 0;height:2px;background:linear-gradient(90deg,var(--vd-cyan),var(--vd-green))}.vd-metric small{display:block;color:var(--vd-muted);font-size:11px}.vd-metric b{display:block;font-family:var(--vd-font-display);font-size:24px;letter-spacing:-.05em;margin-top:6px}.vd-chart{grid-column:1/-1;height:92px;border:1px solid var(--vd-line);border-radius:18px;padding:10px;overflow:hidden;background:rgba(0,0,0,.08)}
+    .vd-phone{position:absolute;right:0;bottom:28px;width:220px;height:430px;border:1px solid var(--vd-line-strong);border-radius:38px;background:linear-gradient(180deg,var(--vd-panel),var(--vd-panel-2));box-shadow:var(--vd-shadow);padding:13px;transform:rotateX(5deg) rotateY(-16deg) rotateZ(6deg);animation:float 6s ease-in-out infinite 1s}.vd-phone-screen{height:100%;border:1px solid var(--vd-line);border-radius:28px;background:linear-gradient(180deg,rgba(56,189,248,.12),rgba(37,211,102,.06));overflow:hidden;padding:14px}.vd-store-hero{height:78px;border-radius:22px;background:radial-gradient(circle at 20% 20%, rgba(56,189,248,.6), transparent 32%),linear-gradient(135deg,#0b1220,#1e3a8a);padding:12px}.vd-product-row{display:flex;gap:8px;margin-top:10px}.vd-product-row span{height:58px;flex:1;border:1px solid var(--vd-line);border-radius:16px;background:rgba(255,255,255,.08)}
+    .vd-whats-card{position:absolute;left:20px;bottom:98px;width:295px;border:1px solid rgba(37,211,102,.38);border-radius:24px;background:linear-gradient(145deg, rgba(37,211,102,.18), rgba(7,17,31,.84));backdrop-filter:blur(18px);box-shadow:0 22px 55px rgba(37,211,102,.18);padding:16px;animation:float 5s ease-in-out infinite .4s}.vd-kit-chip{position:absolute;left:75px;top:38px;border:1px solid rgba(163,230,53,.35);border-radius:999px;background:rgba(163,230,53,.12);color:var(--vd-lime);padding:10px 13px;font-family:var(--vd-font-mono);font-size:12px;animation:pulseRing 2.5s infinite}
+
+    .vd-panel{border:1px solid var(--vd-line);background:linear-gradient(180deg, color-mix(in srgb, var(--vd-glass), transparent 0%), color-mix(in srgb, var(--vd-panel), transparent 2%));box-shadow:var(--vd-shadow-soft);border-radius:var(--vd-radius-lg);overflow:hidden}.vd-panel.pad{padding:22px}.vd-panel-head{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px}.vd-panel h3,.vd-card h3{font-family:var(--vd-font-display);letter-spacing:-.04em;margin:0}.vd-panel p,.vd-card p{color:var(--vd-muted);line-height:1.6}
+    .vd-grid{display:grid;gap:18px}.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.span-2{grid-column:span 2}.span-3{grid-column:span 3}
+    .vd-card{border:1px solid var(--vd-line);border-radius:var(--vd-radius-md);background:linear-gradient(180deg, rgba(125,211,252,.075), rgba(255,255,255,.018));padding:18px;position:relative;overflow:hidden}.vd-card:before{content:"";position:absolute;inset:-1px;background:linear-gradient(120deg, transparent 20%, rgba(56,189,248,.18), transparent 60%);opacity:0;transition:.3s}.vd-card:hover:before{opacity:1}.vd-card > *{position:relative}.vd-card:hover{border-color:var(--vd-line-strong);transform:translateY(-2px);transition:.25s ease}
+    .vd-token{display:flex;gap:14px;align-items:center}.vd-swatch{width:58px;height:58px;border-radius:18px;border:1px solid var(--vd-line-strong);box-shadow:inset 0 0 24px rgba(255,255,255,.08)}.vd-token-code{font-family:var(--vd-font-mono);font-size:11px;color:var(--vd-muted);line-height:1.6}.vd-token-code b{color:var(--vd-text)}
+    .vd-type-row{display:grid;grid-template-columns:170px 1fr 180px;gap:18px;padding:18px;border-top:1px solid var(--vd-line);align-items:center}.vd-type-preview{font-family:var(--vd-font-display);letter-spacing:-.06em}.vd-spec{font-family:var(--vd-font-mono);font-size:11px;color:var(--vd-muted);line-height:1.55}
+    .vd-component-lab{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.vd-field{display:grid;gap:8px}.vd-field label{font-size:12px;font-weight:800;color:var(--vd-muted)}.vd-input,.vd-select,.vd-textarea{width:100%;border:1px solid var(--vd-line);background:rgba(125,211,252,.06);color:var(--vd-text);border-radius:16px;padding:13px 14px;outline:none;transition:.2s}.vd-input:focus,.vd-select:focus,.vd-textarea:focus{border-color:var(--vd-cyan);box-shadow:0 0 0 4px rgba(56,189,248,.12)}.vd-textarea{min-height:100px;resize:vertical}.vd-input.error{border-color:var(--vd-danger);box-shadow:0 0 0 4px rgba(251,113,133,.12)}
+
+    /* Select fix: evita o dropdown nativo branco/azul quebrando o tema premium tech */
+    .vd-select{
+      -webkit-appearance:none;
+      appearance:none;
+      cursor:pointer;
+      padding-right:48px;
+      color-scheme:dark;
+      background:
+        linear-gradient(45deg, transparent 50%, var(--vd-cyan) 50%) no-repeat calc(100% - 25px) calc(50% - 3px)/7px 7px,
+        linear-gradient(135deg, var(--vd-cyan) 50%, transparent 50%) no-repeat calc(100% - 19px) calc(50% - 3px)/7px 7px,
+        linear-gradient(180deg, rgba(56,189,248,.13), rgba(125,211,252,.045));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .vd-select:hover{border-color:rgba(56,189,248,.65);background-color:rgba(56,189,248,.08)}
+    .vd-select:focus{background-color:rgba(56,189,248,.1)}
+    .vd-select option,
+    .vd-select optgroup{
+      background:#07111F;
+      color:#EAF6FF;
+      font-weight:650;
+    }
+    .vd-select option:checked{background:#0E7490;color:#FFFFFF}
+    .vd-select option:disabled{background:#0A1628;color:#64748B}
+    [data-theme="light"] .vd-select{
+      color-scheme:light;
+      background:
+        linear-gradient(45deg, transparent 50%, var(--vd-cyan) 50%) no-repeat calc(100% - 25px) calc(50% - 3px)/7px 7px,
+        linear-gradient(135deg, var(--vd-cyan) 50%, transparent 50%) no-repeat calc(100% - 19px) calc(50% - 3px)/7px 7px,
+        linear-gradient(180deg, rgba(37,99,235,.08), rgba(255,255,255,.72));
+    }
+    [data-theme="light"] .vd-select option,
+    [data-theme="light"] .vd-select optgroup{background:#FFFDF7;color:#081019}
+    [data-theme="light"] .vd-select option:checked{background:#2563EB;color:#FFFFFF}
+
+    .vd-switch{width:58px;height:32px;border-radius:999px;border:1px solid var(--vd-line);background:rgba(125,211,252,.09);padding:3px;display:inline-flex;justify-content:flex-end}.vd-switch span{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--vd-cyan),var(--vd-violet));box-shadow:0 0 18px rgba(56,189,248,.5)}.vd-checkbox{width:22px;height:22px;border-radius:7px;border:1px solid var(--vd-line);display:inline-grid;place-items:center;background:rgba(37,211,102,.13);color:var(--vd-green)}
+    .vd-status{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--vd-line);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:850;color:var(--vd-muted);background:rgba(125,211,252,.06)}.vd-status.good{border-color:rgba(37,211,102,.35);color:var(--vd-green);background:rgba(37,211,102,.10)}.vd-status.warn{border-color:rgba(245,158,11,.38);color:var(--vd-amber);background:rgba(245,158,11,.10)}.vd-status.danger{border-color:rgba(251,113,133,.38);color:var(--vd-danger);background:rgba(251,113,133,.10)}.vd-status.blue{border-color:rgba(56,189,248,.35);color:var(--vd-cyan);background:rgba(56,189,248,.10)}
+    .vd-table{width:100%;border-collapse:collapse;overflow:hidden}.vd-table th,.vd-table td{text-align:left;padding:14px;border-bottom:1px solid var(--vd-line);font-size:13px}.vd-table th{color:var(--vd-muted);font-family:var(--vd-font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em}.vd-table tr:hover td{background:rgba(125,211,252,.04)}
+    .vd-dashboard{display:grid;grid-template-columns:250px 1fr;min-height:660px;border:1px solid var(--vd-line-strong);border-radius:32px;overflow:hidden;background:linear-gradient(145deg, rgba(7,17,31,.78), rgba(10,22,40,.62));box-shadow:var(--vd-shadow)}.vd-dash-side{border-right:1px solid var(--vd-line);padding:16px;background:rgba(0,0,0,.12)}.vd-side-brand{display:flex;align-items:center;gap:10px;margin-bottom:18px;font-weight:900;font-family:var(--vd-font-display)}.vd-side-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;color:var(--vd-muted);font-weight:750;margin-bottom:4px}.vd-side-item.active{background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(99,102,241,.12));color:var(--vd-text);border:1px solid var(--vd-line)}.vd-side-item svg{width:18px;height:18px}.vd-dash-main{padding:18px}.vd-dash-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.vd-dash-top h3{font-size:26px}.vd-metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}.vd-dash-metric{padding:16px;border-radius:22px;border:1px solid var(--vd-line);background:rgba(125,211,252,.06)}.vd-dash-metric small{color:var(--vd-muted);font-size:12px}.vd-dash-metric b{display:block;margin-top:8px;font-family:var(--vd-font-display);font-size:28px;letter-spacing:-.05em}.vd-split{display:grid;grid-template-columns:1.3fr .7fr;gap:12px}.vd-bar{height:9px;border-radius:999px;background:rgba(125,211,252,.10);overflow:hidden}.vd-bar i{display:block;height:100%;width:var(--w);border-radius:inherit;background:linear-gradient(90deg,var(--vd-cyan),var(--vd-green))}
+    .vd-landing-preview{border-radius:32px;overflow:hidden;border:1px solid var(--vd-line-strong);background:linear-gradient(180deg,rgba(56,189,248,.09),rgba(255,255,255,.02));box-shadow:var(--vd-shadow)}.vd-lp-hero{min-height:420px;padding:42px;display:grid;grid-template-columns:1fr 410px;gap:24px;align-items:center;position:relative;overflow:hidden}.vd-lp-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 25%, rgba(37,211,102,.18), transparent 32%), radial-gradient(circle at 20% 70%, rgba(56,189,248,.18), transparent 32%)}.vd-lp-hero>*{position:relative}.vd-lp-card{border:1px solid var(--vd-line);border-radius:28px;background:rgba(7,17,31,.62);padding:18px;backdrop-filter:blur(14px)}[data-theme="light"] .vd-lp-card{background:rgba(255,255,255,.68)}
+    .vd-auth{display:grid;grid-template-columns:1fr 1.1fr;gap:0;border:1px solid var(--vd-line-strong);border-radius:32px;overflow:hidden;background:var(--vd-glass);box-shadow:var(--vd-shadow-soft)}.vd-auth-form{padding:34px}.vd-auth-visual{min-height:500px;background:radial-gradient(circle at 30% 20%,rgba(56,189,248,.25),transparent 35%),linear-gradient(145deg,rgba(37,99,235,.28),rgba(37,211,102,.10));padding:28px;position:relative;overflow:hidden}.vd-auth-visual:after{content:"";position:absolute;inset:28px;border:1px solid var(--vd-line);border-radius:28px;background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px, transparent 1px);background-size:34px 34px}.vd-auth-card{position:relative;z-index:1;margin-top:80px;border:1px solid var(--vd-line);border-radius:24px;background:rgba(3,7,18,.6);backdrop-filter:blur(14px);padding:18px}.vd-stepper{display:flex;gap:8px;margin:14px 0}.vd-step{height:7px;flex:1;border-radius:999px;background:rgba(125,211,252,.13)}.vd-step.active{background:linear-gradient(90deg,var(--vd-cyan),var(--vd-green))}
+    .vd-storefront{border:1px solid var(--vd-line-strong);border-radius:34px;overflow:hidden;background:linear-gradient(180deg,var(--vd-panel),var(--vd-panel-2));box-shadow:var(--vd-shadow-soft)}.vd-store-header{padding:32px;min-height:210px;background:radial-gradient(circle at 24% 20%, rgba(56,189,248,.30), transparent 38%),radial-gradient(circle at 82% 30%, rgba(37,211,102,.15), transparent 34%),linear-gradient(135deg,rgba(37,99,235,.26),rgba(15,23,42,.4));display:flex;align-items:end;justify-content:space-between;gap:20px}.vd-store-body{padding:22px;display:grid;grid-template-columns:1fr 320px;gap:18px}.vd-products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.vd-product{border:1px solid var(--vd-line);border-radius:22px;background:rgba(125,211,252,.06);padding:12px;display:grid;grid-template-columns:70px 1fr;gap:12px}.vd-product-img{height:70px;border-radius:18px;background:linear-gradient(135deg,rgba(56,189,248,.25),rgba(37,211,102,.15))}.vd-cart{border:1px solid var(--vd-line);border-radius:24px;padding:16px;background:rgba(125,211,252,.05);height:max-content;position:sticky;top:100px}
+    .vd-kit-builder{display:grid;grid-template-columns:1fr 360px;gap:18px}.vd-builder-canvas{min-height:420px;border:1px solid var(--vd-line);border-radius:28px;background:radial-gradient(circle at 15% 20%, rgba(163,230,53,.11), transparent 35%),rgba(125,211,252,.04);padding:18px;position:relative;overflow:hidden}.vd-node{position:absolute;border:1px solid var(--vd-line-strong);border-radius:22px;background:var(--vd-glass);backdrop-filter:blur(14px);padding:14px;min-width:170px;box-shadow:var(--vd-shadow-soft)}.vd-node.main{left:50%;top:50%;transform:translate(-50%,-50%);border-color:rgba(163,230,53,.45)}.vd-node.n1{left:26px;top:38px}.vd-node.n2{right:28px;top:60px}.vd-node.n3{left:55px;bottom:54px}.vd-node.n4{right:40px;bottom:42px}.vd-wire{position:absolute;inset:0;pointer-events:none}.vd-wire path{stroke:rgba(56,189,248,.5);stroke-width:2;fill:none;stroke-dasharray:10 10;animation:dash 8s linear infinite}.vd-margin-ring{width:190px;height:190px;border-radius:50%;margin:20px auto;border:14px solid rgba(125,211,252,.12);background:conic-gradient(var(--vd-green) 0 72%, rgba(125,211,252,.12) 72% 100%);display:grid;place-items:center;position:relative}.vd-margin-ring:after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--vd-panel)}.vd-margin-ring b{position:relative;z-index:1;font-family:var(--vd-font-display);font-size:38px;letter-spacing:-.06em}
+    .vd-motion-tile{height:180px;border:1px solid var(--vd-line);border-radius:24px;background:rgba(125,211,252,.05);display:grid;place-items:center;position:relative;overflow:hidden}.vd-motion-dot{width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,var(--vd-cyan),var(--vd-indigo));box-shadow:0 0 35px rgba(56,189,248,.32)}.vd-motion-tile.float .vd-motion-dot{animation:float 2.6s ease-in-out infinite}.vd-motion-tile.pulse .vd-motion-dot{animation:pulseRing 2s infinite}.vd-motion-tile.shimmer:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent);background-size:220% 100%;animation:shimmer 2.4s infinite}.vd-motion-tile.grid:before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--vd-line) 1px, transparent 1px),linear-gradient(90deg,var(--vd-line) 1px, transparent 1px);background-size:26px 26px;animation:scan 5s linear infinite;opacity:.8}
+    .vd-marquee{overflow:hidden;border:1px solid var(--vd-line);border-radius:999px;background:rgba(125,211,252,.05);padding:10px 0}.vd-marquee-track{display:flex;width:max-content;gap:28px;animation:marquee 26s linear infinite}.vd-marquee span{font-family:var(--vd-font-mono);font-size:12px;color:var(--vd-muted);white-space:nowrap}.vd-checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.vd-check{display:flex;align-items:center;gap:9px;border:1px solid var(--vd-line);border-radius:16px;background:rgba(37,211,102,.06);padding:12px;color:var(--vd-muted);font-size:13px}.vd-check:before{content:"✓";width:22px;height:22px;border-radius:8px;background:rgba(37,211,102,.18);color:var(--vd-green);display:grid;place-items:center;font-weight:900}
+    .vd-footer{padding:48px 0;color:var(--vd-muted);border-top:1px solid var(--vd-line)}
+    .reveal{opacity:0;transform:translateY(24px);transition:.75s ease}.reveal.show{opacity:1;transform:none}
+
+
+
+    /* Light mode polish: remove cinzas/darks residuais e deixa o tema white realmente premium tech */
+    [data-theme="light"] body{
+      background:
+        radial-gradient(circle at 16% 9%, rgba(37,99,235,.12), transparent 30%),
+        radial-gradient(circle at 82% 4%, rgba(14,165,233,.10), transparent 30%),
+        radial-gradient(circle at 50% 86%, rgba(22,163,74,.07), transparent 36%),
+        linear-gradient(180deg, #f7fbff 0%, #eef8ff 46%, #f8fffb 100%);
+    }
+    [data-theme="light"] .vd-grid-bg{
+      background-image:linear-gradient(rgba(37,99,235,.055) 1px, transparent 1px),linear-gradient(90deg, rgba(37,99,235,.055) 1px, transparent 1px);
+      opacity:.86;
+    }
+    [data-theme="light"] .vd-noise{opacity:.035}
+    [data-theme="light"] .vd-scanline{opacity:.16;background:linear-gradient(to bottom, transparent, rgba(37,99,235,.10), transparent)}
+    [data-theme="light"] .vd-topbar,
+    [data-theme="light"] .vd-panel,
+    [data-theme="light"] .vd-card,
+    [data-theme="light"] .vd-auth,
+    [data-theme="light"] .vd-landing-preview,
+    [data-theme="light"] .vd-storefront{
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,250,255,.76));
+      box-shadow:0 22px 70px rgba(29,78,216,.10);
+    }
+    [data-theme="light"] .vd-card{background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(236,247,255,.72))}
+    [data-theme="light"] .vd-card:hover{box-shadow:0 18px 48px rgba(37,99,235,.10)}
+    [data-theme="light"] .vd-command-panel{
+      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(235,247,255,.92));
+      box-shadow:0 28px 86px rgba(37,99,235,.14), 0 0 70px rgba(14,165,233,.10);
+    }
+    [data-theme="light"] .vd-panel-top,
+    [data-theme="light"] .vd-mini-nav,
+    [data-theme="light"] .vd-metric,
+    [data-theme="light"] .vd-dash-metric,
+    [data-theme="light"] .vd-product,
+    [data-theme="light"] .vd-cart,
+    [data-theme="light"] .vd-motion-tile,
+    [data-theme="light"] .vd-check,
+    [data-theme="light"] .vd-pill,
+    [data-theme="light"] .vd-status,
+    [data-theme="light"] .vd-marquee{
+      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(231,244,255,.62));
+    }
+    [data-theme="light"] .vd-chart,
+    [data-theme="light"] .vd-bar,
+    [data-theme="light"] .vd-switch,
+    [data-theme="light"] .vd-checkbox{
+      background:rgba(37,99,235,.055);
+    }
+    [data-theme="light"] .vd-dashboard{
+      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(232,246,255,.92));
+      box-shadow:0 28px 80px rgba(29,78,216,.14);
+    }
+    [data-theme="light"] .vd-dash-side{
+      background:linear-gradient(180deg, rgba(239,248,255,.92), rgba(255,255,255,.82));
+    }
+    [data-theme="light"] .vd-dash-main{background:linear-gradient(180deg, rgba(255,255,255,.46), rgba(240,249,255,.58))}
+    [data-theme="light"] .vd-side-item.active{
+      background:linear-gradient(90deg, rgba(37,99,235,.12), rgba(22,163,74,.08));
+    }
+    [data-theme="light"] .vd-auth-visual{
+      background:radial-gradient(circle at 28% 20%, rgba(14,165,233,.18), transparent 36%),linear-gradient(145deg, rgba(235,247,255,.95), rgba(239,253,244,.88));
+    }
+    [data-theme="light"] .vd-auth-visual:after{
+      background-image:linear-gradient(rgba(37,99,235,.065) 1px, transparent 1px),linear-gradient(90deg,rgba(37,99,235,.065) 1px, transparent 1px);
+    }
+    [data-theme="light"] .vd-auth-card,
+    [data-theme="light"] .vd-lp-card,
+    [data-theme="light"] .vd-node{
+      background:rgba(255,255,255,.84);
+      box-shadow:0 18px 48px rgba(29,78,216,.10);
+    }
+    [data-theme="light"] .vd-store-header{
+      background:radial-gradient(circle at 24% 20%, rgba(14,165,233,.20), transparent 38%),radial-gradient(circle at 82% 30%, rgba(22,163,74,.13), transparent 34%),linear-gradient(135deg, rgba(232,246,255,.96), rgba(255,255,255,.78));
+    }
+    [data-theme="light"] .vd-store-hero{
+      background:radial-gradient(circle at 20% 20%, rgba(14,165,233,.32), transparent 32%),linear-gradient(135deg,#eaf6ff,#dbeafe);
+    }
+    [data-theme="light"] .vd-phone,
+    [data-theme="light"] .vd-phone-screen{
+      background:linear-gradient(180deg, #ffffff, #edf7ff);
+    }
+    [data-theme="light"] .vd-product-row span,
+    [data-theme="light"] .vd-product-img{
+      background:linear-gradient(135deg, rgba(14,165,233,.16), rgba(22,163,74,.09));
+    }
+    [data-theme="light"] .vd-whats-card{
+      background:linear-gradient(145deg, rgba(22,163,74,.13), rgba(255,255,255,.92));
+      box-shadow:0 22px 60px rgba(22,163,74,.13);
+    }
+    [data-theme="light"] .vd-builder-canvas{
+      background:radial-gradient(circle at 15% 20%, rgba(101,163,13,.10), transparent 35%),rgba(236,247,255,.58);
+    }
+    [data-theme="light"] .vd-margin-ring:after{background:#ffffff}
+    [data-theme="light"] .vd-input,
+    [data-theme="light"] .vd-textarea{
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(238,247,255,.82));
+      color:var(--vd-text);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
+    }
+    [data-theme="light"] .vd-input::placeholder,
+    [data-theme="light"] .vd-textarea::placeholder{color:#7b8798}
+    [data-theme="light"] .vd-table tr:hover td{background:rgba(37,99,235,.045)}
+    [data-theme="light"] .vd-btn:not(.primary):not(.whatsapp):not(.danger){
+      background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(235,247,255,.72));
+    }
+
+    /* Select customizado: elimina totalmente o dropdown nativo cinza/azul do navegador */
+    .vd-custom-select{position:relative;width:100%;isolation:isolate}
+    .vd-select-trigger{
+      width:100%;min-height:48px;border:1px solid var(--vd-line);border-radius:16px;padding:13px 48px 13px 14px;text-align:left;color:var(--vd-text);font-weight:750;cursor:pointer;outline:none;
+      background:
+        linear-gradient(180deg, rgba(56,189,248,.13), rgba(125,211,252,.045));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+      transition:.2s ease;
+      position:relative;
+    }
+    .vd-select-trigger:hover,.vd-custom-select.open .vd-select-trigger{border-color:rgba(56,189,248,.65);box-shadow:0 0 0 4px rgba(56,189,248,.10)}
+    .vd-select-trigger i:before,.vd-select-trigger i:after{content:"";position:absolute;top:50%;width:8px;height:2px;background:var(--vd-cyan);border-radius:999px;transition:.2s ease}
+    .vd-select-trigger i:before{right:25px;transform:rotate(45deg)}
+    .vd-select-trigger i:after{right:20px;transform:rotate(-45deg)}
+    .vd-custom-select.open .vd-select-trigger i:before{transform:rotate(-45deg)}
+    .vd-custom-select.open .vd-select-trigger i:after{transform:rotate(45deg)}
+    .vd-select-menu{
+      position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:30;display:grid;gap:6px;padding:8px;border:1px solid var(--vd-line-strong);border-radius:18px;
+      background:linear-gradient(180deg, rgba(7,17,31,.98), rgba(10,22,40,.96));
+      box-shadow:0 24px 70px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.03) inset;
+      opacity:0;transform:translateY(-6px) scale(.98);pointer-events:none;transition:.18s ease;
+    }
+    .vd-custom-select.open .vd-select-menu{opacity:1;transform:none;pointer-events:auto}
+    .vd-select-option{border:0;border-radius:12px;padding:12px 13px;text-align:left;background:transparent;color:var(--vd-muted);font-weight:750;cursor:pointer;transition:.15s ease}
+    .vd-select-option:hover,.vd-select-option.is-selected{background:linear-gradient(90deg,rgba(56,189,248,.18),rgba(37,211,102,.10));color:var(--vd-text)}
+    [data-theme="light"] .vd-select-trigger{
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(235,247,255,.84));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
+    }
+    [data-theme="light"] .vd-select-menu{
+      background:linear-gradient(180deg, #ffffff, #eef7ff);
+      box-shadow:0 24px 60px rgba(29,78,216,.14), inset 0 1px 0 rgba(255,255,255,.85);
+    }
+    [data-theme="light"] .vd-select-option{color:#46576d}
+    [data-theme="light"] .vd-select-option:hover,
+    [data-theme="light"] .vd-select-option.is-selected{background:linear-gradient(90deg,rgba(37,99,235,.10),rgba(22,163,74,.08));color:#06111f}
+
+    @media(max-width:980px){
+      .vd-hero-grid,.cols-2,.cols-3,.cols-4,.vd-lp-hero,.vd-auth,.vd-store-body,.vd-kit-builder,.vd-dashboard,.vd-split{grid-template-columns:1fr}.span-2,.span-3{grid-column:auto}.vd-hero-stage{min-height:740px}.vd-command-panel{left:0;right:auto;width:100%;transform:none}.vd-phone{right:16px;bottom:40px}.vd-whats-card{left:0;bottom:10px}.vd-metrics-grid,.vd-products,.vd-checklist{grid-template-columns:1fr}.vd-dash-side{display:none}.vd-type-row{grid-template-columns:1fr}.vd-topbar{border-radius:28px;height:auto;align-items:flex-start;flex-wrap:wrap}.vd-nav{order:3;width:100%}.vd-title{letter-spacing:-.05em}.vd-section{padding:60px 0}.vd-store-header{align-items:flex-start;flex-direction:column}.vd-cart{position:static}.vd-auth-visual{min-height:360px}}
+    @media(max-width:560px){.vd-shell{width:min(100% - 20px,var(--vd-max))}.vd-hero-stage{display:none}.vd-actions{flex-direction:column}.vd-btn{justify-content:center}.vd-panel-head{flex-direction:column}.vd-card,.vd-panel.pad{padding:15px}.vd-title{font-size:42px}.vd-lp-hero{padding:24px}.vd-store-header{padding:22px}.vd-products{grid-template-columns:1fr}.vd-token{align-items:flex-start}.vd-command-body{grid-template-columns:1fr}.vd-mini-sidebar{display:none}}
+  </style>
+</head>
+<body>
+  <div class="vd-grid-bg"></div><div class="vd-noise"></div><div class="vd-scanline"></div>
+
+  <header class="vd-topbar">
+    <a class="vd-brand" href="#vision"><span class="vd-mark"><span>VD</span></span><span>Venddup V4</span></a>
+    <nav class="vd-nav" aria-label="Navegação do design system">
+      <a href="#vision">Visão</a><a href="#tokens">Tokens</a><a href="#type">Tipografia</a><a href="#motion">Motion</a><a href="#components">Componentes</a><a href="#landing">Landing</a><a href="#auth">Auth</a><a href="#dashboard">Dashboard</a><a href="#orders">Pedidos</a><a href="#products">Produtos</a><a href="#kits">Kits</a><a href="#storefront">Vitrine</a><a href="#policies">18+</a><a href="#support">Suporte</a><a href="#checklist">Checklist</a>
+    </nav>
+    <button class="vd-theme-toggle" type="button" id="themeToggle" aria-label="Alternar tema"><span>◐</span><b>Modo</b></button>
+  </header>
+
+  <main>
+    <section class="vd-hero vd-shell" id="vision">
+      <div class="vd-hero-grid">
+        <div class="reveal">
+          <div class="vd-kicker">V4 · Premium Tech SaaS · Signal Mesh OS</div>
+          <h1 class="vd-title">Venddup como <span class="vd-gradient-text">central tecnológica</span> de vendas locais.</h1>
+          <p class="vd-copy">Uma versão totalmente diferente: menos banco premium, menos balcão físico, mais <strong>cockpit SaaS high-tech</strong>. Neon limpo, malha de dados, HUD operacional, dashboards densos, vitrine mobile-first e componentes para transformar pedido bagunçado em venda organizada pelo WhatsApp.</p>
+          <div class="vd-badge-row">
+            <span class="vd-pill"><i class="vd-dot"></i> Vitrine própria</span>
+            <span class="vd-pill"><i class="vd-dot"></i> Pedidos completos</span>
+            <span class="vd-pill"><i class="vd-dot"></i> Kits com margem</span>
+            <span class="vd-pill"><i class="vd-dot"></i> Controle 18+</span>
+            <span class="vd-pill"><i class="vd-dot"></i> Starter R$97/mês</span>
+          </div>
+          <div class="vd-actions">
+            <a class="vd-btn primary" href="#dashboard">Explorar sistema</a>
+            <a class="vd-btn whatsapp" href="#storefront">Ver vitrine tech</a>
+            <a class="vd-btn ghost" href="#tokens">Tokens visuais</a>
+          </div>
+        </div>
+        <div class="vd-hero-stage reveal" aria-hidden="true">
+          <div class="vd-orbital"></div><div class="vd-orbital"></div><div class="vd-orbital"></div>
+          <div class="vd-kit-chip">MARGEM DO KIT +42%</div>
+          <div class="vd-command-panel">
+            <div class="vd-panel-top"><div class="vd-traffic"><span></span><span></span><span></span></div><div class="vd-panel-label">venddup://command-center</div></div>
+            <div class="vd-command-body">
+              <div class="vd-mini-sidebar">
+                <div class="vd-mini-nav active">⌁ Dashboard</div><div class="vd-mini-nav">◧ Pedidos</div><div class="vd-mini-nav">◇ Kits</div><div class="vd-mini-nav">⇄ Entrega</div><div class="vd-mini-nav">⚑ Vitrine</div>
+              </div>
+              <div class="vd-command-main">
+                <div class="vd-metric"><small>Pedidos hoje</small><b>28</b></div>
+                <div class="vd-metric"><small>Total estimado</small><b>R$ 2.840</b></div>
+                <div class="vd-metric"><small>Ticket médio</small><b>R$ 101</b></div>
+                <div class="vd-metric"><small>Pendentes</small><b>06</b></div>
+                <div class="vd-chart">
+                  <svg viewBox="0 0 420 90" width="100%" height="100%" preserveAspectRatio="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#38bdf8"/><stop offset=".55" stop-color="#6366f1"/><stop offset="1" stop-color="#25d366"/></linearGradient></defs><path d="M0 72 C35 50,58 60,88 34 S145 18,180 45 238 75,278 32 346 15,420 20" fill="none" stroke="url(#g1)" stroke-width="5" stroke-linecap="round"/><path d="M0 72 C35 50,58 60,88 34 S145 18,180 45 238 75,278 32 346 15,420 20 V90 H0Z" fill="url(#g1)" opacity=".14"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vd-phone"><div class="vd-phone-screen"><div class="vd-store-hero"><div class="vd-status good">Aberta agora</div></div><div class="vd-product-row"><span></span><span></span></div><div class="vd-product-row"><span></span><span></span></div><div style="margin-top:12px" class="vd-btn whatsapp">Enviar pedido</div></div></div>
+          <div class="vd-whats-card"><span class="vd-status good">WhatsApp pronto</span><h3 style="margin:10px 0 6px">Pedido #1842</h3><p style="margin:0;color:var(--vd-muted);font-size:13px">2x Cerveja • 1x Kit Jogo • PIX • Bairro Centro<br><strong style="color:var(--vd-text)">Aguardo confirmação de disponibilidade e entrega.</strong></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section tight">
+      <div class="vd-shell">
+        <div class="vd-marquee"><div class="vd-marquee-track">
+          <span>VITRINE PRÓPRIA</span><span>WHATSAPP ORGANIZADO</span><span>KITS COM MARGEM</span><span>PIX FIXO</span><span>CONTROLE 18+</span><span>STARTER R$97</span><span>PAINEL OPERACIONAL</span><span>SUPORTE</span>
+          <span>VITRINE PRÓPRIA</span><span>WHATSAPP ORGANIZADO</span><span>KITS COM MARGEM</span><span>PIX FIXO</span><span>CONTROLE 18+</span><span>STARTER R$97</span><span>PAINEL OPERACIONAL</span><span>SUPORTE</span>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="tokens">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">01 · Tokens</div><h2 class="vd-title small">Paleta cyber-clean para SaaS premium tech.</h2></div><p class="vd-copy">Cores documentadas com HEX, RGB, HSL e decimal. O sistema usa contraste alto, superfícies profundas, highlights ciano/índigo e verde WhatsApp sem cair em visual genérico.</p></div>
+        <div class="vd-grid cols-3 reveal">
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#030712"></span><div><h3>Core / Void</h3><div class="vd-token-code"><b>--vd-bg</b><br>HEX #030712<br>RGB 3, 7, 18<br>HSL 222, 71%, 4%<br>DEC 198418</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#07111f"></span><div><h3>Panel / Command</h3><div class="vd-token-code"><b>--vd-panel</b><br>HEX #07111F<br>RGB 7, 17, 31<br>HSL 215, 63%, 7%<br>DEC 463135</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#38bdf8"></span><div><h3>Signal Cyan</h3><div class="vd-token-code"><b>--vd-cyan</b><br>HEX #38BDF8<br>RGB 56, 189, 248<br>HSL 198, 93%, 60%<br>DEC 3718648</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#6366f1"></span><div><h3>Control Indigo</h3><div class="vd-token-code"><b>--vd-indigo</b><br>HEX #6366F1<br>RGB 99, 102, 241<br>HSL 239, 84%, 67%<br>DEC 6514417</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#25d366"></span><div><h3>WhatsApp Green</h3><div class="vd-token-code"><b>--vd-green</b><br>HEX #25D366<br>RGB 37, 211, 102<br>HSL 142, 70%, 49%<br>DEC 2478950</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#a3e635"></span><div><h3>Margin Lime</h3><div class="vd-token-code"><b>--vd-lime</b><br>HEX #A3E635<br>RGB 163, 230, 53<br>HSL 83, 78%, 55%<br>DEC 10741301</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#f59e0b"></span><div><h3>Warning Amber</h3><div class="vd-token-code"><b>--vd-amber</b><br>HEX #F59E0B<br>RGB 245, 158, 11<br>HSL 38, 92%, 50%<br>DEC 16096779</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#fb7185"></span><div><h3>Risk Rose</h3><div class="vd-token-code"><b>--vd-danger</b><br>HEX #FB7185<br>RGB 251, 113, 133<br>HSL 351, 95%, 71%<br>DEC 16478597</div></div></div></div>
+          <div class="vd-card"><div class="vd-token"><span class="vd-swatch" style="background:#f5f9ff"></span><div><h3>Light Cloud</h3><div class="vd-token-code"><b>--vd-bg light</b><br>HEX #F5F9FF<br>RGB 245,249,255<br>HSL 216,100%,98%<br>DEC 16120319</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="type">
+      <div class="vd-shell">
+        <div class="vd-kicker reveal">02 · Tipografia</div><h2 class="vd-title small reveal">Escala de interface com pegada técnica, limpa e vendável.</h2>
+        <div class="vd-panel reveal">
+          <div class="vd-type-row"><div class="vd-spec">Display XXL<br>72/0.88 · 900 · -0.075em</div><div class="vd-type-preview" style="font-size:72px;line-height:.88">Venda sem caos</div><div class="vd-spec">Classe: .vd-display-xxl<br>Uso: hero/manifesto</div></div>
+          <div class="vd-type-row"><div class="vd-spec">H1<br>56/0.96 · 900 · -0.06em</div><div class="vd-type-preview" style="font-size:56px;line-height:.96">Central da adega</div><div class="vd-spec">Landing, dashboard title</div></div>
+          <div class="vd-type-row"><div class="vd-spec">H2<br>42/1.02 · 850 · -0.05em</div><div class="vd-type-preview" style="font-size:42px;line-height:1.02">Kits com margem</div><div class="vd-spec">Seções, blocos principais</div></div>
+          <div class="vd-type-row"><div class="vd-spec">H3<br>26/1.1 · 820 · -0.035em</div><div class="vd-type-preview" style="font-size:26px;line-height:1.1">Pedido organizado</div><div class="vd-spec">Cards e módulos</div></div>
+          <div class="vd-type-row"><div class="vd-spec">Body LG<br>18/1.7 · 500</div><div style="font-size:18px;line-height:1.7;color:var(--vd-muted)">Com o Venddup, sua adega cria uma vitrine online, cadastra produtos, monta kits com margem e recebe pedidos completos pelo WhatsApp.</div><div class="vd-spec">Textos explicativos</div></div>
+          <div class="vd-type-row"><div class="vd-spec">Metric Mono<br>32/1 · 800</div><div style="font-family:var(--vd-font-mono);font-size:32px;letter-spacing:-.04em">R$ 2.840,00</div><div class="vd-spec">Métricas, status e tokens</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="motion">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">03 · Motion</div><h2 class="vd-title small">Interação com sensação de sistema vivo.</h2></div><p class="vd-copy">Movimento premium sem exagero: scanning, orbitais, hover lift, shimmer, pulso de status e wires animados para reforçar ideia de operação em tempo real.</p></div>
+        <div class="vd-grid cols-4 reveal">
+          <div class="vd-motion-tile float"><div class="vd-motion-dot"></div><span class="vd-status blue" style="position:absolute;bottom:14px">float-card · 6s</span></div>
+          <div class="vd-motion-tile pulse"><div class="vd-motion-dot"></div><span class="vd-status good" style="position:absolute;bottom:14px">status-pulse · 2s</span></div>
+          <div class="vd-motion-tile shimmer"><div class="vd-motion-dot"></div><span class="vd-status" style="position:absolute;bottom:14px">shimmer · 2.4s</span></div>
+          <div class="vd-motion-tile grid"><div class="vd-motion-dot"></div><span class="vd-status blue" style="position:absolute;bottom:14px">scan-grid · 5s</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="components">
+      <div class="vd-shell">
+        <div class="vd-kicker reveal">04 · Componentes</div><h2 class="vd-title small reveal">UI kit para landing, painel, vitrine e operação.</h2>
+        <div class="vd-grid cols-2 reveal">
+          <div class="vd-panel pad"><div class="vd-panel-head"><div><h3>Buttons</h3><p>Primary, secondary, WhatsApp, danger, loading e disabled.</p></div></div><div class="vd-component-lab"><button class="vd-btn primary">Começar teste</button><button class="vd-btn">Copiar link</button><button class="vd-btn whatsapp">Enviar WhatsApp</button><button class="vd-btn danger">Cancelar</button><button class="vd-btn loading">Salvando</button><button class="vd-btn disabled">Bloqueado</button></div></div>
+          <div class="vd-panel pad"><h3>Form controls</h3><p>Inputs/selects no tema correto, com foco forte e erro visível.</p><div class="vd-grid cols-2"><div class="vd-field"><label>Nome da adega</label><input class="vd-input" value="Adega do João"></div><div class="vd-field"><label>Pagamento</label><div class="vd-custom-select" data-select>
+                  <button class="vd-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span>Pix</span><i></i></button>
+                  <div class="vd-select-menu" role="listbox">
+                    <button class="vd-select-option is-selected" type="button" role="option" aria-selected="true">Pix</button>
+                    <button class="vd-select-option" type="button" role="option">Cartão na entrega</button>
+                    <button class="vd-select-option" type="button" role="option">Dinheiro</button>
+                  </div>
+                </div></div><div class="vd-field"><label>Telefone</label><input class="vd-input" value="(11) 99999-9999"></div><div class="vd-field"><label>Produto bloqueado</label><input class="vd-input error" value="vape premium"></div></div></div>
+          <div class="vd-panel pad"><h3>Badges e status</h3><p>Estados claros para operação diária.</p><div class="vd-component-lab"><span class="vd-status good">Loja aberta</span><span class="vd-status blue">Trial ativo</span><span class="vd-status warn">Margem baixa</span><span class="vd-status danger">Assinatura vencida</span><span class="vd-status">Preparando</span><span class="vd-status good">18+ confirmado</span></div></div>
+          <div class="vd-panel pad"><h3>Feedback</h3><p>Toast, alerta, vazio, skeleton e modal.</p><div class="vd-card"><span class="vd-status good">Sucesso</span><h3 style="margin-top:12px">Pedido salvo no painel</h3><p>O WhatsApp foi aberto com a mensagem pronta e o pedido nasceu como NEW.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="landing">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">05 · Landing</div><h2 class="vd-title small">Página de conversão com energia tech e promessa clara.</h2></div><p class="vd-copy">A landing vende a V1: vitrine própria, pedidos organizados, kits com margem e WhatsApp. Sem prometer IA, CRM completo ou automação avançada.</p></div>
+        <div class="vd-landing-preview reveal">
+          <div class="vd-lp-hero">
+            <div>
+              <span class="vd-status good">Venddup Starter · R$97/mês</span>
+              <h2 class="vd-title small" style="margin-top:18px">Sua adega vendendo pelo WhatsApp com vitrine própria e pedidos organizados.</h2>
+              <p class="vd-copy">Pare de receber pedido bagunçado. Cadastre produtos, crie kits com margem e receba pedidos completos no WhatsApp da loja.</p>
+              <div class="vd-actions"><button class="vd-btn primary">Começar teste grátis</button><button class="vd-btn ghost">Ver como funciona</button></div>
+            </div>
+            <div class="vd-lp-card"><h3>Pedido recebido</h3><table class="vd-table"><tbody><tr><td>Kit Jogo</td><td>R$ 89</td></tr><tr><td>Entrega Centro</td><td>R$ 8</td></tr><tr><td><strong>Total estimado</strong></td><td><strong>R$ 97</strong></td></tr></tbody></table><p>Aguardo confirmação de disponibilidade e entrega.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="auth">
+      <div class="vd-shell">
+        <div class="vd-kicker reveal">06 · Auth + Onboarding</div><h2 class="vd-title small reveal">Entrada premium para dono de adega configurar rápido.</h2>
+        <div class="vd-auth reveal">
+          <div class="vd-auth-form">
+            <span class="vd-status blue">Etapa 1 de 6</span><h3 style="font-size:34px;margin:18px 0 8px;font-family:var(--vd-font-display);letter-spacing:-.05em">Crie sua central Venddup</h3><p>Configure adega, WhatsApp, Pix, bairros, políticas e publicação.</p>
+            <div class="vd-stepper"><span class="vd-step active"></span><span class="vd-step active"></span><span class="vd-step"></span><span class="vd-step"></span><span class="vd-step"></span><span class="vd-step"></span></div>
+            <div class="vd-grid"><div class="vd-field"><label>E-mail</label><input class="vd-input" placeholder="voce@adega.com.br"></div><div class="vd-field"><label>Senha</label><input class="vd-input" placeholder="••••••••" type="password"></div><button class="vd-btn primary">Continuar onboarding</button></div>
+          </div>
+          <div class="vd-auth-visual"><div class="vd-auth-card"><span class="vd-status good">Prévia da vitrine</span><h3 style="margin-top:12px">Adega publicada só após aceite 18+</h3><p>O design guia o usuário sem abrir escopo: vitrine, produtos, kits, entrega, WhatsApp e políticas.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="dashboard">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">07 · Dashboard</div><h2 class="vd-title small">Cockpit operacional: vender, acompanhar, ajustar margem.</h2></div><p class="vd-copy">Sidebar forte, topbar funcional, métricas visíveis, sem perfil duplicado, sem branco quebrado no dark mode e sem overflow.</p></div>
+        <div class="vd-dashboard reveal">
+          <aside class="vd-dash-side">
+            <div class="vd-side-brand"><span class="vd-mark"><span>VD</span></span> Venddup</div>
+            <div class="vd-side-item active">⌁ Dashboard</div><div class="vd-side-item">◧ Pedidos</div><div class="vd-side-item">◲ Produtos</div><div class="vd-side-item">◇ Kits</div><div class="vd-side-item">⇄ Entrega</div><div class="vd-side-item">⚑ Vitrine</div><div class="vd-side-item">◉ Assinatura</div><div class="vd-side-item">⚖ Políticas</div><div class="vd-side-item">? Suporte</div>
+          </aside>
+          <div class="vd-dash-main">
+            <div class="vd-dash-top"><div><span class="vd-status good">Loja aberta</span><h3>Command Center</h3></div><div class="vd-component-lab"><button class="vd-btn">Copiar link</button><button class="vd-btn primary">Ver minha vitrine</button></div></div>
+            <div class="vd-metrics-grid"><div class="vd-dash-metric"><small>Pedidos hoje</small><b>28</b></div><div class="vd-dash-metric"><small>Faturamento estimado</small><b>R$2.840</b></div><div class="vd-dash-metric"><small>Ticket médio</small><b>R$101</b></div><div class="vd-dash-metric"><small>Pendentes</small><b>06</b></div></div>
+            <div class="vd-split">
+              <div class="vd-panel pad"><h3>Últimos pedidos</h3><table class="vd-table"><thead><tr><th>Cliente</th><th>Status</th><th>Total</th></tr></thead><tbody><tr><td>Marcos</td><td><span class="vd-status blue">Novo</span></td><td>R$ 148</td></tr><tr><td>Ana</td><td><span class="vd-status warn">Preparando</span></td><td>R$ 86</td></tr><tr><td>Rafael</td><td><span class="vd-status good">Entregue</span></td><td>R$ 122</td></tr></tbody></table></div>
+              <div class="vd-panel pad"><h3>Kits mais vendidos</h3><p>Kit Jogo</p><div class="vd-bar"><i style="--w:86%"></i></div><p>Kit Churrasco</p><div class="vd-bar"><i style="--w:68%"></i></div><p>Kit Presente</p><div class="vd-bar"><i style="--w:44%"></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="orders">
+      <div class="vd-shell">
+        <div class="vd-grid cols-2">
+          <div class="reveal"><div class="vd-kicker">08 · Pedidos</div><h2 class="vd-title small">Status manual, mensagem clara e confirmação 18+.</h2><p class="vd-copy">Pedido nasce como NEW, não como venda confirmada. A interface reforça que a adega deve confirmar disponibilidade, pagamento e entrega no WhatsApp.</p></div>
+          <div class="vd-panel pad reveal"><div class="vd-panel-head"><div><span class="vd-status blue">Pedido #1842</span><h3>Cliente: João Pedro</h3></div><span class="vd-status good">18+ confirmado</span></div><table class="vd-table"><tbody><tr><td>Itens</td><td>2x Produto + 1x Kit</td></tr><tr><td>Pagamento</td><td>PIX</td></tr><tr><td>Total estimado</td><td>R$ 148,00</td></tr><tr><td>Status</td><td><span class="vd-status warn">PREPARING</span></td></tr></tbody></table><p><strong>Mensagem WhatsApp:</strong><br>Olá! Quero fazer este pedido na Adega do João... Aguardo confirmação de disponibilidade e entrega.</p><button class="vd-btn primary">Copiar mensagem</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="products">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">09 · Produtos, categorias e entrega</div><h2 class="vd-title small">Catálogo organizado, bloqueios conservadores e taxa por bairro.</h2></div></div>
+        <div class="vd-grid cols-3 reveal">
+          <div class="vd-card"><span class="vd-status good">Produto ativo</span><h3>Cerveja Long Neck</h3><p>Categoria: Cervejas<br>Preço: R$ 9,90 · Custo: R$ 5,40</p><button class="vd-btn">Editar</button></div>
+          <div class="vd-card"><span class="vd-status danger">Termo bloqueado</span><h3>Produto proibido</h3><p>Termos como vape, pod, juul, ignite, elfbar e DEF devem ser barrados na V1.</p><button class="vd-btn danger">Bloquear cadastro</button></div>
+          <div class="vd-card"><span class="vd-status blue">Bairro ativo</span><h3>Centro</h3><p>Taxa de entrega R$ 8,00<br>Pedido mínimo R$ 35,00</p><button class="vd-btn">Configurar</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="kits">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">10 · Kits e margem</div><h2 class="vd-title small">O módulo mais visual: margem como radar de lucro.</h2></div><p class="vd-copy">O builder usa metáfora de rede: produtos conectados ao kit central, margem em tempo real e alertas para produto sem custo, indisponível ou margem baixa.</p></div>
+        <div class="vd-kit-builder reveal">
+          <div class="vd-builder-canvas">
+            <svg class="vd-wire" viewBox="0 0 760 420" preserveAspectRatio="none"><path d="M130 90 C260 80,300 190,380 210 C465 235,510 90,640 110"/><path d="M150 330 C250 280,280 220,380 210 C485 180,540 310,660 325"/></svg>
+            <div class="vd-node n1"><span class="vd-status">Produto</span><h3>Cerveja</h3><p>4x · R$ 39,60</p></div>
+            <div class="vd-node n2"><span class="vd-status">Produto</span><h3>Gelo</h3><p>1x · R$ 12,00</p></div>
+            <div class="vd-node main"><span class="vd-status good">Kit Jogo</span><h3>Preço final R$ 89</h3><p>Lucro estimado R$ 37,40</p></div>
+            <div class="vd-node n3"><span class="vd-status">Produto</span><h3>Energético</h3><p>2x · R$ 18,00</p></div>
+            <div class="vd-node n4"><span class="vd-status warn">Alerta</span><h3>Margem OK</h3><p>Acima do mínimo sugerido</p></div>
+          </div>
+          <div class="vd-panel pad"><h3>Margem percentual</h3><div class="vd-margin-ring"><b>42%</b></div><table class="vd-table"><tbody><tr><td>custoTotal</td><td>R$ 51,60</td></tr><tr><td>lucroEstimado</td><td>R$ 37,40</td></tr><tr><td>margemPercentual</td><td>42%</td></tr></tbody></table><button class="vd-btn primary">Publicar kit</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="storefront">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">11 · Vitrine pública + carrinho</div><h2 class="vd-title small">Mobile-first, bonita e feita para abrir WhatsApp com pedido completo.</h2></div></div>
+        <div class="vd-storefront reveal">
+          <div class="vd-store-header"><div><span class="vd-status good">Aberta agora · 18+</span><h2 class="vd-title small">Adega do João</h2><p class="vd-copy">Bebidas, kits e entrega local. Confirme disponibilidade pelo WhatsApp da loja.</p></div><button class="vd-btn whatsapp">Enviar pedido</button></div>
+          <div class="vd-store-body"><div><div class="vd-component-lab" style="margin-bottom:14px"><span class="vd-status blue">Cervejas</span><span class="vd-status">Destilados</span><span class="vd-status">Kits</span><span class="vd-status">Sem álcool</span></div><div class="vd-products"><div class="vd-product"><div class="vd-product-img"></div><div><h3>Kit Churrasco</h3><p>R$ 129,00</p><button class="vd-btn">Adicionar</button></div></div><div class="vd-product"><div class="vd-product-img"></div><div><h3>Kit Jogo</h3><p>R$ 89,00</p><button class="vd-btn">Adicionar</button></div></div><div class="vd-product"><div class="vd-product-img"></div><div><h3>Gelo 5kg</h3><p>R$ 12,00</p><button class="vd-btn">Adicionar</button></div></div><div class="vd-product"><div class="vd-product-img"></div><div><h3>Produto indisponível</h3><p>Volta em breve</p><button class="vd-btn disabled">Indisponível</button></div></div></div></div><aside class="vd-cart"><h3>Carrinho</h3><table class="vd-table"><tbody><tr><td>Kit Jogo</td><td>R$ 89</td></tr><tr><td>Entrega</td><td>R$ 8</td></tr><tr><td>Total estimado</td><td><strong>R$ 97</strong></td></tr></tbody></table><label style="display:flex;gap:9px;align-items:center;margin:14px 0"><span class="vd-checkbox">✓</span><span>Confirmo que sou maior de 18 anos.</span></label><button class="vd-btn whatsapp" style="width:100%;justify-content:center">Enviar pelo WhatsApp</button></aside></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="policies">
+      <div class="vd-shell">
+        <div class="vd-grid cols-3 reveal">
+          <div class="vd-card span-2"><div class="vd-kicker">12 · Políticas e 18+</div><h2 class="vd-title small">Responsabilidade como parte da estética.</h2><p class="vd-copy">O Venddup é uma ferramenta de vitrine e organização de pedidos para adegas. A responsabilidade pela confirmação de idade, disponibilidade dos produtos, entrega e cumprimento das leis aplicáveis é da adega contratante.</p><div class="vd-component-lab"><span class="vd-status good">Termos aceitos</span><span class="vd-status good">Privacidade aceita</span><span class="vd-status good">Venda responsável 18+</span></div></div>
+          <div class="vd-card"><span class="vd-status danger">Publicação bloqueada</span><h3>Sem aceite 18+</h3><p>A vitrine não pode ser publicada sem Termos, Privacidade e Venda Responsável 18+.</p><button class="vd-btn primary">Revisar políticas</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="support">
+      <div class="vd-shell">
+        <div class="vd-panel-head reveal"><div><div class="vd-kicker">13 · Suporte + assinatura</div><h2 class="vd-title small">Tela secundária ainda com cara de produto caro.</h2></div></div>
+        <div class="vd-grid cols-3 reveal">
+          <div class="vd-panel pad"><span class="vd-status blue">Central de ajuda</span><h3>Dúvida rápida</h3><p>Produtos, pedidos, kits, cobrança, vitrine, políticas ou problema técnico.</p><button class="vd-btn">Abrir chamado</button></div>
+          <div class="vd-panel pad"><span class="vd-status good">Starter ativo</span><h3>R$97/mês</h3><p>Stripe cobra a ferramenta Venddup. O cliente final da adega paga fora da plataforma, via WhatsApp/Pix da loja.</p><button class="vd-btn primary">Gerenciar assinatura</button></div>
+          <div class="vd-panel pad"><span class="vd-status warn">Diagnóstico</span><h3>Quer ajuda para organizar seus kits, margem e WhatsApp?</h3><button class="vd-btn whatsapp">Agendar diagnóstico</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section" id="checklist">
+      <div class="vd-shell">
+        <div class="vd-kicker reveal">14 · Checklist final</div><h2 class="vd-title small reveal">Pronto para guiar uma implementação premium tech.</h2>
+        <div class="vd-checklist reveal">
+          <div class="vd-check">Primeira dobra forte</div><div class="vd-check">Dark e light mode reais</div><div class="vd-check">Tokens com HEX/RGB/HSL/DEC</div><div class="vd-check">Landing coberta</div><div class="vd-check">Login/cadastro cobertos</div><div class="vd-check">Dashboard premium coberto</div><div class="vd-check">Sidebar aberta/retraída pensada</div><div class="vd-check">Produtos/categorias cobertos</div><div class="vd-check">Kits/margem em destaque</div><div class="vd-check">Pedidos/status cobertos</div><div class="vd-check">Vitrine pública coberta</div><div class="vd-check">Carrinho/WhatsApp coberto</div><div class="vd-check">Políticas/18+ cobertas</div><div class="vd-check">Suporte/Stripe cobertos</div><div class="vd-check">Sem escopo fora da V1</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="vd-footer"><div class="vd-shell"><strong>Venddup Design System V4 — Signal Mesh OS.</strong><br>Uma direção premium tech, totalmente diferente das versões anteriores, focada em sistema interno, landing, vitrine e fluxo de pedido pelo WhatsApp.</div></footer>
+
+  <script>
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('venddup-v4-theme');
+    if(saved){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('venddup-v4-theme', next);
+    });
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    document.querySelectorAll('[data-select]').forEach((select) => {
+      const trigger = select.querySelector('.vd-select-trigger');
+      const label = trigger.querySelector('span');
+      const options = select.querySelectorAll('.vd-select-option');
+      trigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelectorAll('[data-select].open').forEach((openSelect) => {
+          if (openSelect !== select) {
+            openSelect.classList.remove('open');
+            openSelect.querySelector('.vd-select-trigger')?.setAttribute('aria-expanded', 'false');
+          }
+        });
+        const isOpen = select.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', String(isOpen));
+      });
+      options.forEach((option) => {
+        option.addEventListener('click', () => {
+          options.forEach((item) => {
+            item.classList.remove('is-selected');
+            item.removeAttribute('aria-selected');
+          });
+          option.classList.add('is-selected');
+          option.setAttribute('aria-selected', 'true');
+          label.textContent = option.textContent;
+          select.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('[data-select].open').forEach((select) => {
+        select.classList.remove('open');
+        select.querySelector('.vd-select-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>
