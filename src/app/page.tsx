@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "Crie uma vitrine online para sua adega, cadastre produtos e kits, receba pedidos completos e feche tudo pelo WhatsApp da loja. Sem marketplace. Sem checkout complicado.",
 };
 
-/* ── ícones SVG inline (leves, sem dependência) ─────────── */
+/* ── ícones SVG inline ───────────────────────────────────── */
 
 function IconStorefront() {
   return (
@@ -67,9 +67,9 @@ function IconBarChart() {
   );
 }
 
-function IconGift() {
+function IconGift({ size = 22 }: { size?: number }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polyline points="20 12 20 22 4 22 4 12" />
       <rect x="2" y="7" width="20" height="5" />
       <line x1="12" y1="22" x2="12" y2="7" />
@@ -104,8 +104,41 @@ function IconArrow() {
   );
 }
 
+/* Ícones exclusivos do mockup/vitrine */
+function IconBottle({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9.5 2h5l.5 4.5A5.5 5.5 0 0117 11v9a2 2 0 01-2 2H9a2 2 0 01-2-2v-9a5.5 5.5 0 012-4.5L9.5 2z" />
+      <line x1="8" y1="2" x2="16" y2="2" />
+      <line x1="7.5" y1="15" x2="16.5" y2="15" />
+    </svg>
+  );
+}
+
+function IconDocument({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>
+  );
+}
+
+function IconCart({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.61L23 6H6" />
+    </svg>
+  );
+}
+
 /* ── Logo SVG do Venddup ─────────────────────────────────── */
-function VenddupSymbol({ size = 20, idPrefix = "vd" }: { size?: number; idPrefix?: string }) {
+function VenddupSymbol({ size = 28, idPrefix = "vd" }: { size?: number; idPrefix?: string }) {
   const topId = `${idPrefix}-topGrad`;
   const blueId = `${idPrefix}-blueGrad`;
   return (
@@ -115,7 +148,8 @@ function VenddupSymbol({ size = 20, idPrefix = "vd" }: { size?: number; idPrefix
       height={size}
       viewBox="0 0 500 500"
       fill="none"
-      aria-label="Venddup"
+      aria-hidden="true"
+      style={{ flexShrink: 0 }}
     >
       <defs>
         <linearGradient id={topId} x1="95" y1="100" x2="405" y2="255" gradientUnits="userSpaceOnUse">
@@ -143,9 +177,7 @@ function Navbar() {
   return (
     <nav className="lp-nav" aria-label="Navegação principal">
       <Link href="/" className="lp-logo" aria-label="Venddup — página inicial">
-        <div className="lp-logo-mark" aria-hidden="true">
-          <VenddupSymbol size={22} idPrefix="nav" />
-        </div>
+        <VenddupSymbol size={30} idPrefix="nav" />
         <span className="lp-logo-text">Venddup</span>
       </Link>
 
@@ -167,7 +199,7 @@ function Navbar() {
   );
 }
 
-/* ── Hero Visual — Stage ─────────────────────────────────── */
+/* ── Hero Visual — Stage (desktop, aria-hidden) ──────────── */
 function HeroStage() {
   return (
     <div className="lp-stage" aria-hidden="true">
@@ -184,7 +216,9 @@ function HeroStage() {
         </div>
 
         <div className="lp-vitrine-header">
-          <div className="lp-store-logo" aria-hidden="true">🍷</div>
+          <div className="lp-store-logo">
+            <IconBottle size={20} />
+          </div>
           <div className="lp-store-meta">
             <div className="lp-store-name">Adega do João</div>
             <div className="lp-store-tag">Vila Madalena · São Paulo</div>
@@ -197,7 +231,9 @@ function HeroStage() {
 
         <div className="lp-products-list">
           <div className="lp-product-row">
-            <div className="lp-product-thumb wine">🍷</div>
+            <div className="lp-product-thumb wine">
+              <IconBottle size={17} />
+            </div>
             <div className="lp-product-info">
               <div className="lp-product-name">Bordeaux Reserva 750ml</div>
               <div className="lp-product-cat">Tinto · França</div>
@@ -206,7 +242,9 @@ function HeroStage() {
           </div>
 
           <div className="lp-product-row">
-            <div className="lp-product-thumb wine">🍾</div>
+            <div className="lp-product-thumb wine">
+              <IconBottle size={17} />
+            </div>
             <div className="lp-product-info">
               <div className="lp-product-name">Malbec Reserva 750ml</div>
               <div className="lp-product-cat">Tinto · Argentina</div>
@@ -215,7 +253,9 @@ function HeroStage() {
           </div>
 
           <div className="lp-product-row">
-            <div className="lp-product-thumb kit">🎁</div>
+            <div className="lp-product-thumb kit">
+              <IconGift size={17} />
+            </div>
             <div className="lp-product-info">
               <div className="lp-product-name">Kit Aniversário Premium</div>
               <div className="lp-product-cat">3 rótulos · caixa inclusa</div>
@@ -225,8 +265,11 @@ function HeroStage() {
         </div>
 
         <div className="lp-vitrine-footer">
-          <span style={{ fontSize: "13px", color: "var(--vd-muted)" }}>🛒 1 item no carrinho</span>
-          <span className="vd-btn sm" style={{ padding: "6px 14px", fontSize: "12px" }}>
+          <span className="lp-cart-label">
+            <IconCart size={13} />
+            1 item no carrinho
+          </span>
+          <span className="lp-vitrine-view-btn">
             Ver carrinho →
           </span>
         </div>
@@ -236,7 +279,10 @@ function HeroStage() {
       <div className="lp-order-card">
         <div className="lp-order-top">
           <div>
-            <div className="lp-order-id">📋 Pedido #1.247</div>
+            <div className="lp-order-id">
+              <IconDocument size={14} />
+              Pedido #1.247
+            </div>
             <div className="lp-order-time">Hoje · 14h32</div>
           </div>
           <span className="vd-status good">Novo</span>
@@ -258,16 +304,14 @@ function HeroStage() {
           <span className="lp-total-value">R$ 476,80</span>
         </div>
 
-        <div
-          className="vd-btn whatsapp sm"
-          style={{ justifyContent: "center" }}
-        >
+        {/* Status decorativo — não é botão clicável */}
+        <div className="lp-mockup-status">
           <IconWhatsApp size={14} />
-          Confirmar no WhatsApp
+          Confirmar via WhatsApp
         </div>
       </div>
 
-      {/* Cartão 3: WhatsApp da loja */}
+      {/* Cartão 3: notificação WhatsApp */}
       <div className="lp-wa-card">
         <div className="lp-wa-top">
           <div className="lp-wa-icon">
@@ -287,14 +331,17 @@ function HeroStage() {
   );
 }
 
-/* ── Hero Stage Mobile (simplificado) ───────────────────── */
+/* ── Hero Stage Mobile (aria-hidden — decorativo) ────────── */
 function HeroStageMobile() {
   return (
-    <div className="lp-stage-mobile">
+    <div className="lp-stage-mobile" aria-hidden="true">
       <div className="lp-mobile-order">
         <div className="lp-order-top">
           <div>
-            <div className="lp-order-id">📋 Pedido #1.247</div>
+            <div className="lp-order-id">
+              <IconDocument size={14} />
+              Pedido #1.247
+            </div>
             <div className="lp-order-time">Hoje · 14h32 · João Silva</div>
           </div>
           <span className="vd-status good">Novo</span>
@@ -316,13 +363,11 @@ function HeroStageMobile() {
           <span className="lp-total-value">R$ 476,80</span>
         </div>
 
-        <span
-          className="vd-btn whatsapp"
-          style={{ width: "100%", justifyContent: "center" }}
-        >
-          <IconWhatsApp size={16} />
-          Confirmar via WhatsApp
-        </span>
+        {/* Status chip decorativo */}
+        <div className="lp-mockup-status">
+          <IconWhatsApp size={14} />
+          Confirmado via WhatsApp ✓
+        </div>
       </div>
     </div>
   );
@@ -412,40 +457,56 @@ function HowItWorks() {
 }
 
 /* ── Seção: Funcionalidades ──────────────────────────────── */
-const features = [
+type FeatureColor = "cyan" | "violet" | "lime" | "amber" | "green" | "pink";
+
+const features: Array<{
+  icon: React.ReactNode;
+  color: FeatureColor;
+  primary: boolean;
+  title: string;
+  desc: string;
+}> = [
+  /* Primárias: os 3 maiores diferenciais */
   {
     icon: <IconStorefront />,
-    color: "cyan" as const,
+    color: "cyan",
+    primary: true,
     title: "Vitrine própria",
     desc: "Link exclusivo da sua adega para divulgar no WhatsApp, Instagram ou onde quiser. Sem marketplace, sem comissão.",
   },
   {
-    icon: <IconGrid />,
-    color: "violet" as const,
-    title: "Catálogo ilimitado",
-    desc: "Cadastre quantos produtos quiser com foto, descrição, preço e categoria. Fácil de atualizar.",
-  },
-  {
-    icon: <IconGift />,
-    color: "lime" as const,
-    title: "Kits com margem",
-    desc: "Monte kits presenteáveis com rótulos da sua adega. O sistema mostra a margem de cada kit automaticamente.",
-  },
-  {
     icon: <IconPackage />,
-    color: "amber" as const,
+    color: "amber",
+    primary: true,
     title: "Pedido completo",
     desc: "Em vez de áudio, print e mensagem perdida, você recebe um pedido completo e organizado para confirmar.",
   },
   {
+    icon: <IconGift />,
+    color: "lime",
+    primary: true,
+    title: "Kits com margem",
+    desc: "Monte kits presenteáveis com rótulos da sua adega. O sistema mostra a margem de cada kit automaticamente.",
+  },
+  /* Secundárias: suporte às primárias */
+  {
+    icon: <IconGrid />,
+    color: "violet",
+    primary: false,
+    title: "Catálogo ilimitado",
+    desc: "Cadastre quantos produtos quiser com foto, descrição, preço e categoria. Fácil de atualizar.",
+  },
+  {
     icon: <IconWhatsApp />,
-    color: "green" as const,
+    color: "green",
+    primary: false,
     title: "Notificação no WhatsApp",
     desc: "Cada pedido novo chega no WhatsApp da loja com todos os dados: itens, cliente, endereço e total.",
   },
   {
     icon: <IconBarChart />,
-    color: "pink" as const,
+    color: "pink",
+    primary: false,
     title: "Dashboard de pedidos",
     desc: "Acompanhe todos os pedidos em um painel simples. Veja histórico, status e valores em um lugar só.",
   },
@@ -467,7 +528,7 @@ function Features() {
 
         <div className="lp-features-grid">
           {features.map((f, i) => (
-            <div key={i} className="lp-feature-card">
+            <div key={i} className={`lp-feature-card${f.primary ? " primary" : ""}`}>
               <div className={`lp-feature-icon ${f.color}`}>
                 {f.icon}
               </div>
@@ -484,15 +545,18 @@ function Features() {
 /* ── Seção: Copy de conversão ────────────────────────────── */
 const conversionItems = [
   {
-    icon: "💬",
+    icon: <IconWhatsApp size={22} />,
+    color: "green" as FeatureColor,
     text: "Seu WhatsApp continua sendo o fechamento. O Venddup organiza o pedido antes de chegar pra você.",
   },
   {
-    icon: "📋",
+    icon: <IconDocument size={22} />,
+    color: "cyan" as FeatureColor,
     text: "Em vez de áudio, print e mensagem perdida, você recebe um pedido completo com tudo que precisa.",
   },
   {
-    icon: "🔗",
+    icon: <IconLink />,
+    color: "violet" as FeatureColor,
     text: "Cadastre produtos, monte kits e compartilhe um link bonito da sua adega. Simples assim.",
   },
 ];
@@ -501,19 +565,13 @@ function ConversionCopy() {
   return (
     <section className="vd-section tight">
       <div className="vd-shell">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "16px",
-          }}
-        >
+        <div className="lp-conv-grid">
           {conversionItems.map((item, i) => (
-            <div key={i} className="vd-card" style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-              <span style={{ fontSize: "28px", lineHeight: 1, flexShrink: 0 }}>{item.icon}</span>
-              <p style={{ color: "var(--vd-muted)", fontSize: "15px", lineHeight: 1.65, margin: 0 }}>
-                {item.text}
-              </p>
+            <div key={i} className="vd-card lp-conv-card">
+              <span className={`lp-conv-icon ${item.color}`}>
+                {item.icon}
+              </span>
+              <p className="lp-conv-text">{item.text}</p>
             </div>
           ))}
         </div>
@@ -533,6 +591,21 @@ const pricingFeatures = [
   { text: <>Suporte por <strong>WhatsApp</strong></> },
 ];
 
+function PricingFeatureList() {
+  return (
+    <ul className="lp-features-list" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      {pricingFeatures.map((f, i) => (
+        <li key={i} className="lp-feature-item">
+          <div className="lp-check-icon">
+            <IconCheck />
+          </div>
+          <span>{f.text}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function Pricing() {
   return (
     <section id="preco" className="vd-section">
@@ -540,56 +613,74 @@ function Pricing() {
         <div className="lp-section-head">
           <span className="vd-kicker">Preço</span>
           <h2 className="lp-section-title">
-            Um plano. Tudo incluso.
+            Um plano simples para começar
           </h2>
           <p className="lp-section-sub">
-            Sem taxa de transação, sem comissão por venda, sem surpresa no final do mês.
+            Sem taxa por pedido. Sem comissão por venda. Sua adega confirma tudo no WhatsApp.
           </p>
         </div>
 
-        <div className="lp-pricing-card">
-          <div className="lp-pricing-glow" aria-hidden="true" />
-
-          <div className="lp-pricing-header">
-            <div>
+        <div className="lp-pricing-grid">
+          {/* ── Card Mensal ── */}
+          <div className="lp-pricing-wrap">
+            <div className="lp-pricing-glow" aria-hidden="true" />
+            <div className="lp-pricing-header">
               <div className="lp-plan-badge">
                 <span className="vd-dot" />
-                Starter
+                Starter Mensal
               </div>
+              <div className="lp-price">
+                <span className="lp-price-currency">R$</span>
+                <span className="lp-price-amount">97</span>
+                <span className="lp-price-period">/mês</span>
+              </div>
+              <p className="lp-price-note">7 dias grátis · Sem cartão para começar</p>
             </div>
-            <div className="lp-price">
-              <span className="lp-price-currency">R$</span>
-              <span className="lp-price-amount">97</span>
-              <span className="lp-price-period">/mês</span>
+
+            <div className="lp-pricing-body">
+              <PricingFeatureList />
+              <a
+                href="https://app.venddup.com.br/cadastro"
+                className="vd-btn primary"
+                style={{ width: "100%", justifyContent: "center" }}
+                rel="noopener"
+              >
+                Começar teste grátis
+                <IconArrow />
+              </a>
+              <p className="lp-trial-note">
+                Cancele quando quiser · Sem fidelidade
+              </p>
             </div>
-            <p className="lp-price-note">7 dias grátis · Sem cartão para começar</p>
           </div>
 
-          <div className="lp-pricing-body">
-            <ul className="lp-features-list" style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {pricingFeatures.map((f, i) => (
-                <li key={i} className="lp-feature-item">
-                  <div className="lp-check-icon">
-                    <IconCheck />
-                  </div>
-                  <span>{f.text}</span>
-                </li>
-              ))}
-            </ul>
+          {/* ── Card Anual (em breve) ── */}
+          <div className="lp-pricing-wrap annual">
+            <div className="lp-pricing-glow lp-pricing-glow-annual" aria-hidden="true" />
+            <div className="lp-pricing-header">
+              <div className="lp-plan-header-row">
+                <div className="lp-plan-badge lp-plan-badge-annual">
+                  Starter Anual
+                </div>
+                <span className="lp-pricing-tag">2 meses grátis</span>
+              </div>
+              <div className="lp-price">
+                <span className="lp-price-currency">R$</span>
+                <span className="lp-price-amount">970</span>
+                <span className="lp-price-period">/ano</span>
+              </div>
+              <p className="lp-price-note">≈ R$ 80,83/mês · 7 dias grátis</p>
+            </div>
 
-            <a
-              href="https://app.venddup.com.br/cadastro"
-              className="vd-btn primary"
-              style={{ width: "100%", justifyContent: "center" }}
-              rel="noopener"
-            >
-              Começar teste grátis
-              <IconArrow />
-            </a>
-
-            <p className="lp-trial-note">
-              Cancele quando quiser · Sem fidelidade
-            </p>
+            <div className="lp-pricing-body">
+              <PricingFeatureList />
+              <div className="lp-btn-soon">
+                Em breve
+              </div>
+              <p className="lp-trial-note">
+                Entre em contato para saber mais
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -731,7 +822,7 @@ function CTAFinal() {
             fontFamily: "var(--vd-font-mono)",
           }}
         >
-          Sem marketplace. Sem checkout complicado. Seu cliente pede, sua adega confirma no WhatsApp.
+          Sem marketplace. Sem checkout complicado. Seu cliente escolhe, sua adega confirma.
         </p>
       </div>
     </section>
@@ -746,9 +837,7 @@ function Footer() {
       <div className="vd-shell">
         <div className="lp-footer-inner">
           <Link href="/" className="lp-logo" aria-label="Venddup — página inicial">
-            <div className="lp-logo-mark" aria-hidden="true">
-              <VenddupSymbol size={18} idPrefix="footer" />
-            </div>
+            <VenddupSymbol size={24} idPrefix="footer" />
             <span className="lp-logo-text" style={{ fontSize: "16px" }}>Venddup</span>
           </Link>
 
@@ -820,7 +909,7 @@ export default function HomePage() {
                 </div>
 
                 <p className="lp-microcopy">
-                  Sem marketplace. Sem checkout complicado. Seu cliente pede, sua adega confirma no WhatsApp.
+                  Sem marketplace. Sem checkout complicado. Seu cliente escolhe, sua adega confirma.
                 </p>
               </div>
 
