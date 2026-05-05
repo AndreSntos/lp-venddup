@@ -880,94 +880,229 @@ h1, h2, h3, h4, h5, h6 { color: var(--vd-text); margin: 0; }
   margin: 0;
 }
 
-/* ── Pricing dois cards ──────────────────────────────────── */
-.lp-pricing-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  max-width: 840px;
-  margin: 0 auto;
+/* ── Pricing: toggle de cobrança + 3 planos ─────────────── */
+
+/* Toggle segmentado */
+.lp-period-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
 }
 
-.lp-pricing-wrap {
-  border: 1px solid var(--vd-line-strong);
+.lp-period-toggle {
+  display: inline-flex;
+  gap: 2px;
+  background: rgba(10,22,40,.68);
+  border: 1px solid var(--vd-line);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.lp-period-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--vd-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s ease;
+  font-family: var(--vd-font-ui);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.lp-period-btn:hover:not(.active) {
+  color: var(--vd-text);
+  background: rgba(125,211,252,.08);
+}
+
+.lp-period-btn.active {
+  background: linear-gradient(135deg, var(--vd-cyan), var(--vd-indigo));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(37,99,235,.28);
+}
+
+.lp-period-tag {
+  font-size: 10px;
+  font-family: var(--vd-font-mono);
+  font-weight: 700;
+  background: rgba(255,255,255,.16);
+  border-radius: 999px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.lp-period-btn:not(.active) .lp-period-tag {
+  background: rgba(163,230,53,.15);
+  color: var(--vd-lime);
+}
+
+/* Grid dos planos (3 colunas desktop) */
+.lp-plans-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.975fr 0.975fr;
+  gap: 16px;
+  max-width: 980px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Card base */
+.lp-plan-card {
+  border: 1px solid var(--vd-line);
   border-radius: var(--vd-radius-xl);
-  background: linear-gradient(145deg, rgba(7,17,31,.96), rgba(10,22,40,.88));
-  box-shadow: var(--vd-shadow), 0 0 60px rgba(56,189,248,.08);
+  background: linear-gradient(145deg, rgba(7,17,31,.95), rgba(10,22,40,.84));
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: .25s ease;
 }
 
-.lp-pricing-wrap.annual {
-  border-color: rgba(163,230,53,.28);
-  box-shadow: var(--vd-shadow), 0 0 60px rgba(163,230,53,.06);
+/* Starter: destaque principal */
+.lp-plan-card.starter {
+  border-color: rgba(56,189,248,.40);
+  box-shadow: var(--vd-shadow), 0 0 70px rgba(56,189,248,.12);
 }
 
+.lp-plan-card.starter:hover {
+  box-shadow: var(--vd-shadow), 0 0 90px rgba(56,189,248,.18);
+}
+
+/* Cards futuros: presença discreta */
+.lp-plan-card.soon {
+  opacity: .58;
+  border-color: rgba(125,211,252,.12);
+}
+
+.lp-plan-card.soon:hover { opacity: .74; }
+
+/* Glow no topo do Starter */
 .lp-pricing-glow {
   position: absolute;
-  top: -60px;
+  top: -50px;
   left: 50%;
   transform: translateX(-50%);
-  width: 260px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(56,189,248,.16), transparent 70%);
+  width: 240px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(56,189,248,.18), transparent 70%);
   pointer-events: none;
 }
 
-.lp-pricing-glow-annual {
-  background: radial-gradient(circle, rgba(163,230,53,.12), transparent 70%);
-}
-
-.lp-pricing-header {
-  padding: 32px 32px 22px;
+/* Header do card */
+.lp-plan-header {
+  padding: 28px 28px 22px;
   border-bottom: 1px solid var(--vd-line);
   position: relative;
 }
 
-.lp-plan-header-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.lp-plan-badge {
+/* Badge "Disponível agora" */
+.lp-plan-available-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid rgba(56,189,248,.35);
-  background: rgba(56,189,248,.10);
-  color: var(--vd-cyan);
+  border: 1px solid rgba(37,211,102,.35);
+  background: rgba(37,211,102,.10);
+  color: var(--vd-green);
   border-radius: 999px;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-family: var(--vd-font-mono);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-
-.lp-plan-badge-annual {
-  border-color: rgba(163,230,53,.30);
-  background: rgba(163,230,53,.10);
-  color: var(--vd-lime);
-}
-
-.lp-pricing-tag {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid rgba(163,230,53,.30);
-  background: rgba(163,230,53,.10);
-  color: var(--vd-lime);
-  border-radius: 999px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   font-size: 11px;
   font-family: var(--vd-font-mono);
   font-weight: 700;
-  white-space: nowrap;
+  margin-bottom: 16px;
 }
 
+/* Badge "Em breve" */
+.lp-plan-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--vd-line);
+  background: rgba(125,211,252,.06);
+  color: var(--vd-faint);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-family: var(--vd-font-mono);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Nome do plano */
+.lp-plan-name {
+  font-family: var(--vd-font-display);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.05em;
+  margin: 0 0 10px;
+  color: var(--vd-text);
+}
+
+.lp-plan-name-soon { color: var(--vd-faint); }
+
+/* Descrição do plano */
+.lp-plan-desc {
+  color: var(--vd-muted);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Preço com margem do topo */
+.lp-price-top { margin-top: 22px; }
+
+/* Corpo do card */
+.lp-plan-body {
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.lp-plan-body-soon { padding: 20px 28px 24px; }
+
+/* Separador visual antes do CTA */
+.lp-plan-cta-wrap {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--vd-line);
+}
+
+.lp-plan-cta-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Bullets dos planos futuros */
+.lp-soon-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.lp-soon-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--vd-faint);
+}
+
+.lp-soon-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vd-faint);
+  flex-shrink: 0;
+}
+
+/* Botão "Em breve" (não interativo) */
 .lp-btn-soon {
   display: flex;
   align-items: center;
@@ -975,14 +1110,84 @@ h1, h2, h3, h4, h5, h6 { color: var(--vd-text); margin: 0; }
   width: 100%;
   border: 1px solid var(--vd-line);
   border-radius: 999px;
-  padding: 13px 22px;
+  padding: 12px 22px;
   background: rgba(125,211,252,.03);
   color: var(--vd-faint);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   font-family: var(--vd-font-ui);
   cursor: default;
-  margin-bottom: 0;
+}
+
+/* Campos de preço e notas */
+.lp-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.lp-price-currency {
+  font-family: var(--vd-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--vd-muted);
+}
+
+.lp-price-amount {
+  font-family: var(--vd-font-display);
+  font-size: 54px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.06em;
+  color: var(--vd-text);
+}
+
+.lp-price-period {
+  font-size: 14px;
+  color: var(--vd-muted);
+  margin-left: 2px;
+}
+
+.lp-price-note {
+  font-size: 12px;
+  color: var(--vd-faint);
+  font-family: var(--vd-font-mono);
+}
+
+/* Lista de benefícios do Starter */
+.lp-features-list { display: grid; gap: 12px; }
+
+.lp-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--vd-muted);
+  line-height: 1.5;
+}
+
+.lp-feature-item strong { color: var(--vd-text); }
+
+.lp-check-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: rgba(37,211,102,.16);
+  border: 1px solid rgba(37,211,102,.30);
+  color: var(--vd-green);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.lp-trial-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--vd-faint);
+  font-family: var(--vd-font-mono);
+  margin-top: 12px;
 }
 
 .lp-price {
@@ -1195,7 +1400,9 @@ details[open] .lp-faq-chevron {
   .lp-features-grid { grid-template-columns: repeat(2, 1fr); }
   .lp-steps { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .lp-steps::before { display: none; }
-  .lp-pricing-grid { grid-template-columns: 1fr; max-width: 480px; }
+  /* Pricing: colapsa para coluna única com Starter em destaque */
+  .lp-plans-grid { grid-template-columns: 1fr; max-width: 480px; }
+  .lp-plan-card.soon { display: none; }
 }
 
 @media (max-width: 768px) {
@@ -1206,6 +1413,9 @@ details[open] .lp-faq-chevron {
   .lp-features-grid { grid-template-columns: 1fr; }
   .lp-nav-links { display: none; }
   .lp-nav { padding: 10px 14px; }
+  /* Toggle: esconde tags de benefício, mantém botões curtos */
+  .lp-period-tag { display: none; }
+  .lp-period-btn { padding: 9px 14px; }
 }
 
 @media (max-width: 560px) {
@@ -1215,9 +1425,10 @@ details[open] .lp-faq-chevron {
   .lp-actions { flex-direction: column; width: 100%; }
   .lp-actions .vd-btn { justify-content: center; width: 100%; }
   .lp-steps { grid-template-columns: 1fr; }
-  .lp-pricing-header { padding: 24px 22px 18px; }
-  .lp-pricing-body { padding: 18px 22px 26px; }
-  .lp-price-amount { font-size: 48px; }
+  .lp-plan-header { padding: 22px 22px 18px; }
+  .lp-plan-body { padding: 18px 22px 22px; }
+  .lp-price-amount { font-size: 46px; }
+  .lp-period-btn { padding: 8px 12px; font-size: 12px; }
   .lp-footer-inner { flex-direction: column; text-align: center; }
   .lp-footer-links { justify-content: center; }
 }

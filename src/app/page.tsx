@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PricingSection } from "./pricing";
 
 export const metadata: Metadata = {
   title: "Venddup — Sua adega vendendo pelo WhatsApp com vitrine própria",
@@ -75,14 +76,6 @@ function IconGift({ size = 22 }: { size?: number }) {
       <line x1="12" y1="22" x2="12" y2="7" />
       <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" />
       <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
-    </svg>
-  );
-}
-
-function IconCheck() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="20 6 9 17 4 12" />
     </svg>
   );
 }
@@ -580,113 +573,6 @@ function ConversionCopy() {
   );
 }
 
-/* ── Seção: Preço ────────────────────────────────────────── */
-const pricingFeatures = [
-  { text: <>Vitrine própria com <strong>link exclusivo</strong></> },
-  { text: <>Catálogo <strong>ilimitado</strong> de produtos</> },
-  { text: <>Monte <strong>kits</strong> com margem calculada</> },
-  { text: <>Receba <strong>pedidos completos</strong> no WhatsApp</> },
-  { text: <>Notificação no <strong>WhatsApp da loja</strong></> },
-  { text: <><strong>Dashboard</strong> de pedidos e histórico</> },
-  { text: <>Suporte por <strong>WhatsApp</strong></> },
-];
-
-function PricingFeatureList() {
-  return (
-    <ul className="lp-features-list" style={{ listStyle: "none", padding: 0, margin: 0 }}>
-      {pricingFeatures.map((f, i) => (
-        <li key={i} className="lp-feature-item">
-          <div className="lp-check-icon">
-            <IconCheck />
-          </div>
-          <span>{f.text}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Pricing() {
-  return (
-    <section id="preco" className="vd-section">
-      <div className="vd-shell">
-        <div className="lp-section-head">
-          <span className="vd-kicker">Preço</span>
-          <h2 className="lp-section-title">
-            Um plano simples para começar
-          </h2>
-          <p className="lp-section-sub">
-            Sem taxa por pedido. Sem comissão por venda. Sua adega confirma tudo no WhatsApp.
-          </p>
-        </div>
-
-        <div className="lp-pricing-grid">
-          {/* ── Card Mensal ── */}
-          <div className="lp-pricing-wrap">
-            <div className="lp-pricing-glow" aria-hidden="true" />
-            <div className="lp-pricing-header">
-              <div className="lp-plan-badge">
-                <span className="vd-dot" />
-                Starter Mensal
-              </div>
-              <div className="lp-price">
-                <span className="lp-price-currency">R$</span>
-                <span className="lp-price-amount">97</span>
-                <span className="lp-price-period">/mês</span>
-              </div>
-              <p className="lp-price-note">7 dias grátis · Sem cartão para começar</p>
-            </div>
-
-            <div className="lp-pricing-body">
-              <PricingFeatureList />
-              <a
-                href="https://app.venddup.com.br/cadastro"
-                className="vd-btn primary"
-                style={{ width: "100%", justifyContent: "center" }}
-                rel="noopener"
-              >
-                Começar teste grátis
-                <IconArrow />
-              </a>
-              <p className="lp-trial-note">
-                Cancele quando quiser · Sem fidelidade
-              </p>
-            </div>
-          </div>
-
-          {/* ── Card Anual (em breve) ── */}
-          <div className="lp-pricing-wrap annual">
-            <div className="lp-pricing-glow lp-pricing-glow-annual" aria-hidden="true" />
-            <div className="lp-pricing-header">
-              <div className="lp-plan-header-row">
-                <div className="lp-plan-badge lp-plan-badge-annual">
-                  Starter Anual
-                </div>
-                <span className="lp-pricing-tag">2 meses grátis</span>
-              </div>
-              <div className="lp-price">
-                <span className="lp-price-currency">R$</span>
-                <span className="lp-price-amount">970</span>
-                <span className="lp-price-period">/ano</span>
-              </div>
-              <p className="lp-price-note">≈ R$ 80,83/mês · 7 dias grátis</p>
-            </div>
-
-            <div className="lp-pricing-body">
-              <PricingFeatureList />
-              <div className="lp-btn-soon">
-                Em breve
-              </div>
-              <p className="lp-trial-note">
-                Entre em contato para saber mais
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ── Seção: FAQ ──────────────────────────────────────────── */
 const faqs = [
@@ -939,7 +825,7 @@ export default function HomePage() {
         <div className="lp-divider" />
 
         {/* ── Preço ── */}
-        <Pricing />
+        <PricingSection />
 
         <div className="lp-divider" />
 
