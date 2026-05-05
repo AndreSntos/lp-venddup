@@ -11,9 +11,9 @@ const periods: Array<{ id: Period; label: string; tag: string | null }> = [
 ];
 
 const starterPricing: Record<Period, { main: string; period: string; note: string }> = {
-  anual:     { main: "970",  period: "/ano",       note: "≈ R$ 80,83/mês · 7 dias grátis" },
-  semestral: { main: "522",  period: "/semestre",  note: "≈ R$ 87,00/mês · 7 dias grátis" },
-  mensal:    { main: "97",   period: "/mês",       note: "7 dias grátis · Sem fidelidade"  },
+  anual:     { main: "970",  period: "/ano",       note: "≈ R$ 80,83/mês · 30 dias grátis" },
+  semestral: { main: "522",  period: "/semestre",  note: "≈ R$ 87,00/mês · 30 dias grátis" },
+  mensal:    { main: "97",   period: "/mês",       note: "30 dias grátis · Sem fidelidade"  },
 };
 
 const starterFeatures: React.ReactNode[] = [

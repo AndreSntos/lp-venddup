@@ -620,7 +620,7 @@ const faqs = [
     q: "Posso cancelar quando quiser?",
     a: (
       <>
-        Sim. Não existe fidelidade mínima. Você começa com 7 dias grátis e, se decidir continuar, paga R$97/mês. <strong>Pode cancelar a qualquer momento</strong> pelo painel sem burocracia.
+        Sim. Não existe fidelidade mínima. Você começa com 30 dias grátis e, se decidir continuar, paga R$97/mês. <strong>Pode cancelar a qualquer momento</strong> pelo painel sem burocracia.
       </>
     ),
   },
@@ -677,7 +677,7 @@ function CTAFinal() {
             lineHeight: 1.65,
           }}
         >
-          Comece com 7 dias grátis. Sem cartão. Cancele quando quiser.
+          Comece com 30 dias grátis. Sem cartão. Cancele quando quiser.
         </p>
 
         <div className="lp-cta-actions">
