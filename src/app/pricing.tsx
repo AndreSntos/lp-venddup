@@ -5,15 +5,15 @@ import { useState } from "react";
 type Period = "anual" | "semestral" | "mensal";
 
 const periods: Array<{ id: Period; label: string; tag: string | null }> = [
-  { id: "anual",     label: "Anual",      tag: "2 meses grátis" },
-  { id: "semestral", label: "Semestral",  tag: "Economize 10%"  },
-  { id: "mensal",    label: "Mensal",     tag: null              },
+  { id: "anual", label: "Anual", tag: "2 meses grátis" },
+  { id: "semestral", label: "Semestral", tag: "Economize 10%" },
+  { id: "mensal", label: "Mensal", tag: null },
 ];
 
 const starterPricing: Record<Period, { main: string; period: string; note: string }> = {
-  anual:     { main: "970",  period: "/ano",       note: "≈ R$ 80,83/mês · 30 dias grátis" },
-  semestral: { main: "522",  period: "/semestre",  note: "≈ R$ 87,00/mês · 30 dias grátis" },
-  mensal:    { main: "97",   period: "/mês",       note: "30 dias grátis · Sem fidelidade"  },
+  anual: { main: "970", period: "/ano", note: "≈ R$ 80,83/mês · 30 dias grátis" },
+  semestral: { main: "522", period: "/semestre", note: "≈ R$ 87,00/mês · 30 dias grátis" },
+  mensal: { main: "97", period: "/mês", note: "30 dias grátis · Sem fidelidade" },
 };
 
 const starterFeatures: React.ReactNode[] = [
@@ -130,7 +130,7 @@ export function PricingSection() {
 
               <div className="lp-plan-cta-wrap">
                 <a
-                  href="https://app.venddup.com.br/cadastro"
+                  href="https://app.venddup.com.br/register"
                   className="vd-btn primary lp-plan-cta-btn"
                   rel="noopener"
                 >

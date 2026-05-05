@@ -182,7 +182,7 @@ function Navbar() {
       </div>
 
       <a
-        href="https://app.venddup.com.br/cadastro"
+        href="https://app.venddup.com.br/register"
         className="vd-btn primary sm lp-nav-cta"
         rel="noopener"
       >
@@ -459,51 +459,51 @@ const features: Array<{
   title: string;
   desc: string;
 }> = [
-  /* Primárias: os 3 maiores diferenciais */
-  {
-    icon: <IconStorefront />,
-    color: "cyan",
-    primary: true,
-    title: "Vitrine própria",
-    desc: "Link exclusivo da sua adega para divulgar no WhatsApp, Instagram ou onde quiser. Sem marketplace, sem comissão.",
-  },
-  {
-    icon: <IconPackage />,
-    color: "amber",
-    primary: true,
-    title: "Pedido completo",
-    desc: "Em vez de áudio, print e mensagem perdida, você recebe um pedido completo e organizado para confirmar.",
-  },
-  {
-    icon: <IconGift />,
-    color: "lime",
-    primary: true,
-    title: "Kits com margem",
-    desc: "Monte kits presenteáveis com rótulos da sua adega. O sistema mostra a margem de cada kit automaticamente.",
-  },
-  /* Secundárias: suporte às primárias */
-  {
-    icon: <IconGrid />,
-    color: "violet",
-    primary: false,
-    title: "Catálogo ilimitado",
-    desc: "Cadastre quantos produtos quiser com foto, descrição, preço e categoria. Fácil de atualizar.",
-  },
-  {
-    icon: <IconWhatsApp />,
-    color: "green",
-    primary: false,
-    title: "Notificação no WhatsApp",
-    desc: "Cada pedido novo chega no WhatsApp da loja com todos os dados: itens, cliente, endereço e total.",
-  },
-  {
-    icon: <IconBarChart />,
-    color: "pink",
-    primary: false,
-    title: "Dashboard de pedidos",
-    desc: "Acompanhe todos os pedidos em um painel simples. Veja histórico, status e valores em um lugar só.",
-  },
-];
+    /* Primárias: os 3 maiores diferenciais */
+    {
+      icon: <IconStorefront />,
+      color: "cyan",
+      primary: true,
+      title: "Vitrine própria",
+      desc: "Link exclusivo da sua adega para divulgar no WhatsApp, Instagram ou onde quiser. Sem marketplace, sem comissão.",
+    },
+    {
+      icon: <IconPackage />,
+      color: "amber",
+      primary: true,
+      title: "Pedido completo",
+      desc: "Em vez de áudio, print e mensagem perdida, você recebe um pedido completo e organizado para confirmar.",
+    },
+    {
+      icon: <IconGift />,
+      color: "lime",
+      primary: true,
+      title: "Kits com margem",
+      desc: "Monte kits presenteáveis com rótulos da sua adega. O sistema mostra a margem de cada kit automaticamente.",
+    },
+    /* Secundárias: suporte às primárias */
+    {
+      icon: <IconGrid />,
+      color: "violet",
+      primary: false,
+      title: "Catálogo ilimitado",
+      desc: "Cadastre quantos produtos quiser com foto, descrição, preço e categoria. Fácil de atualizar.",
+    },
+    {
+      icon: <IconWhatsApp />,
+      color: "green",
+      primary: false,
+      title: "Notificação no WhatsApp",
+      desc: "Cada pedido novo chega no WhatsApp da loja com todos os dados: itens, cliente, endereço e total.",
+    },
+    {
+      icon: <IconBarChart />,
+      color: "pink",
+      primary: false,
+      title: "Dashboard de pedidos",
+      desc: "Acompanhe todos os pedidos em um painel simples. Veja histórico, status e valores em um lugar só.",
+    },
+  ];
 
 function Features() {
   return (
@@ -682,7 +682,7 @@ function CTAFinal() {
 
         <div className="lp-cta-actions">
           <a
-            href="https://app.venddup.com.br/cadastro"
+            href="https://app.venddup.com.br/register"
             className="vd-btn primary"
             rel="noopener"
             style={{ padding: "16px 32px", fontSize: "16px" }}
@@ -777,7 +777,7 @@ export default function HomePage() {
 
                 <div className="lp-actions">
                   <a
-                    href="https://app.venddup.com.br/cadastro"
+                    href="https://app.venddup.com.br/register"
                     className="vd-btn primary"
                     rel="noopener"
                   >
