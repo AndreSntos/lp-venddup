@@ -1433,6 +1433,180 @@ details[open] .lp-faq-chevron {
   .lp-footer-links { justify-content: center; }
 }
 
+/* ── Páginas legais (Privacidade, Termos, Suporte) ───────── */
+
+.lp-legal-header {
+  border-bottom: 1px solid var(--vd-line);
+  padding: 14px 0;
+  background: rgba(3,7,18,.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.lp-legal-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lp-legal-back {
+  font-size: 13px;
+  color: var(--vd-muted);
+  transition: color .2s;
+  text-decoration: none;
+}
+.lp-legal-back:hover { color: var(--vd-text); }
+
+.lp-legal-main { padding: 56px 0 80px; min-height: calc(100vh - 130px); }
+
+.lp-legal-title {
+  font-family: var(--vd-font-display);
+  font-size: clamp(28px, 5vw, 50px);
+  font-weight: 900;
+  letter-spacing: -.07em;
+  line-height: .92;
+  margin: 0 0 10px;
+  color: var(--vd-text);
+}
+
+.lp-legal-updated {
+  color: var(--vd-faint);
+  font-size: 12px;
+  font-family: var(--vd-font-mono);
+  margin: 0 0 28px;
+}
+
+.lp-legal-intro {
+  color: var(--vd-muted);
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 660px;
+  margin: 0 0 48px;
+}
+
+.lp-legal-body {
+  max-width: 720px;
+  display: grid;
+  gap: 28px;
+}
+
+.lp-legal-section h2 {
+  font-family: var(--vd-font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.04em;
+  color: var(--vd-text);
+  margin: 0 0 8px;
+}
+
+.lp-legal-section p {
+  color: var(--vd-muted);
+  font-size: 15px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.lp-legal-contact {
+  max-width: 720px;
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--vd-line);
+  color: var(--vd-muted);
+  font-size: 14px;
+}
+
+.lp-legal-link {
+  color: var(--vd-cyan);
+  text-decoration: none;
+}
+.lp-legal-link:hover { text-decoration: underline; }
+
+.lp-legal-footer {
+  border-top: 1px solid var(--vd-line);
+  padding: 32px 0;
+}
+
+.lp-legal-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.lp-legal-footer-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.lp-legal-footer-links a {
+  font-size: 13px;
+  color: var(--vd-faint);
+  transition: color .2s;
+}
+.lp-legal-footer-links a:hover { color: var(--vd-muted); }
+
+/* Suporte: canais de contato */
+.lp-support-channels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  max-width: 640px;
+  margin-bottom: 0;
+}
+
+.lp-support-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 1px solid var(--vd-line);
+  border-radius: var(--vd-radius-md);
+  padding: 18px;
+  background: rgba(125,211,252,.04);
+  text-decoration: none;
+  transition: .2s ease;
+}
+.lp-support-card:hover { border-color: var(--vd-line-strong); background: rgba(125,211,252,.08); }
+
+.lp-support-card-wa { border-color: rgba(37,211,102,.22); background: rgba(37,211,102,.05); }
+.lp-support-card-wa:hover { border-color: rgba(37,211,102,.40); background: rgba(37,211,102,.10); }
+
+.lp-support-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.lp-support-icon.cyan  { background: rgba(56,189,248,.12);  color: var(--vd-cyan);  }
+.lp-support-icon.green { background: rgba(37,211,102,.12);  color: var(--vd-green); }
+
+.lp-support-label { font-size: 13px; font-weight: 700; color: var(--vd-text); margin: 0 0 3px; }
+.lp-support-value { font-size: 13px; color: var(--vd-muted); margin: 0 0 2px; }
+.lp-support-note  { font-size: 11px; color: var(--vd-faint); margin: 0; font-family: var(--vd-font-mono); }
+
+.lp-support-faq-title {
+  font-family: var(--vd-font-display);
+  font-size: clamp(20px, 3vw, 28px);
+  letter-spacing: -.05em;
+  margin: 0 0 28px;
+  color: var(--vd-text);
+}
+
+@media (max-width: 640px) {
+  .lp-support-channels { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .lp-legal-main { padding: 36px 0 56px; }
+  .lp-legal-footer-inner { flex-direction: column; gap: 12px; }
+  .lp-legal-footer-links { justify-content: center; }
+}
+
 /* ── Mobile stage card ───────────────────────────────────── */
 .lp-mobile-order {
   border: 1px solid rgba(56,189,248,.38);

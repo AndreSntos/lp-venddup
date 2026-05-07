@@ -742,15 +742,9 @@ function Footer() {
           </Link>
 
           <nav className="lp-footer-links" aria-label="Links do rodapé">
-            <a href="https://app.venddup.com.br/politicas/privacidade" rel="noopener">
-              Privacidade
-            </a>
-            <a href="https://app.venddup.com.br/politicas/termos" rel="noopener">
-              Termos de uso
-            </a>
-            <a href="https://app.venddup.com.br/suporte" rel="noopener">
-              Suporte
-            </a>
+            <Link href="/privacidade">Privacidade</Link>
+            <Link href="/termos">Termos de uso</Link>
+            <Link href="/suporte">Suporte</Link>
           </nav>
 
           <span className="lp-footer-copy">
