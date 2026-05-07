@@ -701,15 +701,16 @@ function CTAFinal() {
             <IconArrow />
           </a>
           <a
-            href="https://demo.venddup.com.br"
+            href="https://vitrine.venddup.com.br/s/smonkey"
             className="vd-btn ghost"
-            rel="noopener"
+            target="_blank"
+            rel="noopener noreferrer"
             data-track="lp_cta_clicked"
-            data-track-label="Ver exemplo de vitrine"
+            data-track-label="Ver vitrine de exemplo"
             data-track-location="cta-final"
           >
             <IconLink />
-            Ver exemplo de vitrine
+            Ver vitrine de exemplo
           </a>
         </div>
 
@@ -801,15 +802,16 @@ export default function HomePage() {
                     <IconArrow />
                   </a>
                   <a
-                    href="https://demo.venddup.com.br"
+                    href="https://vitrine.venddup.com.br/s/smonkey"
                     className="vd-btn ghost"
-                    rel="noopener"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     data-track="lp_cta_clicked"
-                    data-track-label="Ver exemplo de vitrine"
+                    data-track-label="Ver vitrine de exemplo"
                     data-track-location="hero"
                   >
                     <IconLink />
-                    Ver exemplo de vitrine
+                    Ver vitrine de exemplo
                   </a>
                 </div>
 
