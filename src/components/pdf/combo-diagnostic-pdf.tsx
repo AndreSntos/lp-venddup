@@ -1,28 +1,29 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, Link, Svg, Path, G, Defs, LinearGradient, Stop } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link, Svg, Path, G } from "@react-pdf/renderer";
 import type { ComboResult, ComboStatus } from "../../lib/combo-calculator";
 import { formatCurrencyBRL, formatPercentBR } from "../../lib/combo-calculator";
 
 const VenddupPDFLogo = () => (
   <Svg viewBox="0 0 500 500" style={styles.logo}>
-    <Defs>
-      <LinearGradient id="pdfTopGrad" x1="95" y1="100" x2="405" y2="255">
-        <Stop offset="0%" stopColor="#27E8E5" />
-        <Stop offset="50%" stopColor="#1CC8F2" />
-        <Stop offset="100%" stopColor="#1595FF" />
-      </LinearGradient>
-      <LinearGradient id="pdfBlueGrad" x1="110" y1="205" x2="390" y2="430">
-        <Stop offset="0%" stopColor="#2A91FF" />
-        <Stop offset="50%" stopColor="#176BFF" />
-        <Stop offset="100%" stopColor="#0E4FFF" />
-      </LinearGradient>
-    </Defs>
     <G fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M95 100 L250 252 L405 100" stroke="url(#pdfTopGrad)" strokeWidth="74" />
-      <Path d="M112 214 L250 341 L388 214" stroke="url(#pdfBlueGrad)" strokeWidth="58" />
-      <Path d="M112 302 L250 430 L388 302" stroke="url(#pdfBlueGrad)" strokeWidth="58" />
+      <Path d="M95 100 L250 252 L405 100" stroke="#38BDF8" strokeWidth="74" />
+      <Path d="M112 214 L250 341 L388 214" stroke="#2563EB" strokeWidth="58" />
+      <Path d="M112 302 L250 430 L388 302" stroke="#1D4ED8" strokeWidth="58" />
     </G>
   </Svg>
+);
+
+const PDFBackgroundGrid = () => (
+  <View style={styles.gridContainer} fixed>
+    {[0, 48, 96, 144, 192].map((x) => (
+      <View key={`v${x}`} style={[styles.gridLineVertical, { left: x }]} />
+    ))}
+    {[48, 96, 144, 192, 240, 288].map((y) => (
+      <View key={`h${y}`} style={[styles.gridLineHorizontal, { top: y }]} />
+    ))}
+    <View style={styles.gridCircle1} />
+    <View style={styles.gridCircle2} />
+  </View>
 );
 
 const styles = StyleSheet.create({
@@ -30,6 +31,50 @@ const styles = StyleSheet.create({
     backgroundColor: "#030712",
     fontFamily: "Helvetica",
     padding: 24,
+  },
+  gridContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -1,
+  },
+  gridLineVertical: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: "#0E2A3F",
+  },
+  gridLineHorizontal: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: "#0E2A3F",
+  },
+  gridCircle1: {
+    position: "absolute",
+    top: 60,
+    right: 40,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 1,
+    borderColor: "#0B2638",
+    opacity: 0.6,
+  },
+  gridCircle2: {
+    position: "absolute",
+    bottom: 80,
+    left: 30,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: "#0B2638",
+    opacity: 0.4,
   },
   header: {
     flexDirection: "row",
@@ -124,6 +169,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 10,
     width: "48%",
+    borderWidth: 1,
+    borderColor: "#16415C",
   },
   metricLabel: {
     color: "#9FB4D0",
@@ -171,28 +218,42 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
   },
   ctaSection: {
-    backgroundColor: "#38BDF8",
-    borderRadius: 6,
-    padding: 14,
+    backgroundColor: "#07111F",
+    borderRadius: 8,
+    padding: 16,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#38BDF8",
   },
   ctaTitle: {
-    color: "#030712",
-    fontSize: 11,
-    fontWeight: 600,
+    color: "#F8FBFF",
+    fontSize: 12,
+    fontWeight: 700,
     marginBottom: 6,
   },
   ctaText: {
-    color: "#030712",
+    color: "#9FB4D0",
     fontSize: 9,
-    marginBottom: 8,
+    marginBottom: 12,
     lineHeight: 1.4,
   },
-  ctaLink: {
+  ctaButton: {
+    backgroundColor: "#38BDF8",
+    borderRadius: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    alignSelf: "flex-start",
+  },
+  ctaButtonText: {
     color: "#030712",
+    fontSize: 10,
+    fontWeight: 600,
+  },
+  ctaLink: {
+    color: "#38BDF8",
     fontSize: 9,
     fontWeight: 600,
-    textDecoration: "underline",
+    marginTop: 8,
   },
   footer: {
     borderTopWidth: 1,
@@ -258,6 +319,7 @@ export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <PDFBackgroundGrid />
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <VenddupPDFLogo />
@@ -314,13 +376,15 @@ export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
         )}
 
         <View style={styles.ctaSection}>
-          <Text style={styles.ctaTitle}>Agora organize seus combos em uma vitrine própria.</Text>
+          <Text style={styles.ctaTitle}>Agora transforme esse combo em pedido organizado.</Text>
           <Text style={styles.ctaText}>
-            Com a Venddup, sua adega cadastra produtos e kits, configura entrega e recebe pedidos organizados pelo WhatsApp.
+            Com a Venddup, sua adega cadastra produtos e kits, configura entrega e recebe pedidos completos pelo WhatsApp.
           </Text>
-          <Link src="https://app.venddup.com.br/register" style={styles.ctaLink}>
-            Clique aqui para criar sua vitrine →
-          </Link>
+          <View style={styles.ctaButton}>
+            <Link src="https://app.venddup.com.br/register">
+              <Text style={styles.ctaButtonText}>Criar minha vitrine na Venddup</Text>
+            </Link>
+          </View>
         </View>
 
         <View style={styles.footer}>
