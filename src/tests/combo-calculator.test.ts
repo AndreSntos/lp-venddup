@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput } from "../lib/combo-calculator";
+import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput, getComboImprovementTips } from "../lib/combo-calculator";
 
 describe("calculateCombo", () => {
   const baseInput = {
@@ -267,6 +267,108 @@ describe("calculateCombo", () => {
 
     it("deve retornar 0 para Infinity", () => {
       expect(parseNumberInput("Infinity")).toBe(0);
+    });
+  });
+
+  describe("getComboImprovementTips", () => {
+    it("deve retornar array vazio quando isValid é false", () => {
+      const invalidResult = {
+        custoTotal: 0,
+        taxaPagamento: 0,
+        lucroEstimado: 0,
+        margemPercentual: 0,
+        precoMinimoSugerido: 0,
+        status: "prejuizo" as const,
+        statusText: "Dados inválidos",
+        statusEmoji: "⚠️",
+        isValid: false,
+      };
+
+      expect(getComboImprovementTips(invalidResult)).toEqual([]);
+    });
+
+    it("deve retornar dicas corretas para status prejuízo", () => {
+      const result = {
+        custoTotal: 80,
+        taxaPagamento: 3,
+        lucroEstimado: -10,
+        margemPercentual: -10,
+        precoMinimoSugerido: 100,
+        status: "prejuizo" as const,
+        statusText: "Prejuízo detectado",
+        statusEmoji: "⚠️",
+        isValid: true,
+      };
+
+      const tips = getComboImprovementTips(result);
+
+      expect(tips.length).toBe(3);
+      expect(tips[0]).toContain("Revise o preço");
+      expect(tips[1]).toContain("gelo, embalagem, entrega");
+      expect(tips[2]).toContain("versão menor");
+    });
+
+    it("deve retornar dicas corretas para status perigoso", () => {
+      const result = {
+        custoTotal: 70,
+        taxaPagamento: 3,
+        lucroEstimado: 10,
+        margemPercentual: 10,
+        precoMinimoSugerido: 90,
+        status: "perigoso" as const,
+        statusText: "Margem crítica",
+        statusEmoji: "🔥",
+        isValid: true,
+      };
+
+      const tips = getComboImprovementTips(result);
+
+      expect(tips.length).toBe(3);
+      expect(tips[0]).toContain("margem está apertada");
+      expect(tips[1]).toContain("aumentar o preço ou reduzir custos");
+      expect(tips[2]).toContain("sem recalcular");
+    });
+
+    it("deve retornar dicas corretas para status aceitável", () => {
+      const result = {
+        custoTotal: 70,
+        taxaPagamento: 3,
+        lucroEstimado: 27,
+        margemPercentual: 27,
+        precoMinimoSugerido: 90,
+        status: "aceitavel" as const,
+        statusText: "Margem aceitável",
+        statusEmoji: "✅",
+        isValid: true,
+      };
+
+      const tips = getComboImprovementTips(result);
+
+      expect(tips.length).toBe(3);
+      expect(tips[0]).toContain("acompanhar descontos");
+      expect(tips[1]).toContain("preço mínimo sugerido");
+      expect(tips[2]).toContain("adicionais");
+    });
+
+    it("deve retornar dicas corretas para status saudável", () => {
+      const result = {
+        custoTotal: 60,
+        taxaPagamento: 3,
+        lucroEstimado: 60,
+        margemPercentual: 50,
+        precoMinimoSugerido: 80,
+        status: "saudavel" as const,
+        statusText: "Combo saudável",
+        statusEmoji: "💰",
+        isValid: true,
+      };
+
+      const tips = getComboImprovementTips(result);
+
+      expect(tips.length).toBe(3);
+      expect(tips[0]).toContain("destaque");
+      expect(tips[1]).toContain("kit fixo");
+      expect(tips[2]).toContain("promoção");
     });
   });
 });
