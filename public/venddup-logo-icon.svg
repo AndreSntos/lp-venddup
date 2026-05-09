@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 500 500" fill="none">
+  <defs>
+    <linearGradient id="pdf-topGrad" x1="95" y1="100" x2="405" y2="255" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#27E8E5"/>
+      <stop offset="50%" stopColor="#1CC8F2"/>
+      <stop offset="100%" stopColor="#1595FF"/>
+    </linearGradient>
+    <linearGradient id="pdf-blueGrad" x1="110" y1="205" x2="390" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#2A91FF"/>
+      <stop offset="50%" stopColor="#176BFF"/>
+      <stop offset="100%" stopColor="#0E4FFF"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M95 100 L250 252 L405 100" stroke="url(#pdf-topGrad)" strokeWidth="74"/>
+    <path d="M112 214 L250 341 L388 214" stroke="url(#pdf-blueGrad)" strokeWidth="58"/>
+    <path d="M112 302 L250 430 L388 302" stroke="url(#pdf-blueGrad)" strokeWidth="58"/>
+  </g>
+</svg>

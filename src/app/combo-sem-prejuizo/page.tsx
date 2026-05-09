@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { jsPDF } from "jspdf";
 import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput, getComboImprovementTips, type ComboResult, type ComboStatus } from "../../lib/combo-calculator";
+import { downloadComboDiagnosticPDF } from "../../lib/combo-pdf-download";
 
 function VenddupSymbol({ size = 28 }: { size?: number }) {
   return (
@@ -202,227 +202,17 @@ export default function ComboSemPrejuizo() {
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const safeFormat = (value: number, type: "currency" | "percent"): string => {
-    if (!Number.isFinite(value) || isNaN(value)) return "—";
-    return formatSafe(value, type);
-  };
-
-  const generatePDF = async () => {
+  const handleDownloadPDF = async () => {
     if (!result || isGeneratingPDF) return;
 
     setIsGeneratingPDF(true);
-
     try {
-      await new Promise((resolve) => requestAnimationFrame(resolve));
-
-      const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
+      await downloadComboDiagnosticPDF({
+        comboName: inputs.nomeCombo,
+        result,
+        precoVenda: parseNumberInput(inputs.precoVenda),
+        tips: getComboImprovementTips(result),
       });
-
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const margin = 20;
-      let yPos = margin;
-
-      const colors = {
-        bg: [3, 7, 18] as [number, number, number],
-        card: [10, 22, 40] as [number, number, number],
-        textPrimary: [248, 251, 255] as [number, number, number],
-        textSecondary: [159, 180, 208] as [number, number, number],
-        cyan: [56, 189, 248] as [number, number, number],
-        green: [37, 211, 102] as [number, number, number],
-        amber: [245, 158, 11] as [number, number, number],
-        danger: [251, 113, 133] as [number, number, number],
-        footer: [98, 119, 146] as [number, number, number],
-      };
-
-      const getStatusColor = (status: ComboStatus): [number, number, number] => {
-        switch (status) {
-          case "prejuizo": return colors.danger;
-          case "perigoso": return colors.amber;
-          case "aceitavel": return colors.cyan;
-          case "saudavel": return colors.green;
-          default: return colors.cyan;
-        }
-      };
-
-      doc.setFillColor(...colors.bg);
-      doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-      for (let i = 0; i < 3; i++) {
-        doc.setDrawColor(56, 189, 248);
-        doc.setLineWidth(0.1);
-        doc.line(margin + i * 2, 0, margin + i * 2, pageHeight);
-        doc.line(pageWidth - margin - i * 2, 0, pageWidth - margin - i * 2, pageHeight);
-      }
-
-      yPos = margin;
-      doc.setFillColor(...colors.card);
-      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 40, 3, 3, "F");
-      doc.setDrawColor(...colors.cyan);
-      doc.setLineWidth(0.4);
-      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 40, 3, 3, "S");
-
-      doc.setTextColor(...colors.cyan);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "bold");
-      doc.text("VENDDUP", margin + 8, yPos + 10);
-
-      doc.setTextColor(...colors.textPrimary);
-      doc.setFontSize(9);
-      doc.text("Diagnóstico do Combo", margin + 8, yPos + 18);
-
-      doc.setTextColor(...colors.textSecondary);
-      doc.setFontSize(7);
-      doc.setFont("helvetica", "normal");
-      doc.text("Uma análise simples para evitar combo no escuro.", margin + 8, yPos + 25);
-
-      const now = new Date();
-      const dateStr = now.toLocaleDateString("pt-BR");
-      doc.setTextColor(...colors.textSecondary);
-      doc.setFontSize(7);
-      doc.text(`Gerado em ${dateStr}`, pageWidth - margin - 8 - doc.getTextWidth(`Gerado em ${dateStr}`), yPos + 10);
-
-      yPos += 50;
-
-      const comboName = inputs.nomeCombo || "Combo sem nome";
-      const slugName = comboName.toLowerCase().replace(/[^a-z0-9]/g, "-").slice(0, 30);
-      const filename = slugName ? `diagnostico-${slugName}-venddup.pdf` : "diagnostico-combo-venddup.pdf";
-
-      doc.setTextColor(...colors.textPrimary);
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "bold");
-      doc.text(comboName, margin, yPos);
-      yPos += 10;
-
-      const statusColor = getStatusColor(result.status);
-      doc.setFillColor(...statusColor);
-      doc.roundedRect(margin, yPos, 35, 8, 1.5, 1.5, "F");
-
-      doc.setTextColor(...colors.bg);
-      doc.setFontSize(8);
-      doc.setFont("helvetica", "bold");
-      doc.text(result.statusText, margin + 3, yPos + 5.5);
-      yPos += 18;
-
-      const impactColor = result.lucroEstimado < 0 ? colors.danger : colors.green;
-      doc.setTextColor(...impactColor);
-      doc.setFontSize(10);
-      doc.setFont("helvetica", result.lucroEstimado < 0 ? "italic" : "normal");
-
-      const impactText = result.lucroEstimado < 0
-        ? `Você perde aproximadamente ${safeFormat(Math.abs(result.lucroEstimado), "currency")} por combo vendido.`
-        : `Cada combo vendido deixa aproximadamente ${safeFormat(result.lucroEstimado, "currency")} de lucro.`;
-
-      const impactLines = doc.splitTextToSize(impactText, pageWidth - margin * 2);
-      doc.text(impactLines, margin, yPos);
-      yPos += impactLines.length * 5 + 8;
-
-      doc.setFillColor(...colors.card);
-      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 45, 2, 2, "F");
-      doc.setDrawColor(56, 189, 248);
-      doc.setLineWidth(0.2);
-      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 45, 2, 2, "S");
-
-      doc.setTextColor(...colors.textPrimary);
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "bold");
-      doc.text("Métricas do Combo", margin + 5, yPos + 7);
-
-      const metrics = [
-        { label: "Preço de venda", value: safeFormat(parseNumberInput(inputs.precoVenda), "currency") },
-        { label: "Custo total", value: safeFormat(result.custoTotal, "currency") },
-        { label: "Taxa estimada", value: safeFormat(result.taxaPagamento, "currency") },
-        { label: "Lucro estimado", value: safeFormat(result.lucroEstimado, "currency") },
-        { label: "Margem real", value: safeFormat(result.margemPercentual, "percent") },
-        { label: "Preço mínimo", value: result.precoMinimoSugerido > 0 ? safeFormat(result.precoMinimoSugerido, "currency") : "—" },
-      ];
-
-      const colWidth = (pageWidth - margin * 2 - 10) / 2;
-      metrics.forEach((metric, index) => {
-        const col = index % 2;
-        const row = Math.floor(index / 2);
-        const x = margin + 5 + col * (colWidth + 5);
-        const y = yPos + 14 + row * 12;
-
-        doc.setTextColor(...colors.textSecondary);
-        doc.setFontSize(7);
-        doc.setFont("helvetica", "normal");
-        doc.text(metric.label, x, y);
-
-        doc.setTextColor(...colors.textPrimary);
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "bold");
-        doc.text(metric.value, x, y + 5);
-      });
-
-      yPos += 55;
-
-      const tips = getComboImprovementTips(result);
-      if (tips.length > 0) {
-        doc.setTextColor(...colors.textPrimary);
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "bold");
-        doc.text("Dicas para melhorar", margin, yPos);
-        yPos += 8;
-
-        tips.forEach((tip, index) => {
-          const num = String(index + 1).padStart(2, "0");
-          doc.setFillColor(...colors.card);
-          doc.roundedRect(margin, yPos - 2, 8, 6, 1, 1, "F");
-          doc.setTextColor(...colors.cyan);
-          doc.setFontSize(7);
-          doc.setFont("helvetica", "bold");
-          doc.text(num, margin + 1.5, yPos + 2);
-
-          doc.setTextColor(...colors.textSecondary);
-          doc.setFontSize(8);
-          doc.setFont("helvetica", "normal");
-          const tipLines = doc.splitTextToSize(tip, pageWidth - margin * 2 - 12);
-          doc.text(tipLines, margin + 10, yPos + 2);
-          yPos += tipLines.length * 5 + 5;
-        });
-      }
-
-      yPos += 5;
-
-      doc.setFillColor(...colors.cyan);
-      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 32, 2, 2, "F");
-
-      doc.setTextColor(3, 7, 18);
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "bold");
-      doc.text("Agora organize seus combos em uma vitrine própria.", margin + 5, yPos + 8);
-
-      doc.setTextColor(3, 7, 18);
-      doc.setFontSize(7);
-      doc.setFont("helvetica", "normal");
-      const ctaText = "Com a Venddup, sua adega cadastra produtos e kits, configura entrega e recebe pedidos organizados pelo WhatsApp.";
-      const ctaLines = doc.splitTextToSize(ctaText, pageWidth - margin * 2 - 10);
-      doc.text(ctaLines, margin + 5, yPos + 15);
-
-      doc.setTextColor(3, 7, 18);
-      doc.setFontSize(7);
-      doc.setFont("helvetica", "bold");
-      const link = "https://app.venddup.com.br/register";
-      doc.textWithLink("Clique aqui para criar sua vitrine →", margin + 5, yPos + 22, { url: link });
-
-      yPos += 42;
-
-      doc.setTextColor(...colors.footer);
-      doc.setFontSize(6);
-      doc.setFont("helvetica", "italic");
-      const footerText = "Este diagnóstico é uma estimativa operacional. O objetivo é evitar promoção no escuro.";
-      const footerLines = doc.splitTextToSize(footerText, pageWidth - margin * 2);
-      doc.text(footerLines, margin, yPos);
-
-      doc.setTextColor(...colors.textSecondary);
-      doc.setFontSize(6);
-      doc.text("venddup.com.br", margin, yPos + 6);
-
-      doc.save(filename);
     } catch (error) {
       console.error(error);
       alert("Não foi possível gerar o diagnóstico agora. Tente novamente.");
@@ -762,7 +552,7 @@ export default function ComboSemPrejuizo() {
                     </div>
 
                     <button
-                      onClick={generatePDF}
+                      onClick={handleDownloadPDF}
                       disabled={isGeneratingPDF}
                       aria-busy={isGeneratingPDF}
                       className="calc-download-btn"
