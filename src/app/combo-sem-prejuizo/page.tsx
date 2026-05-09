@@ -82,6 +82,15 @@ function IconDownload() {
   );
 }
 
+function IconSpinner() {
+  return (
+    <svg className="calc-pdf-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" opacity="0.25" />
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconStatusWarning() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -164,6 +173,8 @@ export default function ComboSemPrejuizo() {
     margemDesejada: "20",
   });
 
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
   const handleInputChange = (field: keyof CalculatorInputs, value: string) => {
     setInputs((prev) => ({ ...prev, [field]: value }));
   };
@@ -191,160 +202,233 @@ export default function ComboSemPrejuizo() {
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const generatePDF = () => {
-    if (!result) return;
+  const safeFormat = (value: number, type: "currency" | "percent"): string => {
+    if (!Number.isFinite(value) || isNaN(value)) return "—";
+    return formatSafe(value, type);
+  };
 
-    const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
+  const generatePDF = async () => {
+    if (!result || isGeneratingPDF) return;
 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 20;
-    let yPos = margin;
+    setIsGeneratingPDF(true);
 
-    doc.setFillColor(3, 7, 18);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
+    try {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    doc.setFillColor(7, 17, 31);
-    doc.rect(margin, yPos, pageWidth - margin * 2, 35, "F");
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
 
-    doc.setFillColor(56, 189, 248);
-    doc.setDrawColor(56, 189, 248);
-    doc.setLineWidth(0.5);
-    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 35, 3, 3, "S");
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 20;
+      let yPos = margin;
 
-    doc.setTextColor(56, 189, 248);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.text("VENDDUP", margin + 10, yPos + 12);
+      const colors = {
+        bg: [3, 7, 18] as [number, number, number],
+        card: [10, 22, 40] as [number, number, number],
+        textPrimary: [248, 251, 255] as [number, number, number],
+        textSecondary: [159, 180, 208] as [number, number, number],
+        cyan: [56, 189, 248] as [number, number, number],
+        green: [37, 211, 102] as [number, number, number],
+        amber: [245, 158, 11] as [number, number, number],
+        danger: [251, 113, 133] as [number, number, number],
+        footer: [98, 119, 146] as [number, number, number],
+      };
 
-    doc.setTextColor(248, 251, 255);
-    doc.setFontSize(8);
-    doc.setFont("helvetica", "normal");
-    doc.text("Diagnóstico do Combo", margin + 10, yPos + 20);
+      const getStatusColor = (status: ComboStatus): [number, number, number] => {
+        switch (status) {
+          case "prejuizo": return colors.danger;
+          case "perigoso": return colors.amber;
+          case "aceitavel": return colors.cyan;
+          case "saudavel": return colors.green;
+          default: return colors.cyan;
+        }
+      };
 
-    doc.setTextColor(159, 180, 208);
-    doc.setFontSize(7);
-    doc.text("Uma análise simples para evitar combo no escuro.", margin + 10, yPos + 28);
+      doc.setFillColor(...colors.bg);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-    yPos += 45;
+      for (let i = 0; i < 3; i++) {
+        doc.setDrawColor(56, 189, 248);
+        doc.setLineWidth(0.1);
+        doc.line(margin + i * 2, 0, margin + i * 2, pageHeight);
+        doc.line(pageWidth - margin - i * 2, 0, pageWidth - margin - i * 2, pageHeight);
+      }
 
-    const comboName = inputs.nomeCombo || "Combo sem nome";
-    const slugName = comboName.toLowerCase().replace(/[^a-z0-9]/g, "-").slice(0, 30);
-    const filename = slugName ? `diagnostico-${slugName}-venddup.pdf` : "diagnostico-combo-venddup.pdf";
+      yPos = margin;
+      doc.setFillColor(...colors.card);
+      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 40, 3, 3, "F");
+      doc.setDrawColor(...colors.cyan);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 40, 3, 3, "S");
 
-    doc.setTextColor(248, 251, 255);
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.text(comboName, margin, yPos);
-    yPos += 8;
-
-    const statusColor = result.status === "prejuizo" ? [251, 113, 133] :
-                       result.status === "perigoso" ? [245, 158, 11] :
-                       result.status === "aceitavel" ? [56, 189, 248] : [37, 211, 102];
-    doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "bold");
-    doc.text(result.statusText, margin, yPos);
-    yPos += 15;
-
-    if (result.lucroEstimado < 0) {
-      doc.setTextColor(251, 113, 133);
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "italic");
-      const lossText = `Com esse preço, você perde aproximadamente ${formatCurrencyBRL(Math.abs(result.lucroEstimado))} por combo vendido.`;
-      const lines = doc.splitTextToSize(lossText, pageWidth - margin * 2);
-      doc.text(lines, margin, yPos);
-      yPos += lines.length * 5 + 5;
-    } else {
-      doc.setTextColor(37, 211, 102);
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      const profitText = `Com esse preço, cada combo vendido deixa aproximadamente ${formatCurrencyBRL(result.lucroEstimado)} de lucro.`;
-      const lines = doc.splitTextToSize(profitText, pageWidth - margin * 2);
-      doc.text(lines, margin, yPos);
-      yPos += lines.length * 5 + 5;
-    }
-
-    yPos += 5;
-
-    doc.setFillColor(10, 22, 40);
-    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 55, 2, 2, "F");
-    doc.setDrawColor(56, 189, 248);
-    doc.setLineWidth(0.3);
-    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 55, 2, 2, "S");
-
-    doc.setTextColor(248, 251, 255);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.text("Dados do Combo", margin + 5, yPos + 8);
-
-    doc.setTextColor(159, 180, 208);
-    doc.setFontSize(8);
-    doc.setFont("helvetica", "normal");
-
-    const dataLines = [
-      `Preço de venda: ${formatCurrencyBRL(parseNumberInput(inputs.precoVenda))}`,
-      `Custo total: ${formatCurrencyBRL(result.custoTotal)}`,
-      `Taxa estimada: ${formatCurrencyBRL(result.taxaPagamento)}`,
-      `Lucro estimado: ${formatCurrencyBRL(result.lucroEstimado)}`,
-      `Margem real: ${formatPercentBR(result.margemPercentual)}`,
-      `Preço mínimo sugerido: ${result.precoMinimoSugerido > 0 ? formatCurrencyBRL(result.precoMinimoSugerido) : "—"}`,
-    ];
-
-    dataLines.forEach((line, index) => {
-      doc.text(line, margin + 5, yPos + 18 + index * 6);
-    });
-
-    yPos += 65;
-
-    const tips = getComboImprovementTips(result);
-    if (tips.length > 0) {
-      doc.setTextColor(248, 251, 255);
+      doc.setTextColor(...colors.cyan);
       doc.setFontSize(11);
       doc.setFont("helvetica", "bold");
-      doc.text("Dicas para Melhorar", margin, yPos);
-      yPos += 8;
+      doc.text("VENDDUP", margin + 8, yPos + 10);
 
-      doc.setTextColor(159, 180, 208);
+      doc.setTextColor(...colors.textPrimary);
       doc.setFontSize(9);
+      doc.text("Diagnóstico do Combo", margin + 8, yPos + 18);
+
+      doc.setTextColor(...colors.textSecondary);
+      doc.setFontSize(7);
       doc.setFont("helvetica", "normal");
+      doc.text("Uma análise simples para evitar combo no escuro.", margin + 8, yPos + 25);
 
-      tips.forEach((tip, index) => {
-        const tipLines = doc.splitTextToSize(`${index + 1}. ${tip}`, pageWidth - margin * 2 - 5);
-        doc.text(tipLines, margin + 5, yPos);
-        yPos += tipLines.length * 5 + 3;
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("pt-BR");
+      doc.setTextColor(...colors.textSecondary);
+      doc.setFontSize(7);
+      doc.text(`Gerado em ${dateStr}`, pageWidth - margin - 8 - doc.getTextWidth(`Gerado em ${dateStr}`), yPos + 10);
+
+      yPos += 50;
+
+      const comboName = inputs.nomeCombo || "Combo sem nome";
+      const slugName = comboName.toLowerCase().replace(/[^a-z0-9]/g, "-").slice(0, 30);
+      const filename = slugName ? `diagnostico-${slugName}-venddup.pdf` : "diagnostico-combo-venddup.pdf";
+
+      doc.setTextColor(...colors.textPrimary);
+      doc.setFontSize(16);
+      doc.setFont("helvetica", "bold");
+      doc.text(comboName, margin, yPos);
+      yPos += 10;
+
+      const statusColor = getStatusColor(result.status);
+      doc.setFillColor(...statusColor);
+      doc.roundedRect(margin, yPos, 35, 8, 1.5, 1.5, "F");
+
+      doc.setTextColor(...colors.bg);
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.text(result.statusText, margin + 3, yPos + 5.5);
+      yPos += 18;
+
+      const impactColor = result.lucroEstimado < 0 ? colors.danger : colors.green;
+      doc.setTextColor(...impactColor);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", result.lucroEstimado < 0 ? "italic" : "normal");
+
+      const impactText = result.lucroEstimado < 0
+        ? `Você perde aproximadamente ${safeFormat(Math.abs(result.lucroEstimado), "currency")} por combo vendido.`
+        : `Cada combo vendido deixa aproximadamente ${safeFormat(result.lucroEstimado, "currency")} de lucro.`;
+
+      const impactLines = doc.splitTextToSize(impactText, pageWidth - margin * 2);
+      doc.text(impactLines, margin, yPos);
+      yPos += impactLines.length * 5 + 8;
+
+      doc.setFillColor(...colors.card);
+      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 45, 2, 2, "F");
+      doc.setDrawColor(56, 189, 248);
+      doc.setLineWidth(0.2);
+      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 45, 2, 2, "S");
+
+      doc.setTextColor(...colors.textPrimary);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "bold");
+      doc.text("Métricas do Combo", margin + 5, yPos + 7);
+
+      const metrics = [
+        { label: "Preço de venda", value: safeFormat(parseNumberInput(inputs.precoVenda), "currency") },
+        { label: "Custo total", value: safeFormat(result.custoTotal, "currency") },
+        { label: "Taxa estimada", value: safeFormat(result.taxaPagamento, "currency") },
+        { label: "Lucro estimado", value: safeFormat(result.lucroEstimado, "currency") },
+        { label: "Margem real", value: safeFormat(result.margemPercentual, "percent") },
+        { label: "Preço mínimo", value: result.precoMinimoSugerido > 0 ? safeFormat(result.precoMinimoSugerido, "currency") : "—" },
+      ];
+
+      const colWidth = (pageWidth - margin * 2 - 10) / 2;
+      metrics.forEach((metric, index) => {
+        const col = index % 2;
+        const row = Math.floor(index / 2);
+        const x = margin + 5 + col * (colWidth + 5);
+        const y = yPos + 14 + row * 12;
+
+        doc.setTextColor(...colors.textSecondary);
+        doc.setFontSize(7);
+        doc.setFont("helvetica", "normal");
+        doc.text(metric.label, x, y);
+
+        doc.setTextColor(...colors.textPrimary);
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "bold");
+        doc.text(metric.value, x, y + 5);
       });
+
+      yPos += 55;
+
+      const tips = getComboImprovementTips(result);
+      if (tips.length > 0) {
+        doc.setTextColor(...colors.textPrimary);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "bold");
+        doc.text("Dicas para melhorar", margin, yPos);
+        yPos += 8;
+
+        tips.forEach((tip, index) => {
+          const num = String(index + 1).padStart(2, "0");
+          doc.setFillColor(...colors.card);
+          doc.roundedRect(margin, yPos - 2, 8, 6, 1, 1, "F");
+          doc.setTextColor(...colors.cyan);
+          doc.setFontSize(7);
+          doc.setFont("helvetica", "bold");
+          doc.text(num, margin + 1.5, yPos + 2);
+
+          doc.setTextColor(...colors.textSecondary);
+          doc.setFontSize(8);
+          doc.setFont("helvetica", "normal");
+          const tipLines = doc.splitTextToSize(tip, pageWidth - margin * 2 - 12);
+          doc.text(tipLines, margin + 10, yPos + 2);
+          yPos += tipLines.length * 5 + 5;
+        });
+      }
+
+      yPos += 5;
+
+      doc.setFillColor(...colors.cyan);
+      doc.roundedRect(margin, yPos, pageWidth - margin * 2, 32, 2, 2, "F");
+
+      doc.setTextColor(3, 7, 18);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "bold");
+      doc.text("Agora organize seus combos em uma vitrine própria.", margin + 5, yPos + 8);
+
+      doc.setTextColor(3, 7, 18);
+      doc.setFontSize(7);
+      doc.setFont("helvetica", "normal");
+      const ctaText = "Com a Venddup, sua adega cadastra produtos e kits, configura entrega e recebe pedidos organizados pelo WhatsApp.";
+      const ctaLines = doc.splitTextToSize(ctaText, pageWidth - margin * 2 - 10);
+      doc.text(ctaLines, margin + 5, yPos + 15);
+
+      doc.setTextColor(3, 7, 18);
+      doc.setFontSize(7);
+      doc.setFont("helvetica", "bold");
+      const link = "https://app.venddup.com.br/register";
+      doc.textWithLink("Clique aqui para criar sua vitrine →", margin + 5, yPos + 22, { url: link });
+
+      yPos += 42;
+
+      doc.setTextColor(...colors.footer);
+      doc.setFontSize(6);
+      doc.setFont("helvetica", "italic");
+      const footerText = "Este diagnóstico é uma estimativa operacional. O objetivo é evitar promoção no escuro.";
+      const footerLines = doc.splitTextToSize(footerText, pageWidth - margin * 2);
+      doc.text(footerLines, margin, yPos);
+
+      doc.setTextColor(...colors.textSecondary);
+      doc.setFontSize(6);
+      doc.text("venddup.com.br", margin, yPos + 6);
+
+      doc.save(filename);
+    } catch (error) {
+      console.error(error);
+      alert("Não foi possível gerar o diagnóstico agora. Tente novamente.");
+    } finally {
+      setIsGeneratingPDF(false);
     }
-
-    yPos += 10;
-
-    doc.setFillColor(56, 189, 248);
-    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 30, 2, 2, "F");
-
-    doc.setTextColor(3, 7, 18);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.text("Agora que você sabe o preço certo, organize seus combos em uma vitrine própria.", margin + 5, yPos + 10);
-
-    doc.setTextColor(3, 7, 18);
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "normal");
-    doc.text("Crie sua vitrine na Venddup: https://app.venddup.com.br/register", margin + 5, yPos + 18);
-
-    yPos += 40;
-
-    doc.setTextColor(98, 119, 146);
-    doc.setFontSize(7);
-    doc.setFont("helvetica", "italic");
-    const footerText = "Este diagnóstico é uma estimativa operacional. O objetivo é evitar promoção no escuro.";
-    const footerLines = doc.splitTextToSize(footerText, pageWidth - margin * 2);
-    doc.text(footerLines, margin, yPos);
-
-    doc.save(filename);
   };
 
   return (
@@ -677,9 +761,14 @@ export default function ComboSemPrejuizo() {
                       <p>Essa conta é uma estimativa operacional. O objetivo é evitar promoção no escuro.</p>
                     </div>
 
-                    <button onClick={generatePDF} className="calc-download-btn">
-                      <IconDownload />
-                      Baixar diagnóstico do combo
+                    <button
+                      onClick={generatePDF}
+                      disabled={isGeneratingPDF}
+                      aria-busy={isGeneratingPDF}
+                      className="calc-download-btn"
+                    >
+                      {isGeneratingPDF ? <IconSpinner /> : <IconDownload />}
+                      {isGeneratingPDF ? "Gerando diagnóstico..." : "Baixar diagnóstico do combo"}
                     </button>
                     <p className="calc-download-hint">Gere um PDF com os dados, margem e dicas para melhorar o combo.</p>
                   </div>

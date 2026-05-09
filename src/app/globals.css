@@ -2091,6 +2091,26 @@ details[open] .lp-faq-chevron {
   transform: translateY(-1px);
 }
 
+.calc-download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.calc-download-btn:disabled:hover {
+  background: rgba(125,211,252,.08);
+  border-color: var(--vd-line);
+}
+
+.calc-pdf-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .calc-download-hint {
   font-size: 11px;
   color: var(--vd-faint);
