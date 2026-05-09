@@ -12,6 +12,10 @@ interface DownloadComboDiagnosticParams {
 export async function downloadComboDiagnosticPDF(params: DownloadComboDiagnosticParams): Promise<void> {
   const { comboName, result, precoVenda, tips } = params;
 
+  const logoSrc = typeof window !== "undefined"
+    ? `${window.location.origin}/venddup-logo-icon.svg`
+    : undefined;
+
   const blob = await pdf(
     <ComboDiagnosticPDF
       comboName={comboName}
@@ -19,6 +23,7 @@ export async function downloadComboDiagnosticPDF(params: DownloadComboDiagnostic
       precoVenda={precoVenda}
       tips={tips}
       generatedAt={new Date()}
+      logoSrc={logoSrc}
     />
   ).toBlob();
 

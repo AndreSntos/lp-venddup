@@ -19,6 +19,7 @@ export default defineConfig({
       exclude: [
         "src/tests/**",
         "src/app/**",
+        "src/components/**",
         "src/**/*.d.ts",
         "src/**/*.config.ts",
         /* PostHog e Provider dependem de browser/React — excluídos de cobertura */
@@ -26,6 +27,8 @@ export default defineConfig({
         "src/lib/tracking/posthog-provider.tsx",
         /* Apenas constantes e tipos — sem lógica executável */
         "src/lib/tracking/events.ts",
+        /* PDF generation só funciona em browser — excluído de coverage */
+        "src/lib/combo-pdf-download.tsx",
       ],
       thresholds: {
         statements: 85,

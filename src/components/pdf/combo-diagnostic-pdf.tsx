@@ -1,21 +1,12 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, Font, Link, Image } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link, Image } from "@react-pdf/renderer";
 import type { ComboResult, ComboStatus } from "../../lib/combo-calculator";
 import { formatCurrencyBRL, formatPercentBR } from "../../lib/combo-calculator";
-
-Font.register({
-  family: "Inter",
-  fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZ9hiJ-Ek-_EeA.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiJ-Ek-_EeA.woff2", fontWeight: 700 },
-  ],
-});
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#030712",
-    fontFamily: "Inter",
+    fontFamily: "Helvetica",
     padding: 24,
   },
   header: {
@@ -40,6 +31,17 @@ const styles = StyleSheet.create({
     color: "#38BDF8",
     fontSize: 14,
     fontWeight: 700,
+  },
+  logoTextOnly: {
+    width: 28,
+    height: 28,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#07111F",
+    borderRadius: 4,
+  },
+  logoTextHidden: {
+    display: "none",
   },
   headerBadge: {
     backgroundColor: "rgba(56, 189, 248, 0.15)",
@@ -209,6 +211,7 @@ interface ComboDiagnosticPDFProps {
   precoVenda: number;
   tips: string[];
   generatedAt: Date;
+  logoSrc?: string;
 }
 
 export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
@@ -217,6 +220,7 @@ export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
   precoVenda,
   tips,
   generatedAt,
+  logoSrc,
 }) => {
   const dateStr = generatedAt.toLocaleDateString("pt-BR");
   const statusColor = getStatusColor(result.status);
@@ -236,10 +240,16 @@ export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            {/* eslint-disable-next-line jsx-a11y/alt-text */}
-            <Image src="/venddup-logo-icon.svg" style={styles.logo} />
+            {logoSrc ? (
+              /* eslint-disable-next-line jsx-a11y/alt-text */
+              <Image src={logoSrc} style={styles.logo} />
+            ) : (
+              <View style={styles.logoTextOnly}>
+                <Text style={styles.logoText}>Venddup</Text>
+              </View>
+            )}
             <View>
-              <Text style={styles.logoText}>Venddup</Text>
+              <Text style={logoSrc ? styles.logoText : styles.logoTextHidden}>Venddup</Text>
               <View style={styles.headerBadge}>
                 <Text style={styles.headerBadgeText}>Diagnóstico do Combo</Text>
               </View>
