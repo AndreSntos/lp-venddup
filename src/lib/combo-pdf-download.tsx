@@ -10,11 +10,11 @@ interface DownloadComboDiagnosticParams {
 }
 
 export async function downloadComboDiagnosticPDF(params: DownloadComboDiagnosticParams): Promise<void> {
-  const { comboName, result, precoVenda, tips } = params;
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    throw new Error("PDF download is only available in the browser.");
+  }
 
-  const logoSrc = typeof window !== "undefined"
-    ? `${window.location.origin}/venddup-logo-icon.svg`
-    : undefined;
+  const { comboName, result, precoVenda, tips } = params;
 
   const blob = await pdf(
     <ComboDiagnosticPDF
@@ -23,9 +23,12 @@ export async function downloadComboDiagnosticPDF(params: DownloadComboDiagnostic
       precoVenda={precoVenda}
       tips={tips}
       generatedAt={new Date()}
-      logoSrc={logoSrc}
     />
   ).toBlob();
+
+  if (!blob) {
+    throw new Error("Failed to generate PDF blob.");
+  }
 
   const safeName = (comboName || "combo")
     .toLowerCase()
@@ -45,5 +48,5 @@ export async function downloadComboDiagnosticPDF(params: DownloadComboDiagnostic
   link.click();
   document.body.removeChild(link);
 
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

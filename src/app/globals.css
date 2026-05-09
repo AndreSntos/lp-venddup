@@ -2119,6 +2119,26 @@ details[open] .lp-faq-chevron {
   line-height: 1.4;
 }
 
+.calc-download-error {
+  margin-top: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  background: rgba(251, 113, 133, 0.08);
+  color: var(--vd-text);
+  border-radius: var(--vd-radius-sm);
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.calc-download-error svg {
+  color: var(--vd-danger);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 /* Empty State */
 .calc-result-card.calc-result-empty {
   background: linear-gradient(180deg, rgba(125,211,252,.06), rgba(255,255,255,.015));

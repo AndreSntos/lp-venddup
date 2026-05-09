@@ -1,7 +1,29 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, Link, Image } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link, Svg, Path, G, Defs, LinearGradient, Stop } from "@react-pdf/renderer";
 import type { ComboResult, ComboStatus } from "../../lib/combo-calculator";
 import { formatCurrencyBRL, formatPercentBR } from "../../lib/combo-calculator";
+
+const VenddupPDFLogo = () => (
+  <Svg viewBox="0 0 500 500" style={styles.logo}>
+    <Defs>
+      <LinearGradient id="pdfTopGrad" x1="95" y1="100" x2="405" y2="255">
+        <Stop offset="0%" stopColor="#27E8E5" />
+        <Stop offset="50%" stopColor="#1CC8F2" />
+        <Stop offset="100%" stopColor="#1595FF" />
+      </LinearGradient>
+      <LinearGradient id="pdfBlueGrad" x1="110" y1="205" x2="390" y2="430">
+        <Stop offset="0%" stopColor="#2A91FF" />
+        <Stop offset="50%" stopColor="#176BFF" />
+        <Stop offset="100%" stopColor="#0E4FFF" />
+      </LinearGradient>
+    </Defs>
+    <G fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <Path d="M95 100 L250 252 L405 100" stroke="url(#pdfTopGrad)" strokeWidth="74" />
+      <Path d="M112 214 L250 341 L388 214" stroke="url(#pdfBlueGrad)" strokeWidth="58" />
+      <Path d="M112 302 L250 430 L388 302" stroke="url(#pdfBlueGrad)" strokeWidth="58" />
+    </G>
+  </Svg>
+);
 
 const styles = StyleSheet.create({
   page: {
@@ -211,7 +233,6 @@ interface ComboDiagnosticPDFProps {
   precoVenda: number;
   tips: string[];
   generatedAt: Date;
-  logoSrc?: string;
 }
 
 export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
@@ -220,7 +241,6 @@ export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
   precoVenda,
   tips,
   generatedAt,
-  logoSrc,
 }) => {
   const dateStr = generatedAt.toLocaleDateString("pt-BR");
   const statusColor = getStatusColor(result.status);
@@ -240,16 +260,9 @@ export const ComboDiagnosticPDF: React.FC<ComboDiagnosticPDFProps> = ({
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            {logoSrc ? (
-              /* eslint-disable-next-line jsx-a11y/alt-text */
-              <Image src={logoSrc} style={styles.logo} />
-            ) : (
-              <View style={styles.logoTextOnly}>
-                <Text style={styles.logoText}>Venddup</Text>
-              </View>
-            )}
+            <VenddupPDFLogo />
             <View>
-              <Text style={logoSrc ? styles.logoText : styles.logoTextHidden}>Venddup</Text>
+              <Text style={styles.logoText}>Venddup</Text>
               <View style={styles.headerBadge}>
                 <Text style={styles.headerBadgeText}>Diagnóstico do Combo</Text>
               </View>

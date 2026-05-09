@@ -91,6 +91,16 @@ function IconSpinner() {
   );
 }
 
+function IconError() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+  );
+}
+
 function IconStatusWarning() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -174,9 +184,11 @@ export default function ComboSemPrejuizo() {
   });
 
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
 
   const handleInputChange = (field: keyof CalculatorInputs, value: string) => {
     setInputs((prev) => ({ ...prev, [field]: value }));
+    setPdfError(null);
   };
 
   const result = useMemo((): ComboResult | null => {
@@ -205,6 +217,7 @@ export default function ComboSemPrejuizo() {
   const handleDownloadPDF = async () => {
     if (!result || isGeneratingPDF) return;
 
+    setPdfError(null);
     setIsGeneratingPDF(true);
     try {
       await downloadComboDiagnosticPDF({
@@ -215,7 +228,7 @@ export default function ComboSemPrejuizo() {
       });
     } catch (error) {
       console.error(error);
-      alert("Não foi possível gerar o diagnóstico agora. Tente novamente.");
+      setPdfError("Não conseguimos gerar o diagnóstico agora. Tente novamente em alguns segundos.");
     } finally {
       setIsGeneratingPDF(false);
     }
@@ -561,6 +574,12 @@ export default function ComboSemPrejuizo() {
                       {isGeneratingPDF ? "Gerando diagnóstico..." : "Baixar diagnóstico do combo"}
                     </button>
                     <p className="calc-download-hint">Gere um PDF com os dados, margem e dicas para melhorar o combo.</p>
+                    {pdfError && (
+                      <div className="calc-download-error">
+                        <IconError />
+                        <span>{pdfError}</span>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="calc-result-card calc-result-empty">
