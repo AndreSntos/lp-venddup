@@ -2,12 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-
-export const metadata = {
-  title: "Combo Sem Prejuízo — Calcule a margem do seu combo",
-  description:
-    "Calcule o custo real do seu combo, descubra sua margem e veja o preço mínimo para não vender no escuro.",
-};
+import { calculateCombo, formatCurrencyBRL, formatPercentBR, type ComboResult } from "../../lib/combo-calculator";
 
 function VenddupSymbol({ size = 28 }: { size?: number }) {
   return (
@@ -87,38 +82,11 @@ interface CalculatorInputs {
   margemDesejada: string;
 }
 
-interface Result {
-  custoTotal: number;
-  taxaPagamento: number;
-  lucroEstimado: number;
-  margemPercentual: number;
-  precoMinimoSugerido: number;
-  status: "prejuizo" | "perigoso" | "aceitavel" | "saudavel";
-  statusText: string;
-  statusEmoji: string;
-}
-
-const isValidNumber = (value: number): boolean => {
-  return !isNaN(value) && isFinite(value) && value !== 0;
-};
-
-const safeFormat = (value: number, type: "currency" | "percent"): string => {
-  if (!isValidNumber(value)) return "—";
-  
+const formatSafe = (value: number, type: "currency" | "percent"): string => {
   if (type === "currency") {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
+    return formatCurrencyBRL(value);
   }
-  
-  return new Intl.NumberFormat("pt-BR", {
-    style: "percent",
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  }).format(value / 100);
+  return formatPercentBR(value);
 };
 
 export default function ComboSemPrejuizo() {
@@ -137,57 +105,20 @@ export default function ComboSemPrejuizo() {
     setInputs((prev) => ({ ...prev, [field]: value }));
   };
 
-  const result = useMemo((): Result | null => {
-    const precoVenda = parseFloat(inputs.precoVenda) || 0;
-    const custoBebidas = parseFloat(inputs.custoBebidas) || 0;
-    const custoAdicionais = parseFloat(inputs.custoAdicionais) || 0;
-    const custoEmbalagemGelo = parseFloat(inputs.custoEmbalagemGelo) || 0;
-    const custoEntrega = parseFloat(inputs.custoEntrega) || 0;
-    const taxaPagamentoPercentual = parseFloat(inputs.taxaPagamento) || 0;
-    const margemDesejadaPercentual = parseFloat(inputs.margemDesejada) || 0;
+  const result = useMemo((): ComboResult | null => {
+    const comboResult = calculateCombo({
+      precoVenda: parseFloat(inputs.precoVenda) || 0,
+      custoBebidas: parseFloat(inputs.custoBebidas) || 0,
+      custoAdicionais: parseFloat(inputs.custoAdicionais) || 0,
+      custoEmbalagemGelo: parseFloat(inputs.custoEmbalagemGelo) || 0,
+      custoEntrega: parseFloat(inputs.custoEntrega) || 0,
+      taxaPagamentoPercentual: parseFloat(inputs.taxaPagamento) || 0,
+      margemDesejadaPercentual: parseFloat(inputs.margemDesejada) || 0,
+    });
 
-    if (precoVenda <= 0) return null;
+    if (!comboResult.isValid) return null;
 
-    const custoTotal = custoBebidas + custoAdicionais + custoEmbalagemGelo + custoEntrega;
-    const taxaPagamento = precoVenda * (taxaPagamentoPercentual / 100);
-    const lucroEstimado = precoVenda - custoTotal - taxaPagamento;
-    const margemPercentual = (lucroEstimado / precoVenda) * 100;
-
-    const denominador = 1 - (margemDesejadaPercentual / 100) - (taxaPagamentoPercentual / 100);
-    const precoMinimoSugerido = denominador > 0 ? custoTotal / denominador : 0;
-
-    let status: Result["status"];
-    let statusText: string;
-    let statusEmoji: string;
-
-    if (margemPercentual < 0) {
-      status = "prejuizo";
-      statusText = "Prejuízo detectado";
-      statusEmoji = "⚠️";
-    } else if (margemPercentual <= 15) {
-      status = "perigoso";
-      statusText = "Margem crítica";
-      statusEmoji = "🔥";
-    } else if (margemPercentual <= 30) {
-      status = "aceitavel";
-      statusText = "Margem aceitável";
-      statusEmoji = "✅";
-    } else {
-      status = "saudavel";
-      statusText = "Combo saudável";
-      statusEmoji = "💰";
-    }
-
-    return {
-      custoTotal,
-      taxaPagamento,
-      lucroEstimado,
-      margemPercentual,
-      precoMinimoSugerido,
-      status,
-      statusText,
-      statusEmoji,
-    };
+    return comboResult;
   }, [inputs]);
 
   const scrollToCalculator = () => {
@@ -408,11 +339,11 @@ export default function ComboSemPrejuizo() {
                     <div className="calc-result-impact">
                       {result.lucroEstimado < 0 ? (
                         <p className="calc-result-impact-text negative">
-                          Com esse preço, você perde aproximadamente <strong>{safeFormat(result.lucroEstimado, "currency")}</strong> por combo vendido.
+                          Com esse preço, você perde aproximadamente <strong>{formatSafe(result.lucroEstimado, "currency")}</strong> por combo vendido.
                         </p>
                       ) : (
                         <p className="calc-result-impact-text positive">
-                          Com esse preço, cada combo vendido deixa aproximadamente <strong>{safeFormat(result.lucroEstimado, "currency")}</strong> de lucro.
+                          Com esse preço, cada combo vendido deixa aproximadamente <strong>{formatSafe(result.lucroEstimado, "currency")}</strong> de lucro.
                         </p>
                       )}
                     </div>
@@ -421,28 +352,28 @@ export default function ComboSemPrejuizo() {
                       <div className="calc-result-item">
                         <span className="calc-result-label">Receita</span>
                         <span className="calc-result-value">
-                          {safeFormat(parseFloat(inputs.precoVenda) || 0, "currency")}
+                          {formatSafe(parseFloat(inputs.precoVenda) || 0, "currency")}
                         </span>
                       </div>
 
                       <div className="calc-result-item">
                         <span className="calc-result-label">Custo total</span>
                         <span className="calc-result-value cost">
-                          − {safeFormat(result.custoTotal, "currency")}
+                          − {formatSafe(result.custoTotal, "currency")}
                         </span>
                       </div>
 
                       <div className="calc-result-item">
                         <span className="calc-result-label">Taxa pagamento</span>
                         <span className="calc-result-value cost">
-                          − {safeFormat(result.taxaPagamento, "currency")}
+                          − {formatSafe(result.taxaPagamento, "currency")}
                         </span>
                       </div>
 
                       <div className="calc-result-item highlight">
                         <span className="calc-result-label">Sua margem</span>
                         <span className={`calc-result-value margin ${result.margemPercentual < 0 ? "negative" : "positive"}`}>
-                          {safeFormat(result.margemPercentual, "percent")}
+                          {formatSafe(result.margemPercentual, "percent")}
                         </span>
                       </div>
                     </div>
@@ -457,7 +388,7 @@ export default function ComboSemPrejuizo() {
                             Para buscar uma margem de <strong>{inputs.margemDesejada}%</strong>, o preço mínimo é:
                           </p>
                           <span className="calc-suggestion-value">
-                            {safeFormat(result.precoMinimoSugerido, "currency")}
+                            {formatSafe(result.precoMinimoSugerido, "currency")}
                           </span>
                         </div>
                       </div>
