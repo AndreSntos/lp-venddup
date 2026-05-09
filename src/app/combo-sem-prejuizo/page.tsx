@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput, type ComboResult } from "../../lib/combo-calculator";
+import { jsPDF } from "jspdf";
+import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput, getComboImprovementTips, type ComboResult, type ComboStatus } from "../../lib/combo-calculator";
 
 function VenddupSymbol({ size = 28 }: { size?: number }) {
   return (
@@ -71,6 +72,68 @@ function IconCheck() {
   );
 }
 
+function IconDownload() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
+function IconStatusWarning() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  );
+}
+
+function IconStatusDanger() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="15" y1="9" x2="9" y2="15" />
+      <line x1="9" y1="9" x2="15" y2="15" />
+    </svg>
+  );
+}
+
+function IconStatusSuccess() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  );
+}
+
+function IconStatusStar() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+
+function getStatusIcon(status: ComboStatus) {
+  switch (status) {
+    case "prejuizo":
+      return <IconStatusDanger />;
+    case "perigoso":
+      return <IconStatusWarning />;
+    case "aceitavel":
+      return <IconStatusSuccess />;
+    case "saudavel":
+      return <IconStatusStar />;
+    default:
+      return <IconStatusWarning />;
+  }
+}
+
 interface CalculatorInputs {
   nomeCombo: string;
   precoVenda: string;
@@ -126,6 +189,162 @@ export default function ComboSemPrejuizo() {
   const scrollToCalculator = () => {
     const el = document.getElementById("calculator");
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const generatePDF = () => {
+    if (!result) return;
+
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    let yPos = margin;
+
+    doc.setFillColor(3, 7, 18);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    doc.setFillColor(7, 17, 31);
+    doc.rect(margin, yPos, pageWidth - margin * 2, 35, "F");
+
+    doc.setFillColor(56, 189, 248);
+    doc.setDrawColor(56, 189, 248);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 35, 3, 3, "S");
+
+    doc.setTextColor(56, 189, 248);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("VENDDUP", margin + 10, yPos + 12);
+
+    doc.setTextColor(248, 251, 255);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.text("Diagnóstico do Combo", margin + 10, yPos + 20);
+
+    doc.setTextColor(159, 180, 208);
+    doc.setFontSize(7);
+    doc.text("Uma análise simples para evitar combo no escuro.", margin + 10, yPos + 28);
+
+    yPos += 45;
+
+    const comboName = inputs.nomeCombo || "Combo sem nome";
+    const slugName = comboName.toLowerCase().replace(/[^a-z0-9]/g, "-").slice(0, 30);
+    const filename = slugName ? `diagnostico-${slugName}-venddup.pdf` : "diagnostico-combo-venddup.pdf";
+
+    doc.setTextColor(248, 251, 255);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text(comboName, margin, yPos);
+    yPos += 8;
+
+    const statusColor = result.status === "prejuizo" ? [251, 113, 133] :
+                       result.status === "perigoso" ? [245, 158, 11] :
+                       result.status === "aceitavel" ? [56, 189, 248] : [37, 211, 102];
+    doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text(result.statusText, margin, yPos);
+    yPos += 15;
+
+    if (result.lucroEstimado < 0) {
+      doc.setTextColor(251, 113, 133);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "italic");
+      const lossText = `Com esse preço, você perde aproximadamente ${formatCurrencyBRL(Math.abs(result.lucroEstimado))} por combo vendido.`;
+      const lines = doc.splitTextToSize(lossText, pageWidth - margin * 2);
+      doc.text(lines, margin, yPos);
+      yPos += lines.length * 5 + 5;
+    } else {
+      doc.setTextColor(37, 211, 102);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      const profitText = `Com esse preço, cada combo vendido deixa aproximadamente ${formatCurrencyBRL(result.lucroEstimado)} de lucro.`;
+      const lines = doc.splitTextToSize(profitText, pageWidth - margin * 2);
+      doc.text(lines, margin, yPos);
+      yPos += lines.length * 5 + 5;
+    }
+
+    yPos += 5;
+
+    doc.setFillColor(10, 22, 40);
+    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 55, 2, 2, "F");
+    doc.setDrawColor(56, 189, 248);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 55, 2, 2, "S");
+
+    doc.setTextColor(248, 251, 255);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("Dados do Combo", margin + 5, yPos + 8);
+
+    doc.setTextColor(159, 180, 208);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+
+    const dataLines = [
+      `Preço de venda: ${formatCurrencyBRL(parseNumberInput(inputs.precoVenda))}`,
+      `Custo total: ${formatCurrencyBRL(result.custoTotal)}`,
+      `Taxa estimada: ${formatCurrencyBRL(result.taxaPagamento)}`,
+      `Lucro estimado: ${formatCurrencyBRL(result.lucroEstimado)}`,
+      `Margem real: ${formatPercentBR(result.margemPercentual)}`,
+      `Preço mínimo sugerido: ${result.precoMinimoSugerido > 0 ? formatCurrencyBRL(result.precoMinimoSugerido) : "—"}`,
+    ];
+
+    dataLines.forEach((line, index) => {
+      doc.text(line, margin + 5, yPos + 18 + index * 6);
+    });
+
+    yPos += 65;
+
+    const tips = getComboImprovementTips(result);
+    if (tips.length > 0) {
+      doc.setTextColor(248, 251, 255);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "bold");
+      doc.text("Dicas para Melhorar", margin, yPos);
+      yPos += 8;
+
+      doc.setTextColor(159, 180, 208);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+
+      tips.forEach((tip, index) => {
+        const tipLines = doc.splitTextToSize(`${index + 1}. ${tip}`, pageWidth - margin * 2 - 5);
+        doc.text(tipLines, margin + 5, yPos);
+        yPos += tipLines.length * 5 + 3;
+      });
+    }
+
+    yPos += 10;
+
+    doc.setFillColor(56, 189, 248);
+    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 30, 2, 2, "F");
+
+    doc.setTextColor(3, 7, 18);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("Agora que você sabe o preço certo, organize seus combos em uma vitrine própria.", margin + 5, yPos + 10);
+
+    doc.setTextColor(3, 7, 18);
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text("Crie sua vitrine na Venddup: https://app.venddup.com.br/register", margin + 5, yPos + 18);
+
+    yPos += 40;
+
+    doc.setTextColor(98, 119, 146);
+    doc.setFontSize(7);
+    doc.setFont("helvetica", "italic");
+    const footerText = "Este diagnóstico é uma estimativa operacional. O objetivo é evitar promoção no escuro.";
+    const footerLines = doc.splitTextToSize(footerText, pageWidth - margin * 2);
+    doc.text(footerLines, margin, yPos);
+
+    doc.save(filename);
   };
 
   return (
@@ -390,7 +609,9 @@ export default function ComboSemPrejuizo() {
                 {result ? (
                   <div className={`calc-result-card ${result.status}`}>
                     <div className="calc-result-header">
-                      <span className="calc-result-emoji">{result.statusEmoji}</span>
+                      <span className={`calc-result-icon ${result.status}`}>
+                        {getStatusIcon(result.status)}
+                      </span>
                       <span className="calc-result-status">{result.statusText}</span>
                     </div>
 
@@ -455,6 +676,12 @@ export default function ComboSemPrejuizo() {
                     <div className="calc-result-microcopy">
                       <p>Essa conta é uma estimativa operacional. O objetivo é evitar promoção no escuro.</p>
                     </div>
+
+                    <button onClick={generatePDF} className="calc-download-btn">
+                      <IconDownload />
+                      Baixar diagnóstico do combo
+                    </button>
+                    <p className="calc-download-hint">Gere um PDF com os dados, margem e dicas para melhorar o combo.</p>
                   </div>
                 ) : (
                   <div className="calc-result-card calc-result-empty">

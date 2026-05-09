@@ -1884,6 +1884,39 @@ details[open] .lp-faq-chevron {
   line-height: 1;
 }
 
+.calc-result-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.calc-result-icon.prejuizo {
+  background: rgba(251,113,133,.12);
+  border: 1px solid rgba(251,113,133,.35);
+  color: var(--vd-danger);
+}
+
+.calc-result-icon.perigoso {
+  background: rgba(245,158,11,.12);
+  border: 1px solid rgba(245,158,11,.35);
+  color: var(--vd-amber);
+}
+
+.calc-result-icon.aceitavel {
+  background: rgba(56,189,248,.12);
+  border: 1px solid rgba(56,189,248,.35);
+  color: var(--vd-cyan);
+}
+
+.calc-result-icon.saudavel {
+  background: rgba(37,211,102,.12);
+  border: 1px solid rgba(37,211,102,.35);
+  color: var(--vd-green);
+}
+
 .calc-result-status {
   font-family: var(--vd-font-display);
   font-size: 18px;
@@ -2030,6 +2063,40 @@ details[open] .lp-faq-chevron {
   font-style: italic;
   margin: 0;
   line-height: 1.5;
+}
+
+/* Download Button */
+.calc-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 20px;
+  border: 1px solid var(--vd-line);
+  border-radius: var(--vd-radius-sm);
+  background: rgba(125,211,252,.08);
+  color: var(--vd-cyan);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--vd-font-ui);
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.calc-download-btn:hover {
+  background: rgba(125,211,252,.14);
+  border-color: rgba(56,189,248,.5);
+  transform: translateY(-1px);
+}
+
+.calc-download-hint {
+  font-size: 11px;
+  color: var(--vd-faint);
+  text-align: center;
+  margin: 8px 0 0;
+  line-height: 1.4;
 }
 
 /* Empty State */

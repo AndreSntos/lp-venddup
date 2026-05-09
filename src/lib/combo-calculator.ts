@@ -153,3 +153,36 @@ export function parseNumberInput(value: string): number {
   
   return parsed;
 }
+
+export function getComboImprovementTips(result: ComboResult): string[] {
+  if (!result.isValid) return [];
+
+  switch (result.status) {
+    case "prejuizo":
+      return [
+        "Revise o preço imediatamente: este combo está consumindo margem.",
+        "Confira se gelo, embalagem, entrega e taxa estão sendo considerados.",
+        "Teste uma versão menor do combo ou remova adicionais que não aumentam o valor percebido.",
+      ];
+    case "perigoso":
+      return [
+        "A margem está apertada. Pequenos descontos podem transformar esse combo em prejuízo.",
+        "Tente aumentar o preço ou reduzir custos invisíveis como gelo, embalagem e entrega.",
+        "Evite usar esse combo em promoção sem recalcular.",
+      ];
+    case "aceitavel":
+      return [
+        "A margem é aceitável, mas ainda vale acompanhar descontos e entrega subsidiada.",
+        "Use esse combo como oferta principal, mas preserve o preço mínimo sugerido.",
+        "Teste kits com adicionais de maior percepção e baixo custo.",
+      ];
+    case "saudavel":
+      return [
+        "Esse combo tem boa margem e pode ser usado como destaque.",
+        "Considere transformá-lo em kit fixo na sua vitrine.",
+        "Acompanhe se o preço continua saudável quando houver promoção ou entrega grátis.",
+      ];
+    default:
+      return [];
+  }
+}
