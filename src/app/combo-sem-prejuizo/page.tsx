@@ -68,6 +68,14 @@ function IconArrow() {
   );
 }
 
+function IconCheck() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 interface CalculatorInputs {
   nomeCombo: string;
   precoVenda: string;
@@ -87,7 +95,31 @@ interface Result {
   precoMinimoSugerido: number;
   status: "prejuizo" | "perigoso" | "aceitavel" | "saudavel";
   statusText: string;
+  statusEmoji: string;
 }
+
+const isValidNumber = (value: number): boolean => {
+  return !isNaN(value) && isFinite(value) && value !== 0;
+};
+
+const safeFormat = (value: number, type: "currency" | "percent"): string => {
+  if (!isValidNumber(value)) return "—";
+  
+  if (type === "currency") {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  }
+  
+  return new Intl.NumberFormat("pt-BR", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(value / 100);
+};
 
 export default function ComboSemPrejuizo() {
   const [inputs, setInputs] = useState<CalculatorInputs>({
@@ -126,19 +158,24 @@ export default function ComboSemPrejuizo() {
 
     let status: Result["status"];
     let statusText: string;
+    let statusEmoji: string;
 
     if (margemPercentual < 0) {
       status = "prejuizo";
-      statusText = "Esse combo está dando prejuízo.";
+      statusText = "Prejuízo detectado";
+      statusEmoji = "⚠️";
     } else if (margemPercentual <= 15) {
       status = "perigoso";
-      statusText = "Esse combo vende, mas sua margem está perigosa.";
+      statusText = "Margem crítica";
+      statusEmoji = "🔥";
     } else if (margemPercentual <= 30) {
       status = "aceitavel";
-      statusText = "Esse combo tem margem aceitável.";
+      statusText = "Margem aceitável";
+      statusEmoji = "✅";
     } else {
       status = "saudavel";
-      statusText = "Esse combo está saudável.";
+      statusText = "Combo saudável";
+      statusEmoji = "💰";
     }
 
     return {
@@ -149,23 +186,9 @@ export default function ComboSemPrejuizo() {
       precoMinimoSugerido,
       status,
       statusText,
+      statusEmoji,
     };
   }, [inputs]);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  };
-
-  const formatPercent = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "percent",
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    }).format(value / 100);
-  };
 
   const scrollToCalculator = () => {
     const el = document.getElementById("calculator");
@@ -187,19 +210,19 @@ export default function ComboSemPrejuizo() {
             <div className="calc-hero-content">
               <div className="calc-pill">
                 <IconCalculator />
-                Calculadora de combos
+                Calculadora de margem
               </div>
 
               <h1 className="calc-headline">
-                Você pode estar <em>perdendo dinheiro</em> em cada combo vendido na sua adega.
+                Você pode estar <em>perdendo dinheiro</em> em cada combo vendido.
               </h1>
 
               <p className="calc-sub">
-                Calcule o custo real do seu combo, descubra sua margem e veja o preço mínimo para não vender no escuro.
+                Descubra o custo real do seu combo e nunca mais vendê-lo no escuro.
               </p>
 
               <button onClick={scrollToCalculator} className="vd-btn primary">
-                Calcular meu combo agora
+                Calcular agora
                 <IconArrow />
               </button>
             </div>
@@ -220,7 +243,7 @@ export default function ComboSemPrejuizo() {
                     id="nomeCombo"
                     type="text"
                     className="calc-input"
-                    placeholder="Ex: Kit Happy Hour"
+                    placeholder="Ex: Kit Happy Hour, Combo Presente"
                     value={inputs.nomeCombo}
                     onChange={(e) => handleInputChange("nomeCombo", e.target.value)}
                   />
@@ -228,46 +251,57 @@ export default function ComboSemPrejuizo() {
 
                 <div className="calc-field">
                   <label htmlFor="precoVenda" className="calc-label">
-                    Preço de venda (R$)
+                    Por quanto você vende este combo?
                   </label>
-                  <input
-                    id="precoVenda"
-                    type="number"
-                    className="calc-input"
-                    placeholder="0,00"
-                    min="0"
-                    step="0.01"
-                    value={inputs.precoVenda}
-                    onChange={(e) => handleInputChange("precoVenda", e.target.value)}
-                  />
+                  <div className="calc-input-wrapper">
+                    <span className="calc-input-prefix">R$</span>
+                    <input
+                      id="precoVenda"
+                      type="number"
+                      className="calc-input calc-input-with-prefix"
+                      placeholder="149,90"
+                      min="0"
+                      step="0.01"
+                      value={inputs.precoVenda}
+                      onChange={(e) => handleInputChange("precoVenda", e.target.value)}
+                    />
+                  </div>
                 </div>
 
-                <div className="calc-field-group">
-                  <div className="calc-field">
-                    <label htmlFor="custoBebidas" className="calc-label">
-                      Custo das bebidas (R$)
-                    </label>
+                <div className="calc-field-section">
+                  <span className="calc-field-section-title">Custos</span>
+                </div>
+
+                <div className="calc-field">
+                  <label htmlFor="custoBebidas" className="calc-label">
+                    Custo das bebidas
+                  </label>
+                  <div className="calc-input-wrapper">
+                    <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoBebidas"
                       type="number"
-                      className="calc-input"
-                      placeholder="0,00"
+                      className="calc-input calc-input-with-prefix"
+                      placeholder="Ex: 45,00"
                       min="0"
                       step="0.01"
                       value={inputs.custoBebidas}
                       onChange={(e) => handleInputChange("custoBebidas", e.target.value)}
                     />
                   </div>
+                </div>
 
-                  <div className="calc-field">
-                    <label htmlFor="custoAdicionais" className="calc-label">
-                      Custo dos adicionais (R$)
-                    </label>
+                <div className="calc-field">
+                  <label htmlFor="custoAdicionais" className="calc-label">
+                    Custo dos adicionais
+                  </label>
+                  <div className="calc-input-wrapper">
+                    <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoAdicionais"
                       type="number"
-                      className="calc-input"
-                      placeholder="0,00"
+                      className="calc-input calc-input-with-prefix"
+                      placeholder="Ex: 5,00 (taças, snacks)"
                       min="0"
                       step="0.01"
                       value={inputs.custoAdicionais}
@@ -276,32 +310,36 @@ export default function ComboSemPrejuizo() {
                   </div>
                 </div>
 
-                <div className="calc-field-group">
-                  <div className="calc-field">
-                    <label htmlFor="custoEmbalagemGelo" className="calc-label">
-                      Embalagem e gelo (R$)
-                    </label>
+                <div className="calc-field">
+                  <label htmlFor="custoEmbalagemGelo" className="calc-label">
+                    Embalagem e gelo
+                  </label>
+                  <div className="calc-input-wrapper">
+                    <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoEmbalagemGelo"
                       type="number"
-                      className="calc-input"
-                      placeholder="0,00"
+                      className="calc-input calc-input-with-prefix"
+                      placeholder="Ex: 8,00"
                       min="0"
                       step="0.01"
                       value={inputs.custoEmbalagemGelo}
                       onChange={(e) => handleInputChange("custoEmbalagemGelo", e.target.value)}
                     />
                   </div>
+                </div>
 
-                  <div className="calc-field">
-                    <label htmlFor="custoEntrega" className="calc-label">
-                      Entrega subsidiada (R$)
-                    </label>
+                <div className="calc-field">
+                  <label htmlFor="custoEntrega" className="calc-label">
+                    Entrega subsidiada (se aplicável)
+                  </label>
+                  <div className="calc-input-wrapper">
+                    <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoEntrega"
                       type="number"
-                      className="calc-input"
-                      placeholder="0,00"
+                      className="calc-input calc-input-with-prefix"
+                      placeholder="Ex: 12,00 (ou 0 se cliente paga)"
                       min="0"
                       step="0.01"
                       value={inputs.custoEntrega}
@@ -310,117 +348,159 @@ export default function ComboSemPrejuizo() {
                   </div>
                 </div>
 
+                <div className="calc-field-section">
+                  <span className="calc-field-section-title">Parâmetros</span>
+                </div>
+
                 <div className="calc-field-group">
                   <div className="calc-field">
                     <label htmlFor="taxaPagamento" className="calc-label">
-                      Taxa de pagamento (%)
+                      Taxa de pagamento
                     </label>
-                    <input
-                      id="taxaPagamento"
-                      type="number"
-                      className="calc-input"
-                      placeholder="3"
-                      min="0"
-                      max="100"
-                      step="0.1"
-                      value={inputs.taxaPagamento}
-                      onChange={(e) => handleInputChange("taxaPagamento", e.target.value)}
-                    />
+                    <div className="calc-input-wrapper">
+                      <input
+                        id="taxaPagamento"
+                        type="number"
+                        className="calc-input calc-input-with-suffix"
+                        placeholder="3"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value={inputs.taxaPagamento}
+                        onChange={(e) => handleInputChange("taxaPagamento", e.target.value)}
+                      />
+                      <span className="calc-input-suffix">%</span>
+                    </div>
+                    <span className="calc-field-hint">% da venda que vai para a máquina</span>
                   </div>
 
                   <div className="calc-field">
                     <label htmlFor="margemDesejada" className="calc-label">
-                      Margem desejada (%)
+                      Margem desejada
                     </label>
-                    <input
-                      id="margemDesejada"
-                      type="number"
-                      className="calc-input"
-                      placeholder="20"
-                      min="0"
-                      max="100"
-                      step="1"
-                      value={inputs.margemDesejada}
-                      onChange={(e) => handleInputChange("margemDesejada", e.target.value)}
-                    />
+                    <div className="calc-input-wrapper">
+                      <input
+                        id="margemDesejada"
+                        type="number"
+                        className="calc-input calc-input-with-suffix"
+                        placeholder="20"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value={inputs.margemDesejada}
+                        onChange={(e) => handleInputChange("margemDesejada", e.target.value)}
+                      />
+                      <span className="calc-input-suffix">%</span>
+                    </div>
+                    <span className="calc-field-hint">% de lucro que você quer ter</span>
                   </div>
                 </div>
               </div>
 
-              <div className="calc-result-card">
-                <h2 className="calc-result-title">Resultado</h2>
-
+              <div className="calc-result-wrapper">
                 {result ? (
-                  <div className="calc-result-content">
-                    <div className={`calc-status-badge ${result.status}`}>
-                      {result.statusText}
+                  <div className={`calc-result-card ${result.status}`}>
+                    <div className="calc-result-header">
+                      <span className="calc-result-emoji">{result.statusEmoji}</span>
+                      <span className="calc-result-status">{result.statusText}</span>
+                    </div>
+
+                    <div className="calc-result-impact">
+                      {result.lucroEstimado < 0 ? (
+                        <p className="calc-result-impact-text negative">
+                          Com esse preço, você perde aproximadamente <strong>{safeFormat(result.lucroEstimado, "currency")}</strong> por combo vendido.
+                        </p>
+                      ) : (
+                        <p className="calc-result-impact-text positive">
+                          Com esse preço, cada combo vendido deixa aproximadamente <strong>{safeFormat(result.lucroEstimado, "currency")}</strong> de lucro.
+                        </p>
+                      )}
                     </div>
 
                     <div className="calc-result-grid">
                       <div className="calc-result-item">
-                        <span className="calc-result-label">Custo total</span>
-                        <span className="calc-result-value">{formatCurrency(result.custoTotal)}</span>
-                      </div>
-
-                      <div className="calc-result-item">
-                        <span className="calc-result-label">Taxa de pagamento</span>
-                        <span className="calc-result-value">{formatCurrency(result.taxaPagamento)}</span>
-                      </div>
-
-                      <div className="calc-result-item">
-                        <span className="calc-result-label">Lucro estimado</span>
-                        <span className={`calc-result-value ${result.lucroEstimado < 0 ? "negative" : ""}`}>
-                          {formatCurrency(result.lucroEstimado)}
+                        <span className="calc-result-label">Receita</span>
+                        <span className="calc-result-value">
+                          {safeFormat(parseFloat(inputs.precoVenda) || 0, "currency")}
                         </span>
                       </div>
 
                       <div className="calc-result-item">
-                        <span className="calc-result-label">Margem</span>
-                        <span className={`calc-result-value ${result.margemPercentual < 0 ? "negative" : ""}`}>
-                          {formatPercent(result.margemPercentual)}
+                        <span className="calc-result-label">Custo total</span>
+                        <span className="calc-result-value cost">
+                          − {safeFormat(result.custoTotal, "currency")}
+                        </span>
+                      </div>
+
+                      <div className="calc-result-item">
+                        <span className="calc-result-label">Taxa pagamento</span>
+                        <span className="calc-result-value cost">
+                          − {safeFormat(result.taxaPagamento, "currency")}
+                        </span>
+                      </div>
+
+                      <div className="calc-result-item highlight">
+                        <span className="calc-result-label">Sua margem</span>
+                        <span className={`calc-result-value margin ${result.margemPercentual < 0 ? "negative" : "positive"}`}>
+                          {safeFormat(result.margemPercentual, "percent")}
                         </span>
                       </div>
                     </div>
 
-                    <div className="calc-minimo">
-                      <span className="calc-minimo-label">Preço mínimo sugerido</span>
-                      <span className="calc-minimo-value">
-                        {result.precoMinimoSugerido > 0
-                          ? formatCurrency(result.precoMinimoSugerido)
-                          : "—"}
-                      </span>
-                      <span className="calc-minimo-note">
-                        para margem de {inputs.margemDesejada}%
-                      </span>
+                    {result.precoMinimoSugerido > 0 && result.margemPercentual < parseFloat(inputs.margemDesejada) && (
+                      <div className="calc-result-suggestion">
+                        <div className="calc-suggestion-icon">
+                          <IconCheck />
+                        </div>
+                        <div className="calc-suggestion-content">
+                          <p className="calc-suggestion-text">
+                            Para buscar uma margem de <strong>{inputs.margemDesejada}%</strong>, o preço mínimo é:
+                          </p>
+                          <span className="calc-suggestion-value">
+                            {safeFormat(result.precoMinimoSugerido, "currency")}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="calc-result-microcopy">
+                      <p>Essa conta é uma estimativa operacional. O objetivo é evitar promoção no escuro.</p>
                     </div>
                   </div>
                 ) : (
-                  <div className="calc-result-empty">
-                    <p>Preencha o preço de venda para ver o resultado.</p>
+                  <div className="calc-result-card calc-result-empty">
+                    <div className="calc-empty-icon">
+                      <IconCalculator />
+                    </div>
+                    <p className="calc-empty-title">Preencha os dados</p>
+                    <p className="calc-empty-text">
+                      Comece pelo <strong>preço de venda</strong> do seu combo para ver a análise.
+                    </p>
                   </div>
                 )}
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section className="calc-upsell">
-          <div className="vd-shell">
-            <div className="calc-upsell-card">
-              <h2 className="calc-upsell-title">
-                Agora coloque seus combos em uma vitrine e receba pedidos organizados no WhatsApp.
-              </h2>
-              <p className="calc-upsell-text">
-                Agora que você sabe quais combos dão lucro, o próximo problema é não perder venda respondendo preço manualmente. Com a Venddup, sua adega cria uma vitrine própria, cadastra produtos e kits, recebe pedidos organizados e fecha a venda pelo WhatsApp.
-              </p>
-              <a
-                href="https://app.venddup.com.br/register"
-                className="vd-btn primary"
-                rel="noopener"
-              >
-                Criar minha vitrine com Venddup
-                <IconArrow />
-              </a>
+                <div className="calc-cta-card">
+                  <div className="calc-cta-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <path d="M3 9h18" />
+                      <path d="M9 21V9" />
+                    </svg>
+                  </div>
+                  <div className="calc-cta-content">
+                    <h3 className="calc-cta-title">Organizar meus combos em uma vitrine</h3>
+                    <p className="calc-cta-text">A calculadora mostra o preço. A Venddup organiza o pedido.</p>
+                  </div>
+                  <a
+                    href="https://app.venddup.com.br/register"
+                    className="vd-btn primary calc-cta-btn"
+                    rel="noopener"
+                  >
+                    Criar minha vitrine
+                    <IconArrow />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
