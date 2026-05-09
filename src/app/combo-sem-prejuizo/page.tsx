@@ -248,11 +248,11 @@ export default function ComboSemPrejuizo() {
                     <span className="calc-input-prefix">R$</span>
                     <input
                       id="precoVenda"
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       className="calc-input calc-input-with-prefix"
                       placeholder="149,90"
-                      min="0"
-                      step="0.01"
+                      
                       value={inputs.precoVenda}
                       onChange={(e) => handleInputChange("precoVenda", e.target.value)}
                     />
@@ -271,11 +271,11 @@ export default function ComboSemPrejuizo() {
                     <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoBebidas"
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       className="calc-input calc-input-with-prefix"
                       placeholder="Ex: 45,00"
-                      min="0"
-                      step="0.01"
+                      
                       value={inputs.custoBebidas}
                       onChange={(e) => handleInputChange("custoBebidas", e.target.value)}
                     />
@@ -290,11 +290,11 @@ export default function ComboSemPrejuizo() {
                     <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoAdicionais"
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       className="calc-input calc-input-with-prefix"
                       placeholder="Ex: 5,00 (taças, snacks)"
-                      min="0"
-                      step="0.01"
+                      
                       value={inputs.custoAdicionais}
                       onChange={(e) => handleInputChange("custoAdicionais", e.target.value)}
                     />
@@ -309,11 +309,11 @@ export default function ComboSemPrejuizo() {
                     <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoEmbalagemGelo"
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       className="calc-input calc-input-with-prefix"
                       placeholder="Ex: 8,00"
-                      min="0"
-                      step="0.01"
+                      
                       value={inputs.custoEmbalagemGelo}
                       onChange={(e) => handleInputChange("custoEmbalagemGelo", e.target.value)}
                     />
@@ -328,11 +328,11 @@ export default function ComboSemPrejuizo() {
                     <span className="calc-input-prefix">R$</span>
                     <input
                       id="custoEntrega"
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       className="calc-input calc-input-with-prefix"
                       placeholder="Ex: 12,00 (ou 0 se cliente paga)"
-                      min="0"
-                      step="0.01"
+                      
                       value={inputs.custoEntrega}
                       onChange={(e) => handleInputChange("custoEntrega", e.target.value)}
                     />
@@ -351,12 +351,11 @@ export default function ComboSemPrejuizo() {
                     <div className="calc-input-wrapper">
                       <input
                         id="taxaPagamento"
-                        type="number"
+                        type="text"
+                      inputMode="decimal"
                         className="calc-input calc-input-with-suffix"
-                        placeholder="3"
-                        min="0"
-                        max="100"
-                        step="0.1"
+                        placeholder="3,5"
+
                         value={inputs.taxaPagamento}
                         onChange={(e) => handleInputChange("taxaPagamento", e.target.value)}
                       />
@@ -372,7 +371,8 @@ export default function ComboSemPrejuizo() {
                     <div className="calc-input-wrapper">
                       <input
                         id="margemDesejada"
-                        type="number"
+                        type="text"
+                      inputMode="decimal"
                         className="calc-input calc-input-with-suffix"
                         placeholder="20"
                         min="0"
@@ -412,7 +412,7 @@ export default function ComboSemPrejuizo() {
                       <div className="calc-result-item">
                         <span className="calc-result-label">Receita</span>
                         <span className="calc-result-value">
-                          {formatSafe(parseFloat(inputs.precoVenda) || 0, "currency")}
+                          {formatSafe(parseNumberInput(inputs.precoVenda), "currency")}
                         </span>
                       </div>
 
@@ -438,7 +438,7 @@ export default function ComboSemPrejuizo() {
                       </div>
                     </div>
 
-                    {result.precoMinimoSugerido > 0 && result.margemPercentual < parseFloat(inputs.margemDesejada) && (
+                    {result.precoMinimoSugerido > 0 && result.margemPercentual < parseNumberInput(inputs.margemDesejada) && (
                       <div className="calc-result-suggestion">
                         <div className="calc-suggestion-icon">
                           <IconCheck />
