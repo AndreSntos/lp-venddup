@@ -121,6 +121,8 @@ export default function ComboSemPrejuizo() {
     return comboResult;
   }, [inputs]);
 
+  const margemDesejadaValor = parseNumberInput(inputs.margemDesejada);
+
   const scrollToCalculator = () => {
     const el = document.getElementById("calculator");
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -352,10 +354,9 @@ export default function ComboSemPrejuizo() {
                       <input
                         id="taxaPagamento"
                         type="text"
-                      inputMode="decimal"
+                        inputMode="decimal"
                         className="calc-input calc-input-with-suffix"
                         placeholder="3,5"
-
                         value={inputs.taxaPagamento}
                         onChange={(e) => handleInputChange("taxaPagamento", e.target.value)}
                       />
@@ -372,12 +373,9 @@ export default function ComboSemPrejuizo() {
                       <input
                         id="margemDesejada"
                         type="text"
-                      inputMode="decimal"
+                        inputMode="decimal"
                         className="calc-input calc-input-with-suffix"
                         placeholder="20"
-                        min="0"
-                        max="100"
-                        step="1"
                         value={inputs.margemDesejada}
                         onChange={(e) => handleInputChange("margemDesejada", e.target.value)}
                       />
@@ -445,7 +443,7 @@ export default function ComboSemPrejuizo() {
                         </div>
                         <div className="calc-suggestion-content">
                           <p className="calc-suggestion-text">
-                            Para buscar uma margem de <strong>{inputs.margemDesejada}%</strong>, o preço mínimo é:
+                            Para buscar uma margem de <strong>{formatSafe(margemDesejadaValor, "percent")}</strong>, o preço mínimo é:
                           </p>
                           <span className="calc-suggestion-value">
                             {formatSafe(result.precoMinimoSugerido, "currency")}
