@@ -2123,6 +2123,225 @@ details[open] .lp-faq-chevron {
   margin-top: 8px;
 }
 
+/* Why Section */
+.calc-why {
+  padding: 64px 0;
+  border-top: 1px solid var(--vd-line);
+  border-bottom: 1px solid var(--vd-line);
+  background: rgba(125,211,252,.03);
+}
+
+.calc-why-content {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.calc-why-title {
+  font-family: var(--vd-font-display);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  margin: 0 0 16px;
+  color: var(--vd-text);
+  text-align: center;
+}
+
+.calc-why-text {
+  font-size: 16px;
+  color: var(--vd-muted);
+  line-height: 1.7;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.calc-why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.calc-why-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--vd-muted);
+  line-height: 1.5;
+}
+
+.calc-why-bullet {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(56,189,248,.10);
+  border: 1px solid rgba(56,189,248,.20);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vd-cyan);
+  font-family: var(--vd-font-mono);
+  flex-shrink: 0;
+}
+
+.calc-why-note {
+  font-size: 14px;
+  color: var(--vd-faint);
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+  padding: 16px;
+  background: rgba(125,211,252,.04);
+  border-radius: var(--vd-radius-sm);
+  border: 1px solid var(--vd-line);
+}
+
+/* Features Grid */
+.calc-section-header {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 40px;
+}
+
+.calc-section-title {
+  font-family: var(--vd-font-display);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  margin: 0 0 12px;
+  color: var(--vd-text);
+}
+
+.calc-section-sub {
+  font-size: 15px;
+  color: var(--vd-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.calc-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calc-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 16px;
+  border: 1px solid var(--vd-line);
+  border-radius: var(--vd-radius-md);
+  background: linear-gradient(180deg, rgba(125,211,252,.06), rgba(255,255,255,.015));
+}
+
+.calc-feature-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(56,189,248,.12);
+  border: 1px solid rgba(56,189,248,.20);
+  display: grid;
+  place-items: center;
+  color: var(--vd-cyan);
+  margin-bottom: 12px;
+}
+
+.calc-feature-title {
+  font-family: var(--vd-font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  color: var(--vd-text);
+  margin: 0 0 4px;
+}
+
+.calc-feature-desc {
+  font-size: 12px;
+  color: var(--vd-faint);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* After Section */
+.calc-after {
+  padding: 64px 0;
+  border-top: 1px solid var(--vd-line);
+}
+
+.calc-after-content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.calc-after-title {
+  font-family: var(--vd-font-display);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  margin: 0 0 16px;
+  color: var(--vd-text);
+}
+
+.calc-after-text {
+  font-size: 17px;
+  color: var(--vd-text);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.calc-after-sub {
+  font-size: 15px;
+  color: var(--vd-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Venddup Section */
+.calc-venddup {
+  padding: 0 0 80px;
+}
+
+.calc-venddup-card {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 48px 32px;
+  border: 1px solid rgba(56,189,248,.30);
+  border-radius: var(--vd-radius-xl);
+  background: linear-gradient(180deg, rgba(56,189,248,.08), rgba(139,92,246,.04));
+  box-shadow: 0 0 60px rgba(56,189,248,.12);
+}
+
+.calc-venddup-title {
+  font-family: var(--vd-font-display);
+  font-size: clamp(22px, 4vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -.04em;
+  margin: 0 0 16px;
+  color: var(--vd-text);
+}
+
+.calc-venddup-text {
+  color: var(--vd-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 28px;
+}
+
+.calc-venddup-btn {
+  display: inline-flex;
+  justify-content: center;
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
 /* Footer */
 .calc-footer {
   border-top: 1px solid var(--vd-line);
@@ -2193,6 +2412,22 @@ details[open] .lp-faq-chevron {
 
   .calc-result-card {
     padding: 20px;
+  }
+
+  .calc-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .calc-why-list {
+    text-align: left;
+  }
+
+  .calc-why-note {
+    text-align: left;
+  }
+
+  .calc-venddup-card {
+    padding: 32px 20px;
   }
 }
 

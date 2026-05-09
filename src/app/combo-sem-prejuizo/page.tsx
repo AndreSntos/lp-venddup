@@ -145,7 +145,7 @@ export default function ComboSemPrejuizo() {
               </div>
 
               <h1 className="calc-headline">
-                Você pode estar <em>perdendo dinheiro</em> em cada combo vendido.
+                Você pode estar <em>perdendo dinheiro</em> em cada combo vendido na sua adega.
               </h1>
 
               <p className="calc-sub">
@@ -160,8 +160,68 @@ export default function ComboSemPrejuizo() {
           </div>
         </section>
 
+        <section className="calc-why">
+          <div className="vd-shell">
+            <div className="calc-why-content">
+              <h2 className="calc-why-title">Por que isso acontece?</h2>
+              <p className="calc-why-text">
+                A maioria dos donos de adega considera só o custo da bebida na hora de precificar o combo. Mas existem outros custos que pesam no resultado:
+              </p>
+              <ul className="calc-why-list">
+                <li><span className="calc-why-bullet">Gelo</span> — quanto você gasta por combo?</li>
+                <li><span className="calc-why-bullet">Energético</span> — se vem incluído, quanto custa?</li>
+                <li><span className="calc-why-bullet">Embalagem</span> — caixas, sacolas, copos, taças</li>
+                <li><span className="calc-why-bullet">Entrega</span> — se você subsidia, quanto sai por pedido?</li>
+                <li><span className="calc-why-bullet">Taxa da máquina</span> — o percentual que vai para a bandeira</li>
+                <li><span className="calc-why-bullet">Desconto</span> — se dá pra amigo, quanto deja de ganhar?</li>
+              </ul>
+              <p className="calc-why-note">
+                Esses custos parecem pequenos sozinhos, mas juntos podem transformar um combo aparentemente lucrativo em prejuízo.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section id="calculator" className="calc-section">
           <div className="vd-shell">
+            <div className="calc-section-header">
+              <h2 className="calc-section-title">O que a calculadora mostra?</h2>
+              <p className="calc-section-sub">
+                Tudo que você precisa saber para precificar sem erro:
+              </p>
+            </div>
+            
+            <div className="calc-features-grid">
+              <div className="calc-feature-item">
+                <span className="calc-feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                </span>
+                <span className="calc-feature-title">Custo total</span>
+                <span className="calc-feature-desc">Quanto você gasta de verdade no combo</span>
+              </div>
+              <div className="calc-feature-item">
+                <span className="calc-feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                </span>
+                <span className="calc-feature-title">Lucro por combo</span>
+                <span className="calc-feature-desc">O que sobra depois de pagar tudo</span>
+              </div>
+              <div className="calc-feature-item">
+                <span className="calc-feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </span>
+                <span className="calc-feature-title">Margem real</span>
+                <span className="calc-feature-desc">Percentual que realmente fica na sua mão</span>
+              </div>
+              <div className="calc-feature-item">
+                <span className="calc-feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </span>
+                <span className="calc-feature-title">Preço mínimo</span>
+                <span className="calc-feature-desc">O menor preço pra não sair no prejuízo</span>
+              </div>
+            </div>
+
             <div className="calc-grid">
               <div className="calc-form-card">
                 <h2 className="calc-form-title">Dados do combo</h2>
@@ -409,29 +469,42 @@ export default function ComboSemPrejuizo() {
                     </p>
                   </div>
                 )}
-
-                <div className="calc-cta-card">
-                  <div className="calc-cta-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <path d="M3 9h18" />
-                      <path d="M9 21V9" />
-                    </svg>
-                  </div>
-                  <div className="calc-cta-content">
-                    <h3 className="calc-cta-title">Organizar meus combos em uma vitrine</h3>
-                    <p className="calc-cta-text">A calculadora mostra o preço. A Venddup organiza o pedido.</p>
-                  </div>
-                  <a
-                    href="https://app.venddup.com.br/register"
-                    className="vd-btn primary calc-cta-btn"
-                    rel="noopener"
-                  >
-                    Criar minha vitrine
-                    <IconArrow />
-                  </a>
-                </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="calc-after">
+          <div className="vd-shell">
+            <div className="calc-after-content">
+              <h2 className="calc-after-title">Depois do cálculo</h2>
+              <p className="calc-after-text">
+                Saber o preço certo é o primeiro passo. O segundo é vender esse combo de forma organizada.
+              </p>
+              <p className="calc-after-sub">
+                Se você hoje recebe pedidos pelo WhatsApp sem estrutura, sabe como é: cliente mandando lista, você respondendo preço, confirmando endereço, combinando pagamento. Uma venda que poderia levar 30 segundos vira uma troca de 10 mensagens.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="calc-venddup">
+          <div className="vd-shell">
+            <div className="calc-venddup-card">
+              <h2 className="calc-venddup-title">
+                Transforme seus combos em uma vitrine pronta para receber pedidos.
+              </h2>
+              <p className="calc-venddup-text">
+                Com a Venddup, sua adega cria uma vitrine própria, cadastra produtos e kits, configura bairros e taxas, recebe pedidos organizados e finaliza pelo WhatsApp.
+              </p>
+              <a
+                href="https://app.venddup.com.br/register"
+                className="vd-btn primary calc-venddup-btn"
+                rel="noopener"
+              >
+                Conhecer a Venddup Starter
+                <IconArrow />
+              </a>
             </div>
           </div>
         </section>
