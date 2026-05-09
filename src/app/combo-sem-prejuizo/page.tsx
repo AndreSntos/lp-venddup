@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { calculateCombo, formatCurrencyBRL, formatPercentBR, type ComboResult } from "../../lib/combo-calculator";
+import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput, type ComboResult } from "../../lib/combo-calculator";
 
 function VenddupSymbol({ size = 28 }: { size?: number }) {
   return (
@@ -107,13 +107,13 @@ export default function ComboSemPrejuizo() {
 
   const result = useMemo((): ComboResult | null => {
     const comboResult = calculateCombo({
-      precoVenda: parseFloat(inputs.precoVenda) || 0,
-      custoBebidas: parseFloat(inputs.custoBebidas) || 0,
-      custoAdicionais: parseFloat(inputs.custoAdicionais) || 0,
-      custoEmbalagemGelo: parseFloat(inputs.custoEmbalagemGelo) || 0,
-      custoEntrega: parseFloat(inputs.custoEntrega) || 0,
-      taxaPagamentoPercentual: parseFloat(inputs.taxaPagamento) || 0,
-      margemDesejadaPercentual: parseFloat(inputs.margemDesejada) || 0,
+      precoVenda: parseNumberInput(inputs.precoVenda),
+      custoBebidas: parseNumberInput(inputs.custoBebidas),
+      custoAdicionais: parseNumberInput(inputs.custoAdicionais),
+      custoEmbalagemGelo: parseNumberInput(inputs.custoEmbalagemGelo),
+      custoEntrega: parseNumberInput(inputs.custoEntrega),
+      taxaPagamentoPercentual: parseNumberInput(inputs.taxaPagamento),
+      margemDesejadaPercentual: parseNumberInput(inputs.margemDesejada),
     });
 
     if (!comboResult.isValid) return null;
@@ -173,7 +173,7 @@ export default function ComboSemPrejuizo() {
                 <li><span className="calc-why-bullet">Embalagem</span> — caixas, sacolas, copos, taças</li>
                 <li><span className="calc-why-bullet">Entrega</span> — se você subsidia, quanto sai por pedido?</li>
                 <li><span className="calc-why-bullet">Taxa da máquina</span> — o percentual que vai para a bandeira</li>
-                <li><span className="calc-why-bullet">Desconto</span> — se dá pra amigo, quanto deja de ganhar?</li>
+                <li><span className="calc-why-bullet">Desconto</span> — se dá pra amigo, quanto deixa de ganhar?</li>
               </ul>
               <p className="calc-why-note">
                 Esses custos parecem pequenos sozinhos, mas juntos podem transformar um combo aparentemente lucrativo em prejuízo.
@@ -399,7 +399,7 @@ export default function ComboSemPrejuizo() {
                     <div className="calc-result-impact">
                       {result.lucroEstimado < 0 ? (
                         <p className="calc-result-impact-text negative">
-                          Com esse preço, você perde aproximadamente <strong>{formatSafe(result.lucroEstimado, "currency")}</strong> por combo vendido.
+                          Com esse preço, você perde aproximadamente <strong>{formatSafe(Math.abs(result.lucroEstimado), "currency")}</strong> por combo vendido.
                         </p>
                       ) : (
                         <p className="calc-result-impact-text positive">
@@ -502,7 +502,7 @@ export default function ComboSemPrejuizo() {
                 className="vd-btn primary calc-venddup-btn"
                 rel="noopener"
               >
-                Conhecer a Venddup Starter
+                Criar minha vitrine na Venddup
                 <IconArrow />
               </a>
             </div>

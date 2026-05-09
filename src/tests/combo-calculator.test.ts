@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { calculateCombo, formatCurrencyBRL, formatPercentBR } from "../lib/combo-calculator";
+import { calculateCombo, formatCurrencyBRL, formatPercentBR, parseNumberInput } from "../lib/combo-calculator";
 
 describe("calculateCombo", () => {
   const baseInput = {
@@ -204,7 +204,7 @@ describe("calculateCombo", () => {
   });
 
   describe("formatCurrencyBRL", () => {
-    it("deve formatar货币 em BRL corretamente", () => {
+    it("deve formatar moeda em BRL corretamente", () => {
       const formatted = formatCurrencyBRL(149.9);
       expect(formatted).toContain("149");
       expect(formatted).toContain("R$");
@@ -229,6 +229,44 @@ describe("calculateCombo", () => {
     it("deve retornar '—' para valores inválidos", () => {
       expect(formatPercentBR(NaN)).toBe("—");
       expect(formatPercentBR(Infinity)).toBe("—");
+    });
+  });
+
+  describe("parseNumberInput", () => {
+    it("deve converter string vazia para 0", () => {
+      expect(parseNumberInput("")).toBe(0);
+    });
+
+    it("deve converter string com vírgula para número", () => {
+      expect(parseNumberInput("149,90")).toBe(149.9);
+    });
+
+    it("deve converter string com ponto para número", () => {
+      expect(parseNumberInput("149.90")).toBe(149.9);
+    });
+
+    it("deve converter string de inteiro para número", () => {
+      expect(parseNumberInput("149")).toBe(149);
+    });
+
+    it("deve converter valor inválido para 0", () => {
+      expect(parseNumberInput("abc")).toBe(0);
+    });
+
+    it("deve converter string com múltiplos pontos para 0", () => {
+      expect(parseNumberInput("1.000.000")).toBe(0);
+    });
+
+    it("deve converter string whitespace para 0", () => {
+      expect(parseNumberInput("   ")).toBe(0);
+    });
+
+    it("deve retornar 0 para NaN", () => {
+      expect(parseNumberInput("NaN")).toBe(0);
+    });
+
+    it("deve retornar 0 para Infinity", () => {
+      expect(parseNumberInput("Infinity")).toBe(0);
     });
   });
 });

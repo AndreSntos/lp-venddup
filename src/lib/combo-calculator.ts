@@ -132,3 +132,24 @@ export function formatPercentBR(value: number): string {
     maximumFractionDigits: 1,
   }).format(value / 100);
 }
+
+export function parseNumberInput(value: string): number {
+  if (!value || value.trim() === "") return 0;
+  
+  const trimmed = value.trim();
+  
+  const normalized = trimmed.includes(",") && trimmed.includes(".")
+    ? trimmed.replace(/\./g, "").replace(",", ".")
+    : trimmed.includes(",")
+      ? trimmed.replace(",", ".")
+      : trimmed;
+  
+  const hasMultipleDots = (normalized.match(/\./g) || []).length > 1;
+  if (hasMultipleDots) return 0;
+  
+  const parsed = parseFloat(normalized);
+  
+  if (isNaN(parsed) || !isFinite(parsed)) return 0;
+  
+  return parsed;
+}
