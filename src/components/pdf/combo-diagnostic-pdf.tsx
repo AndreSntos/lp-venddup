@@ -13,18 +13,27 @@ const VenddupPDFLogo = () => (
   </Svg>
 );
 
-const PDFBackgroundGrid = () => (
-  <View style={styles.gridContainer} fixed>
-    {[0, 48, 96, 144, 192].map((x) => (
-      <View key={`v${x}`} style={[styles.gridLineVertical, { left: x }]} />
-    ))}
-    {[48, 96, 144, 192, 240, 288].map((y) => (
-      <View key={`h${y}`} style={[styles.gridLineHorizontal, { top: y }]} />
-    ))}
-    <View style={styles.gridCircle1} />
-    <View style={styles.gridCircle2} />
-  </View>
-);
+const PAGE_WIDTH = 595;
+const PAGE_HEIGHT = 842;
+const GRID_SIZE = 48;
+
+const PDFBackgroundGrid = () => {
+  const verticalLines = Array.from({ length: Math.ceil(PAGE_WIDTH / GRID_SIZE) + 1 }, (_, i) => i * GRID_SIZE);
+  const horizontalLines = Array.from({ length: Math.ceil(PAGE_HEIGHT / GRID_SIZE) + 1 }, (_, i) => i * GRID_SIZE);
+
+  return (
+    <View style={styles.gridContainer} fixed>
+      {verticalLines.map((x) => (
+        <View key={`v${x}`} style={[styles.gridLineVertical, { left: x }]} />
+      ))}
+      {horizontalLines.map((y) => (
+        <View key={`h${y}`} style={[styles.gridLineHorizontal, { top: y }]} />
+      ))}
+      <View style={styles.gridCircle1} />
+      <View style={styles.gridCircle2} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -45,14 +54,14 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 1,
-    backgroundColor: "#0E2A3F",
+    backgroundColor: "#081C2C",
   },
   gridLineHorizontal: {
     position: "absolute",
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "#0E2A3F",
+    backgroundColor: "#081C2C",
   },
   gridCircle1: {
     position: "absolute",
