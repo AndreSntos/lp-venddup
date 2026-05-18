@@ -42,10 +42,27 @@ export default function LandingAnimations(): null {
         { opacity: 0 },
         { opacity: 1, duration: 0.40, ease, delay: 0.52 },
       )
+      /* Stage entra como unidade */
       gsap.fromTo(
         "#hero .lp-stage, #hero .lp-stage-mobile",
-        { opacity: 0, scale: 0.97, y: 12 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.64, ease, delay: 0.22 },
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.60, ease, delay: 0.22 },
+      )
+      /* Cards entram em stagger dentro do stage (só opacity — float usa transform) */
+      gsap.fromTo(
+        "#hero .lp-vitrine-card",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.50, ease, delay: 0.34 },
+      )
+      gsap.fromTo(
+        "#hero .lp-order-card",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.44, ease, delay: 0.52 },
+      )
+      gsap.fromTo(
+        "#hero .lp-wa-card",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.40, ease, delay: 0.66 },
       )
 
       /* ── How it works ── */

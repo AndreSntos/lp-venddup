@@ -356,11 +356,24 @@ h1, h2, h3, h4, h5, h6 { color: var(--vd-text); margin: 0; }
   position: relative;
   height: 540px;
   min-width: 0;
+  /* overflow visible: permite WA card e order card saírem do container */
+  overflow: visible;
 }
 
+/* Grupo 3D para parallax CSS: recebe transform do VenddupHeroScene */
+.lp-stage-group {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ── Camada 1: Vitrine (dominante, ocupa o stage inteiro) ── */
 .lp-vitrine-card {
   position: absolute;
-  inset: 0 0 140px 0;
+  inset: 0;           /* full stage — dominante */
+  z-index: 1;
   border: 1px solid var(--vd-line-strong);
   border-radius: var(--vd-radius-lg);
   background: linear-gradient(145deg, rgba(7,17,31,.97), rgba(10,22,40,.90));
@@ -514,19 +527,20 @@ h1, h2, h3, h4, h5, h6 { color: var(--vd-text); margin: 0; }
   background: rgba(56,189,248,.06);
 }
 
-/* ── Order Card (overlay) ────────────────────────────────── */
+/* ── Camada 2: Pedido organizado (canto inferior direito) ── */
 .lp-order-card {
   position: absolute;
-  bottom: 0;
-  left: 18px;
-  right: 0;
+  bottom: -20px;
+  right: -16px;
+  left: auto;         /* não estica — largura fixa */
+  width: 300px;
+  z-index: 2;
   border: 1px solid rgba(56,189,248,.40);
   border-radius: var(--vd-radius-md);
   background: linear-gradient(145deg, rgba(3,7,18,.99), rgba(7,17,31,.97));
   box-shadow: 0 28px 80px rgba(56,189,248,.18), var(--vd-shadow);
   padding: 18px;
   animation: vd-float 6.5s ease-in-out infinite .7s;
-  z-index: 1;
 }
 
 .lp-order-top {
@@ -584,19 +598,19 @@ h1, h2, h3, h4, h5, h6 { color: var(--vd-text); margin: 0; }
   letter-spacing: -.04em;
 }
 
-/* ── WhatsApp bubble ─────────────────────────────────────── */
+/* ── Camada 3: Toast WhatsApp (canto superior direito) ────── */
 .lp-wa-card {
   position: absolute;
-  top: 20px;
-  right: -12px;
-  width: 220px;
+  top: 16px;
+  right: -28px;       /* sai um pouco do stage para contrastar com vitrine */
+  width: 196px;       /* compacto — é um toast, não um card grande */
+  z-index: 3;
   border: 1px solid rgba(37,211,102,.40);
   border-radius: var(--vd-radius-md);
   background: linear-gradient(145deg, rgba(37,211,102,.16), rgba(7,17,31,.94));
   box-shadow: 0 16px 48px rgba(37,211,102,.22);
   padding: 14px;
   animation: vd-float 7s ease-in-out infinite 1.4s;
-  z-index: 2;
 }
 
 .lp-wa-top {
@@ -1605,36 +1619,6 @@ details[open] .lp-faq-chevron {
   .lp-legal-main { padding: 36px 0 56px; }
   .lp-legal-footer-inner { flex-direction: column; gap: 12px; }
   .lp-legal-footer-links { justify-content: center; }
-}
-
-/* ── Three.js hero scene overlay ────────────────────────── */
-.lp-three-scene {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  border-radius: var(--vd-radius-lg);
-  overflow: hidden;
-}
-
-.lp-three-scene canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: var(--vd-radius-lg);
-}
-
-/* Stage with Three.js: static cards sit behind the canvas */
-.lp-stage-anim .lp-vitrine-card,
-.lp-stage-anim .lp-order-card,
-.lp-stage-anim .lp-wa-card {
-  z-index: 1;
-}
-
-/* ── GSAP animation initial states ──────────────────────── */
-/* Applied by JS — these keep elements fully visible if JS fails */
-@media (prefers-reduced-motion: no-preference) {
-  /* Initial hero states handled by gsap.fromTo — no pre-hide needed */
 }
 
 /* ── Mobile stage card ───────────────────────────────────── */

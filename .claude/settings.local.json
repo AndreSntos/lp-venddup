@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\sntos\\\\Downloads\\\\Projetos\\\\Landing pages\\\\lp-venddup\" -Recurse -Force | Select-Object -ExpandProperty FullName | ForEach-Object { $_.Substring\\(\"c:\\\\Users\\\\sntos\\\\Downloads\\\\Projetos\\\\Landing pages\\\\lp-venddup\".Length\\).TrimStart\\('\\\\'\\) } | Sort-Object)",
-      "PowerShell(head -n 200)"
+      "PowerShell(head -n 200)",
+      "Bash(npm uninstall *)"
     ]
   }
 }

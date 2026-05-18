@@ -202,10 +202,10 @@ function Navbar() {
 /* ── Hero Visual — Stage (desktop, aria-hidden) ──────────── */
 function HeroStage() {
   return (
-    <div className="lp-stage lp-stage-anim" aria-hidden="true">
-      {/* Three.js scene mounts as overlay on desktop — static cards serve as instant fallback */}
-      <VenddupHeroScene />
-      {/* Cartão 1: Vitrine online */}
+    <div className="lp-stage" aria-hidden="true">
+      {/* lp-stage-group: receives CSS 3D parallax transform from VenddupHeroScene */}
+      <div className="lp-stage-group">
+      {/* Cartão 1: Vitrine — camada base (dominante) */}
       <div className="lp-vitrine-card">
         <div className="lp-vitrine-bar">
           <div className="lp-traffic">
@@ -277,7 +277,7 @@ function HeroStage() {
         </div>
       </div>
 
-      {/* Cartão 2: Pedido organizado */}
+      {/* Cartão 2: Pedido organizado — camada intermediária, canto inferior direito */}
       <div className="lp-order-card">
         <div className="lp-order-top">
           <div>
@@ -313,7 +313,7 @@ function HeroStage() {
         </div>
       </div>
 
-      {/* Cartão 3: notificação WhatsApp */}
+      {/* Cartão 3: Toast WhatsApp — camada superior, canto superior direito */}
       <div className="lp-wa-card">
         <div className="lp-wa-top">
           <div className="lp-wa-icon">
@@ -329,6 +329,7 @@ function HeroStage() {
         </div>
         <div className="lp-wa-tick">✓✓ Recebido · 14h32</div>
       </div>
+      </div>{/* /lp-stage-group */}
     </div>
   );
 }
@@ -857,7 +858,8 @@ export default function HomePage() {
         <CTAFinal />
       </main>
 
-      {/* GSAP scroll animations — client only, no SSR */}
+      {/* Parallax CSS 3D + GSAP scroll animations — client only */}
+      <VenddupHeroScene />
       <LandingAnimations />
 
       <Footer />
