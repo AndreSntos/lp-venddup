@@ -1607,6 +1607,36 @@ details[open] .lp-faq-chevron {
   .lp-legal-footer-links { justify-content: center; }
 }
 
+/* ── Three.js hero scene overlay ────────────────────────── */
+.lp-three-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: var(--vd-radius-lg);
+  overflow: hidden;
+}
+
+.lp-three-scene canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: var(--vd-radius-lg);
+}
+
+/* Stage with Three.js: static cards sit behind the canvas */
+.lp-stage-anim .lp-vitrine-card,
+.lp-stage-anim .lp-order-card,
+.lp-stage-anim .lp-wa-card {
+  z-index: 1;
+}
+
+/* ── GSAP animation initial states ──────────────────────── */
+/* Applied by JS — these keep elements fully visible if JS fails */
+@media (prefers-reduced-motion: no-preference) {
+  /* Initial hero states handled by gsap.fromTo — no pre-hide needed */
+}
+
 /* ── Mobile stage card ───────────────────────────────────── */
 .lp-mobile-order {
   border: 1px solid rgba(56,189,248,.38);

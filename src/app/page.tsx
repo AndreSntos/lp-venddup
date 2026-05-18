@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PricingSection } from "./pricing";
+import {
+  VenddupHeroScene,
+  LandingAnimations,
+} from "@/components/landing/ClientOnlyLoader";
 
 export const metadata: Metadata = {
   title: "Venddup — Sua adega vendendo pelo WhatsApp com vitrine própria",
@@ -198,7 +202,9 @@ function Navbar() {
 /* ── Hero Visual — Stage (desktop, aria-hidden) ──────────── */
 function HeroStage() {
   return (
-    <div className="lp-stage" aria-hidden="true">
+    <div className="lp-stage lp-stage-anim" aria-hidden="true">
+      {/* Three.js scene mounts as overlay on desktop — static cards serve as instant fallback */}
+      <VenddupHeroScene />
       {/* Cartão 1: Vitrine online */}
       <div className="lp-vitrine-card">
         <div className="lp-vitrine-bar">
@@ -850,6 +856,9 @@ export default function HomePage() {
         {/* ── CTA Final ── */}
         <CTAFinal />
       </main>
+
+      {/* GSAP scroll animations — client only, no SSR */}
+      <LandingAnimations />
 
       <Footer />
     </>
